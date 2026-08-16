@@ -6,7 +6,8 @@ isort:skip_file
 from collections import abc as _abc
 from grpc import aio as _aio
 import abc as _abc_1
-from . import edge_pb2 as _edge_pb2
+from . import detection_pb2 as _detection_pb2
+from . import device_control_contracts_pb2 as _device_control_contracts_pb2
 import grpc as _grpc
 import sys
 import typing as _typing
@@ -27,374 +28,377 @@ GRPC_GENERATED_VERSION: str
 GRPC_VERSION: str
 
 class EdgeAdapterServiceStub:
-    """EdgeAdapterService provides RPC endpoints for controlling edge devices,
-    including flight operations, gimbal control, camera management, dock operations,
-    and asset management.
+    """EdgeAdapterService is the device-facing command API implemented by each Edge SDK.
+    It intentionally uses shared command messages from common.proto so client-facing
+    and device-facing SDKs do not drift into duplicate contracts.
+    Each adapter also pushes scheduled ReportAssetRuntime requests to RemoteControlService.
     """
 
     @_typing.overload
     def __new__(cls, channel: _grpc.Channel) -> _Self: ...
     @_typing.overload
     def __new__(cls, channel: _aio.Channel) -> EdgeAdapterServiceAsyncStub: ...
-    GetCapabilities: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeGetCapabilitiesRequest, _edge_pb2.EdgeGetCapabilitiesResponse]
-    """Capability Management"""
-    TakeOff: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeTakeOffRequest, _edge_pb2.EdgeResponse]
-    """Flight Control (for drone in dock)"""
-    GoTo: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeGoToRequest, _edge_pb2.EdgeResponse]
-    ReturnToHome: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeReturnToHomeRequest, _edge_pb2.EdgeResponse]
-    EnterManualControl: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeManualControlRequest, _edge_pb2.EdgeResponse]
+    GetCapabilities: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.AssetCapabilitiesRequest, _device_control_contracts_pb2.AssetCapabilitiesResponse]
+    """Current self-describing command contract; also used to build runtime snapshots."""
+    TakeOff: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CoordinateCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    """Flight Control"""
+    GoTo: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CoordinateCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ReturnToHome: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ReturnToHomeCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    EnterManualControl: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ManualControlCommandRequest, _device_control_contracts_pb2.CommandResponse]
     """Manual Control"""
-    ExitManualControl: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeManualControlRequest, _edge_pb2.EdgeResponse]
-    ManualControlInput: _grpc.StreamUnaryMultiCallable[_edge_pb2.EdgeManualControlInputRequest, _edge_pb2.EdgeResponse]
-    LookAt: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeLookAtRequest, _edge_pb2.EdgeResponse]
-    """Gimbal & Camera Control"""
-    TakePhoto: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeTakePhotoRequest, _edge_pb2.EdgeResponse]
-    EnableGimbalTracking: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeEnableGimbalTrackingRequest, _edge_pb2.EdgeResponse]
-    GetDetections: _grpc.UnaryStreamMultiCallable[_edge_pb2.EdgeGetDetectionsRequest, _edge_pb2.EdgeDetectionResponse]
-    """Detection"""
-    OpenCover: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeOpenCoverRequest, _edge_pb2.EdgeResponse]
-    """Dock Specific Operations"""
-    CloseCover: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeCloseCoverRequest, _edge_pb2.EdgeResponse]
-    StartCharging: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeStartChargingRequest, _edge_pb2.EdgeResponse]
-    StopCharging: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeStopChargingRequest, _edge_pb2.EdgeResponse]
-    RebootAsset: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeRebootAssetRequest, _edge_pb2.EdgeResponse]
+    ExitManualControl: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ManualControlCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ManualControlInput: _grpc.StreamUnaryMultiCallable[_device_control_contracts_pb2.ManualControlInputCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    LookAt: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LookAtCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    """Gimbal, Camera & Detection"""
+    EnableGimbalTracking: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    GetDetections: _grpc.UnaryStreamMultiCallable[_detection_pb2.DetectionStreamRequest, _detection_pb2.DetectionBatch]
+    PlayTTSAudio: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TextToSpeechCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    OpenCover: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    """Dock commands"""
+    CloseCover: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CloseCoverCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StartCharging: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StopCharging: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    RebootAsset: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
     """Asset Management"""
-    BootUpSubAsset: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeBootSubAssetRequest, _edge_pb2.EdgeResponse]
-    BootDownSubAsset: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeBootSubAssetRequest, _edge_pb2.EdgeResponse]
-    RegisterAsset: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeRegisterAssetRequest, _edge_pb2.EdgeResponse]
-    DeRegisterAsset: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeDeRegisterAssetRequest, _edge_pb2.EdgeResponse]
-    EnterOrCloseRemoteDebugMode: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeRemoteDebugModeRequest, _edge_pb2.EdgeResponse]
+    BootSubAsset: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    RegisterAsset: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.RegisterAssetCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    DeregisterAsset: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    SetRemoteDebugMode: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]
     """Debug & Maintenance"""
-    ChangeAcMode: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeChangeAcModeRequest, _edge_pb2.EdgeResponse]
-    StartLiveStream: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeStartLiveStreamRequest, _edge_pb2.EdgeResponse]
-    """Live Stream"""
-    StopLiveStream: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeStopLiveStreamRequest, _edge_pb2.EdgeResponse]
-    ChangeLens: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeChangeCameraLensRequest, _edge_pb2.EdgeResponse]
-    ChangeZoom: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeChangeCameraZoomRequest, _edge_pb2.EdgeResponse]
-    CapturePhoto: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeCapturePhotoRequest, _edge_pb2.EdgeResponse]
-    StartRecording: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeStartRecordingRequest, _edge_pb2.EdgeResponse]
-    StopRecording: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeStopRecordingRequest, _edge_pb2.EdgeResponse]
-    StartTask: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeStartTaskRequest, _edge_pb2.EdgeResponse]
-    StopTask: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeStopTaskRequest, _edge_pb2.EdgeResponse]
-    PauseTask: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgePauseTaskRequest, _edge_pb2.EdgeResponse]
-    ResumeTask: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeResumeTaskRequest, _edge_pb2.EdgeResponse]
-    PrepareTask: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgePrepareTaskRequest, _edge_pb2.EdgeResponse]
-    SendCustomCommand: _grpc.UnaryUnaryMultiCallable[_edge_pb2.EdgeCustomCommandRequest, _edge_pb2.EdgeCustomCommandResponse]
+    ChangeAcMode: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeAcModeCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StartLiveStream: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LiveStreamStartCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    """Live Stream & Camera Capture"""
+    StopLiveStream: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LiveStreamStopCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ChangeLens: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraLensCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ChangeZoom: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraZoomCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    CapturePhoto: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StartRecording: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StopRecording: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    LiveStreamSplitScreen: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    PrepareTask: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TaskCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    """Task Lifecycle"""
+    StartTask: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TaskCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StopTask: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TaskCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    PauseTask: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TaskCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ResumeTask: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TaskCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    SendCustomCommand: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CustomCommandRequest, _device_control_contracts_pb2.CustomCommandResponse]
     """Custom / Integrator-defined commands"""
 
 @_typing.type_check_only
 class EdgeAdapterServiceAsyncStub(EdgeAdapterServiceStub):
-    """EdgeAdapterService provides RPC endpoints for controlling edge devices,
-    including flight operations, gimbal control, camera management, dock operations,
-    and asset management.
+    """EdgeAdapterService is the device-facing command API implemented by each Edge SDK.
+    It intentionally uses shared command messages from common.proto so client-facing
+    and device-facing SDKs do not drift into duplicate contracts.
+    Each adapter also pushes scheduled ReportAssetRuntime requests to RemoteControlService.
     """
 
     def __init__(self, channel: _aio.Channel) -> None: ...
-    GetCapabilities: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeGetCapabilitiesRequest, _edge_pb2.EdgeGetCapabilitiesResponse]  # type: ignore[assignment]
-    """Capability Management"""
-    TakeOff: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeTakeOffRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    """Flight Control (for drone in dock)"""
-    GoTo: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeGoToRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    ReturnToHome: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeReturnToHomeRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    EnterManualControl: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeManualControlRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
+    GetCapabilities: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.AssetCapabilitiesRequest, _device_control_contracts_pb2.AssetCapabilitiesResponse]  # type: ignore[assignment]
+    """Current self-describing command contract; also used to build runtime snapshots."""
+    TakeOff: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CoordinateCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    """Flight Control"""
+    GoTo: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CoordinateCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ReturnToHome: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ReturnToHomeCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    EnterManualControl: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ManualControlCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     """Manual Control"""
-    ExitManualControl: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeManualControlRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    ManualControlInput: _aio.StreamUnaryMultiCallable[_edge_pb2.EdgeManualControlInputRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    LookAt: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeLookAtRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    """Gimbal & Camera Control"""
-    TakePhoto: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeTakePhotoRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    EnableGimbalTracking: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeEnableGimbalTrackingRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    GetDetections: _aio.UnaryStreamMultiCallable[_edge_pb2.EdgeGetDetectionsRequest, _edge_pb2.EdgeDetectionResponse]  # type: ignore[assignment]
-    """Detection"""
-    OpenCover: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeOpenCoverRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    """Dock Specific Operations"""
-    CloseCover: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeCloseCoverRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    StartCharging: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeStartChargingRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    StopCharging: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeStopChargingRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    RebootAsset: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeRebootAssetRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
+    ExitManualControl: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ManualControlCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ManualControlInput: _aio.StreamUnaryMultiCallable[_device_control_contracts_pb2.ManualControlInputCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    LookAt: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LookAtCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    """Gimbal, Camera & Detection"""
+    EnableGimbalTracking: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    GetDetections: _aio.UnaryStreamMultiCallable[_detection_pb2.DetectionStreamRequest, _detection_pb2.DetectionBatch]  # type: ignore[assignment]
+    PlayTTSAudio: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TextToSpeechCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    OpenCover: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    """Dock commands"""
+    CloseCover: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CloseCoverCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StartCharging: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StopCharging: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    RebootAsset: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     """Asset Management"""
-    BootUpSubAsset: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeBootSubAssetRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    BootDownSubAsset: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeBootSubAssetRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    RegisterAsset: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeRegisterAssetRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    DeRegisterAsset: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeDeRegisterAssetRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    EnterOrCloseRemoteDebugMode: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeRemoteDebugModeRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
+    BootSubAsset: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    RegisterAsset: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.RegisterAssetCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    DeregisterAsset: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    SetRemoteDebugMode: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     """Debug & Maintenance"""
-    ChangeAcMode: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeChangeAcModeRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    StartLiveStream: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeStartLiveStreamRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    """Live Stream"""
-    StopLiveStream: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeStopLiveStreamRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    ChangeLens: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeChangeCameraLensRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    ChangeZoom: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeChangeCameraZoomRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    CapturePhoto: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeCapturePhotoRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    StartRecording: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeStartRecordingRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    StopRecording: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeStopRecordingRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    StartTask: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeStartTaskRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    StopTask: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeStopTaskRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    PauseTask: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgePauseTaskRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    ResumeTask: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeResumeTaskRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    PrepareTask: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgePrepareTaskRequest, _edge_pb2.EdgeResponse]  # type: ignore[assignment]
-    SendCustomCommand: _aio.UnaryUnaryMultiCallable[_edge_pb2.EdgeCustomCommandRequest, _edge_pb2.EdgeCustomCommandResponse]  # type: ignore[assignment]
+    ChangeAcMode: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeAcModeCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StartLiveStream: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LiveStreamStartCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    """Live Stream & Camera Capture"""
+    StopLiveStream: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LiveStreamStopCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ChangeLens: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraLensCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ChangeZoom: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraZoomCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    CapturePhoto: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StartRecording: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StopRecording: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    LiveStreamSplitScreen: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    PrepareTask: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TaskCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    """Task Lifecycle"""
+    StartTask: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TaskCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StopTask: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TaskCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    PauseTask: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TaskCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ResumeTask: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TaskCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    SendCustomCommand: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CustomCommandRequest, _device_control_contracts_pb2.CustomCommandResponse]  # type: ignore[assignment]
     """Custom / Integrator-defined commands"""
 
 class EdgeAdapterServiceServicer(metaclass=_abc_1.ABCMeta):
-    """EdgeAdapterService provides RPC endpoints for controlling edge devices,
-    including flight operations, gimbal control, camera management, dock operations,
-    and asset management.
+    """EdgeAdapterService is the device-facing command API implemented by each Edge SDK.
+    It intentionally uses shared command messages from common.proto so client-facing
+    and device-facing SDKs do not drift into duplicate contracts.
+    Each adapter also pushes scheduled ReportAssetRuntime requests to RemoteControlService.
     """
 
     @_abc_1.abstractmethod
     def GetCapabilities(
         self,
-        request: _edge_pb2.EdgeGetCapabilitiesRequest,
+        request: _device_control_contracts_pb2.AssetCapabilitiesRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeGetCapabilitiesResponse, _abc.Awaitable[_edge_pb2.EdgeGetCapabilitiesResponse]]:
-        """Capability Management"""
+    ) -> _typing.Union[_device_control_contracts_pb2.AssetCapabilitiesResponse, _abc.Awaitable[_device_control_contracts_pb2.AssetCapabilitiesResponse]]:
+        """Current self-describing command contract; also used to build runtime snapshots."""
 
     @_abc_1.abstractmethod
     def TakeOff(
         self,
-        request: _edge_pb2.EdgeTakeOffRequest,
+        request: _device_control_contracts_pb2.CoordinateCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]:
-        """Flight Control (for drone in dock)"""
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
+        """Flight Control"""
 
     @_abc_1.abstractmethod
     def GoTo(
         self,
-        request: _edge_pb2.EdgeGoToRequest,
+        request: _device_control_contracts_pb2.CoordinateCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def ReturnToHome(
         self,
-        request: _edge_pb2.EdgeReturnToHomeRequest,
+        request: _device_control_contracts_pb2.ReturnToHomeCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def EnterManualControl(
         self,
-        request: _edge_pb2.EdgeManualControlRequest,
+        request: _device_control_contracts_pb2.ManualControlCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]:
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
         """Manual Control"""
 
     @_abc_1.abstractmethod
     def ExitManualControl(
         self,
-        request: _edge_pb2.EdgeManualControlRequest,
+        request: _device_control_contracts_pb2.ManualControlCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def ManualControlInput(
         self,
-        request_iterator: _MaybeAsyncIterator[_edge_pb2.EdgeManualControlInputRequest],
+        request_iterator: _MaybeAsyncIterator[_device_control_contracts_pb2.ManualControlInputCommandRequest],
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def LookAt(
         self,
-        request: _edge_pb2.EdgeLookAtRequest,
+        request: _device_control_contracts_pb2.LookAtCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]:
-        """Gimbal & Camera Control"""
-
-    @_abc_1.abstractmethod
-    def TakePhoto(
-        self,
-        request: _edge_pb2.EdgeTakePhotoRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
+        """Gimbal, Camera & Detection"""
 
     @_abc_1.abstractmethod
     def EnableGimbalTracking(
         self,
-        request: _edge_pb2.EdgeEnableGimbalTrackingRequest,
+        request: _device_control_contracts_pb2.ToggleCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def GetDetections(
         self,
-        request: _edge_pb2.EdgeGetDetectionsRequest,
+        request: _detection_pb2.DetectionStreamRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_abc.Iterator[_edge_pb2.EdgeDetectionResponse], _abc.AsyncIterator[_edge_pb2.EdgeDetectionResponse]]:
-        """Detection"""
+    ) -> _typing.Union[_abc.Iterator[_detection_pb2.DetectionBatch], _abc.AsyncIterator[_detection_pb2.DetectionBatch]]: ...
+
+    @_abc_1.abstractmethod
+    def PlayTTSAudio(
+        self,
+        request: _device_control_contracts_pb2.TextToSpeechCommandRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def OpenCover(
         self,
-        request: _edge_pb2.EdgeOpenCoverRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]:
-        """Dock Specific Operations"""
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
+        """Dock commands"""
 
     @_abc_1.abstractmethod
     def CloseCover(
         self,
-        request: _edge_pb2.EdgeCloseCoverRequest,
+        request: _device_control_contracts_pb2.CloseCoverCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def StartCharging(
         self,
-        request: _edge_pb2.EdgeStartChargingRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def StopCharging(
         self,
-        request: _edge_pb2.EdgeStopChargingRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def RebootAsset(
         self,
-        request: _edge_pb2.EdgeRebootAssetRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]:
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
         """Asset Management"""
 
     @_abc_1.abstractmethod
-    def BootUpSubAsset(
+    def BootSubAsset(
         self,
-        request: _edge_pb2.EdgeBootSubAssetRequest,
+        request: _device_control_contracts_pb2.ToggleCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def BootDownSubAsset(
-        self,
-        request: _edge_pb2.EdgeBootSubAssetRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def RegisterAsset(
         self,
-        request: _edge_pb2.EdgeRegisterAssetRequest,
+        request: _device_control_contracts_pb2.RegisterAssetCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
-    def DeRegisterAsset(
+    def DeregisterAsset(
         self,
-        request: _edge_pb2.EdgeDeRegisterAssetRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
-    def EnterOrCloseRemoteDebugMode(
+    def SetRemoteDebugMode(
         self,
-        request: _edge_pb2.EdgeRemoteDebugModeRequest,
+        request: _device_control_contracts_pb2.ToggleCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]:
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
         """Debug & Maintenance"""
 
     @_abc_1.abstractmethod
     def ChangeAcMode(
         self,
-        request: _edge_pb2.EdgeChangeAcModeRequest,
+        request: _device_control_contracts_pb2.ChangeAcModeCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def StartLiveStream(
         self,
-        request: _edge_pb2.EdgeStartLiveStreamRequest,
+        request: _device_control_contracts_pb2.LiveStreamStartCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]:
-        """Live Stream"""
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
+        """Live Stream & Camera Capture"""
 
     @_abc_1.abstractmethod
     def StopLiveStream(
         self,
-        request: _edge_pb2.EdgeStopLiveStreamRequest,
+        request: _device_control_contracts_pb2.LiveStreamStopCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def ChangeLens(
         self,
-        request: _edge_pb2.EdgeChangeCameraLensRequest,
+        request: _device_control_contracts_pb2.ChangeCameraLensCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def ChangeZoom(
         self,
-        request: _edge_pb2.EdgeChangeCameraZoomRequest,
+        request: _device_control_contracts_pb2.ChangeCameraZoomCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def CapturePhoto(
         self,
-        request: _edge_pb2.EdgeCapturePhotoRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def StartRecording(
         self,
-        request: _edge_pb2.EdgeStartRecordingRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def StopRecording(
         self,
-        request: _edge_pb2.EdgeStopRecordingRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
-    def StartTask(
+    def LiveStreamSplitScreen(
         self,
-        request: _edge_pb2.EdgeStartTaskRequest,
+        request: _device_control_contracts_pb2.ToggleCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def StopTask(
-        self,
-        request: _edge_pb2.EdgeStopTaskRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def PauseTask(
-        self,
-        request: _edge_pb2.EdgePauseTaskRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def ResumeTask(
-        self,
-        request: _edge_pb2.EdgeResumeTaskRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def PrepareTask(
         self,
-        request: _edge_pb2.EdgePrepareTaskRequest,
+        request: _device_control_contracts_pb2.TaskCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeResponse, _abc.Awaitable[_edge_pb2.EdgeResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
+        """Task Lifecycle"""
+
+    @_abc_1.abstractmethod
+    def StartTask(
+        self,
+        request: _device_control_contracts_pb2.TaskCommandRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def StopTask(
+        self,
+        request: _device_control_contracts_pb2.TaskCommandRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def PauseTask(
+        self,
+        request: _device_control_contracts_pb2.TaskCommandRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def ResumeTask(
+        self,
+        request: _device_control_contracts_pb2.TaskCommandRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def SendCustomCommand(
         self,
-        request: _edge_pb2.EdgeCustomCommandRequest,
+        request: _device_control_contracts_pb2.CustomCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_edge_pb2.EdgeCustomCommandResponse, _abc.Awaitable[_edge_pb2.EdgeCustomCommandResponse]]:
+    ) -> _typing.Union[_device_control_contracts_pb2.CustomCommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CustomCommandResponse]]:
         """Custom / Integrator-defined commands"""
 
 def add_EdgeAdapterServiceServicer_to_server(servicer: EdgeAdapterServiceServicer, server: _typing.Union[_grpc.Server, _aio.Server]) -> None: ...

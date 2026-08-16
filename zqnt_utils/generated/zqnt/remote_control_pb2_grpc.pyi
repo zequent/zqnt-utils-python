@@ -6,8 +6,8 @@ isort:skip_file
 from collections import abc as _abc
 from grpc import aio as _aio
 import abc as _abc_1
+from . import device_control_contracts_pb2 as _device_control_contracts_pb2
 import grpc as _grpc
-from . import remote_control_pb2 as _remote_control_pb2
 import sys
 import typing as _typing
 
@@ -27,203 +27,293 @@ GRPC_GENERATED_VERSION: str
 GRPC_VERSION: str
 
 class RemoteControlServiceStub:
-    """========== SERVICE ==========
-
-    RemoteControlService provides remote control operations for assets including flight control,
-    manual control, dock operations, and asset management.
+    """RemoteControlService is the client-facing command gateway.
+    It uses the same command contracts as EdgeAdapterService so SDKs and adapters
+    can share validation, mapping, tests, and documentation.
     """
 
     @_typing.overload
     def __new__(cls, channel: _grpc.Channel) -> _Self: ...
     @_typing.overload
     def __new__(cls, channel: _aio.Channel) -> RemoteControlServiceAsyncStub: ...
-    TakeOff: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlTakeOffRequest, _remote_control_pb2.RemoteControlResponse]
+    ReportAssetRuntime: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ReportAssetRuntimeRequest, _device_control_contracts_pb2.ReportAssetRuntimeResponse]
+    """Capability Management
+    Edge adapters push complete payload and capability snapshots on a schedule.
+    """
+    GetAssetRuntime: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.GetAssetRuntimeRequest, _device_control_contracts_pb2.AssetRuntimeResponse]
+    """Clients discover detected payloads and their current capabilities atomically."""
+    GetCapabilities: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.AssetCapabilitiesRequest, _device_control_contracts_pb2.AssetCapabilitiesResponse]
+    """Clients read the latest snapshot maintained by Remote Control."""
+    TakeOff: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CoordinateCommandRequest, _device_control_contracts_pb2.CommandResponse]
     """Flight Control"""
-    GoTo: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlGoToRequest, _remote_control_pb2.RemoteControlResponse]
-    ReturnToHome: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlReturnToHomeRequest, _remote_control_pb2.RemoteControlResponse]
-    EnterManualControl: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlManualControlRequest, _remote_control_pb2.RemoteControlResponse]
+    GoTo: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CoordinateCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ReturnToHome: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ReturnToHomeCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    EnterManualControl: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ManualControlCommandRequest, _device_control_contracts_pb2.CommandResponse]
     """Manual Control"""
-    ExitManualControl: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlManualControlRequest, _remote_control_pb2.RemoteControlResponse]
-    ManualControlInput: _grpc.StreamUnaryMultiCallable[_remote_control_pb2.RemoteControlManualControlInputRequest, _remote_control_pb2.RemoteControlResponse]
-    LookAt: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlLookAtRequest, _remote_control_pb2.RemoteControlResponse]
-    TakePhoto: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlTakePhotoRequest, _remote_control_pb2.RemoteControlResponse]
-    OpenCover: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlOpenCoverRequest, _remote_control_pb2.RemoteControlResponse]
-    """Dock Specific Operations"""
-    CloseCover: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlCloseCoverRequest, _remote_control_pb2.RemoteControlResponse]
-    StartCharging: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlStartChargingRequest, _remote_control_pb2.RemoteControlResponse]
-    StopCharging: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlStopChargingRequest, _remote_control_pb2.RemoteControlResponse]
-    RebootAsset: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlRebootAssetRequest, _remote_control_pb2.RemoteControlResponse]
+    ExitManualControl: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ManualControlCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ManualControlInput: _grpc.StreamUnaryMultiCallable[_device_control_contracts_pb2.ManualControlInputCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    LookAt: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LookAtCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    CapturePhoto: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    PlayTTSAudio: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TextToSpeechCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    LiveStreamSplitScreen: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ControlDetection: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.DetectionControlCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    """Detection"""
+    OpenCover: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    """Dock commands"""
+    CloseCover: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CloseCoverCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StartCharging: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StopCharging: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    RebootAsset: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
     """Asset Management"""
-    BootSubAsset: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlBootSubAssetRequest, _remote_control_pb2.RemoteControlResponse]
-    EnterOrCloseRemoteDebugMode: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlDebugModeRequest, _remote_control_pb2.RemoteControlResponse]
+    BootSubAsset: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    SetRemoteDebugMode: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]
     """Debug & Maintenance"""
-    ChangeAcMode: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlChangeAcModeRequest, _remote_control_pb2.RemoteControlResponse]
-    SendCustomCommand: _grpc.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlCustomCommandRequest, _remote_control_pb2.RemoteControlCustomCommandResponse]
+    ChangeAcMode: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeAcModeCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ChangeLens: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraLensCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    """Camera"""
+    ChangeZoom: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraZoomCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    SendCustomCommand: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CustomCommandRequest, _device_control_contracts_pb2.CustomCommandResponse]
     """Custom / Integrator-defined commands"""
 
 @_typing.type_check_only
 class RemoteControlServiceAsyncStub(RemoteControlServiceStub):
-    """========== SERVICE ==========
-
-    RemoteControlService provides remote control operations for assets including flight control,
-    manual control, dock operations, and asset management.
+    """RemoteControlService is the client-facing command gateway.
+    It uses the same command contracts as EdgeAdapterService so SDKs and adapters
+    can share validation, mapping, tests, and documentation.
     """
 
     def __init__(self, channel: _aio.Channel) -> None: ...
-    TakeOff: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlTakeOffRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
+    ReportAssetRuntime: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ReportAssetRuntimeRequest, _device_control_contracts_pb2.ReportAssetRuntimeResponse]  # type: ignore[assignment]
+    """Capability Management
+    Edge adapters push complete payload and capability snapshots on a schedule.
+    """
+    GetAssetRuntime: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.GetAssetRuntimeRequest, _device_control_contracts_pb2.AssetRuntimeResponse]  # type: ignore[assignment]
+    """Clients discover detected payloads and their current capabilities atomically."""
+    GetCapabilities: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.AssetCapabilitiesRequest, _device_control_contracts_pb2.AssetCapabilitiesResponse]  # type: ignore[assignment]
+    """Clients read the latest snapshot maintained by Remote Control."""
+    TakeOff: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CoordinateCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     """Flight Control"""
-    GoTo: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlGoToRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    ReturnToHome: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlReturnToHomeRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    EnterManualControl: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlManualControlRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
+    GoTo: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CoordinateCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ReturnToHome: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ReturnToHomeCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    EnterManualControl: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ManualControlCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     """Manual Control"""
-    ExitManualControl: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlManualControlRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    ManualControlInput: _aio.StreamUnaryMultiCallable[_remote_control_pb2.RemoteControlManualControlInputRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    LookAt: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlLookAtRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    TakePhoto: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlTakePhotoRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    OpenCover: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlOpenCoverRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    """Dock Specific Operations"""
-    CloseCover: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlCloseCoverRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    StartCharging: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlStartChargingRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    StopCharging: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlStopChargingRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    RebootAsset: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlRebootAssetRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
+    ExitManualControl: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ManualControlCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ManualControlInput: _aio.StreamUnaryMultiCallable[_device_control_contracts_pb2.ManualControlInputCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    LookAt: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LookAtCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    CapturePhoto: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    PlayTTSAudio: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TextToSpeechCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    LiveStreamSplitScreen: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ControlDetection: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.DetectionControlCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    """Detection"""
+    OpenCover: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    """Dock commands"""
+    CloseCover: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CloseCoverCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StartCharging: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StopCharging: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    RebootAsset: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     """Asset Management"""
-    BootSubAsset: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlBootSubAssetRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    EnterOrCloseRemoteDebugMode: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlDebugModeRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
+    BootSubAsset: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    SetRemoteDebugMode: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     """Debug & Maintenance"""
-    ChangeAcMode: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlChangeAcModeRequest, _remote_control_pb2.RemoteControlResponse]  # type: ignore[assignment]
-    SendCustomCommand: _aio.UnaryUnaryMultiCallable[_remote_control_pb2.RemoteControlCustomCommandRequest, _remote_control_pb2.RemoteControlCustomCommandResponse]  # type: ignore[assignment]
+    ChangeAcMode: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeAcModeCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ChangeLens: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraLensCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    """Camera"""
+    ChangeZoom: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraZoomCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    SendCustomCommand: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CustomCommandRequest, _device_control_contracts_pb2.CustomCommandResponse]  # type: ignore[assignment]
     """Custom / Integrator-defined commands"""
 
 class RemoteControlServiceServicer(metaclass=_abc_1.ABCMeta):
-    """========== SERVICE ==========
-
-    RemoteControlService provides remote control operations for assets including flight control,
-    manual control, dock operations, and asset management.
+    """RemoteControlService is the client-facing command gateway.
+    It uses the same command contracts as EdgeAdapterService so SDKs and adapters
+    can share validation, mapping, tests, and documentation.
     """
+
+    @_abc_1.abstractmethod
+    def ReportAssetRuntime(
+        self,
+        request: _device_control_contracts_pb2.ReportAssetRuntimeRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.ReportAssetRuntimeResponse, _abc.Awaitable[_device_control_contracts_pb2.ReportAssetRuntimeResponse]]:
+        """Capability Management
+        Edge adapters push complete payload and capability snapshots on a schedule.
+        """
+
+    @_abc_1.abstractmethod
+    def GetAssetRuntime(
+        self,
+        request: _device_control_contracts_pb2.GetAssetRuntimeRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.AssetRuntimeResponse, _abc.Awaitable[_device_control_contracts_pb2.AssetRuntimeResponse]]:
+        """Clients discover detected payloads and their current capabilities atomically."""
+
+    @_abc_1.abstractmethod
+    def GetCapabilities(
+        self,
+        request: _device_control_contracts_pb2.AssetCapabilitiesRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.AssetCapabilitiesResponse, _abc.Awaitable[_device_control_contracts_pb2.AssetCapabilitiesResponse]]:
+        """Clients read the latest snapshot maintained by Remote Control."""
 
     @_abc_1.abstractmethod
     def TakeOff(
         self,
-        request: _remote_control_pb2.RemoteControlTakeOffRequest,
+        request: _device_control_contracts_pb2.CoordinateCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]:
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
         """Flight Control"""
 
     @_abc_1.abstractmethod
     def GoTo(
         self,
-        request: _remote_control_pb2.RemoteControlGoToRequest,
+        request: _device_control_contracts_pb2.CoordinateCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def ReturnToHome(
         self,
-        request: _remote_control_pb2.RemoteControlReturnToHomeRequest,
+        request: _device_control_contracts_pb2.ReturnToHomeCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def EnterManualControl(
         self,
-        request: _remote_control_pb2.RemoteControlManualControlRequest,
+        request: _device_control_contracts_pb2.ManualControlCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]:
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
         """Manual Control"""
 
     @_abc_1.abstractmethod
     def ExitManualControl(
         self,
-        request: _remote_control_pb2.RemoteControlManualControlRequest,
+        request: _device_control_contracts_pb2.ManualControlCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def ManualControlInput(
         self,
-        request_iterator: _MaybeAsyncIterator[_remote_control_pb2.RemoteControlManualControlInputRequest],
+        request_iterator: _MaybeAsyncIterator[_device_control_contracts_pb2.ManualControlInputCommandRequest],
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def LookAt(
         self,
-        request: _remote_control_pb2.RemoteControlLookAtRequest,
+        request: _device_control_contracts_pb2.LookAtCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
-    def TakePhoto(
+    def CapturePhoto(
         self,
-        request: _remote_control_pb2.RemoteControlTakePhotoRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def PlayTTSAudio(
+        self,
+        request: _device_control_contracts_pb2.TextToSpeechCommandRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def LiveStreamSplitScreen(
+        self,
+        request: _device_control_contracts_pb2.ToggleCommandRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def ControlDetection(
+        self,
+        request: _device_control_contracts_pb2.DetectionControlCommandRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
+        """Detection"""
 
     @_abc_1.abstractmethod
     def OpenCover(
         self,
-        request: _remote_control_pb2.RemoteControlOpenCoverRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]:
-        """Dock Specific Operations"""
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
+        """Dock commands"""
 
     @_abc_1.abstractmethod
     def CloseCover(
         self,
-        request: _remote_control_pb2.RemoteControlCloseCoverRequest,
+        request: _device_control_contracts_pb2.CloseCoverCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def StartCharging(
         self,
-        request: _remote_control_pb2.RemoteControlStartChargingRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def StopCharging(
         self,
-        request: _remote_control_pb2.RemoteControlStopChargingRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def RebootAsset(
         self,
-        request: _remote_control_pb2.RemoteControlRebootAssetRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]:
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
         """Asset Management"""
 
     @_abc_1.abstractmethod
     def BootSubAsset(
         self,
-        request: _remote_control_pb2.RemoteControlBootSubAssetRequest,
+        request: _device_control_contracts_pb2.ToggleCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
-    def EnterOrCloseRemoteDebugMode(
+    def SetRemoteDebugMode(
         self,
-        request: _remote_control_pb2.RemoteControlDebugModeRequest,
+        request: _device_control_contracts_pb2.ToggleCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]:
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
         """Debug & Maintenance"""
 
     @_abc_1.abstractmethod
     def ChangeAcMode(
         self,
-        request: _remote_control_pb2.RemoteControlChangeAcModeRequest,
+        request: _device_control_contracts_pb2.ChangeAcModeCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def ChangeLens(
+        self,
+        request: _device_control_contracts_pb2.ChangeCameraLensCommandRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]:
+        """Camera"""
+
+    @_abc_1.abstractmethod
+    def ChangeZoom(
+        self,
+        request: _device_control_contracts_pb2.ChangeCameraZoomCommandRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def SendCustomCommand(
         self,
-        request: _remote_control_pb2.RemoteControlCustomCommandRequest,
+        request: _device_control_contracts_pb2.CustomCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_remote_control_pb2.RemoteControlCustomCommandResponse, _abc.Awaitable[_remote_control_pb2.RemoteControlCustomCommandResponse]]:
+    ) -> _typing.Union[_device_control_contracts_pb2.CustomCommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CustomCommandResponse]]:
         """Custom / Integrator-defined commands"""
 
 def add_RemoteControlServiceServicer_to_server(servicer: RemoteControlServiceServicer, server: _typing.Union[_grpc.Server, _aio.Server]) -> None: ...

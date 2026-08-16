@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from . import remote_control_pb2 as remote__control__pb2
+from . import device_control_contracts_pb2 as device__control__contracts__pb2
 
 GRPC_GENERATED_VERSION = '1.80.0'
 GRPC_VERSION = grpc.__version__
@@ -26,10 +26,9 @@ if _version_not_supported:
 
 
 class RemoteControlServiceStub(object):
-    """========== SERVICE ==========
-
-    RemoteControlService provides remote control operations for assets including flight control,
-    manual control, dock operations, and asset management.
+    """RemoteControlService is the client-facing command gateway.
+    It uses the same command contracts as EdgeAdapterService so SDKs and adapters
+    can share validation, mapping, tests, and documentation.
     """
 
     def __init__(self, channel):
@@ -38,99 +37,160 @@ class RemoteControlServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.ReportAssetRuntime = channel.unary_unary(
+                '/zqnt.RemoteControlService/ReportAssetRuntime',
+                request_serializer=device__control__contracts__pb2.ReportAssetRuntimeRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.ReportAssetRuntimeResponse.FromString,
+                _registered_method=True)
+        self.GetAssetRuntime = channel.unary_unary(
+                '/zqnt.RemoteControlService/GetAssetRuntime',
+                request_serializer=device__control__contracts__pb2.GetAssetRuntimeRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.AssetRuntimeResponse.FromString,
+                _registered_method=True)
+        self.GetCapabilities = channel.unary_unary(
+                '/zqnt.RemoteControlService/GetCapabilities',
+                request_serializer=device__control__contracts__pb2.AssetCapabilitiesRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.AssetCapabilitiesResponse.FromString,
+                _registered_method=True)
         self.TakeOff = channel.unary_unary(
-                '/RemoteControlService/TakeOff',
-                request_serializer=remote__control__pb2.RemoteControlTakeOffRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/TakeOff',
+                request_serializer=device__control__contracts__pb2.CoordinateCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.GoTo = channel.unary_unary(
-                '/RemoteControlService/GoTo',
-                request_serializer=remote__control__pb2.RemoteControlGoToRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/GoTo',
+                request_serializer=device__control__contracts__pb2.CoordinateCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ReturnToHome = channel.unary_unary(
-                '/RemoteControlService/ReturnToHome',
-                request_serializer=remote__control__pb2.RemoteControlReturnToHomeRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/ReturnToHome',
+                request_serializer=device__control__contracts__pb2.ReturnToHomeCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.EnterManualControl = channel.unary_unary(
-                '/RemoteControlService/EnterManualControl',
-                request_serializer=remote__control__pb2.RemoteControlManualControlRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/EnterManualControl',
+                request_serializer=device__control__contracts__pb2.ManualControlCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ExitManualControl = channel.unary_unary(
-                '/RemoteControlService/ExitManualControl',
-                request_serializer=remote__control__pb2.RemoteControlManualControlRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/ExitManualControl',
+                request_serializer=device__control__contracts__pb2.ManualControlCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ManualControlInput = channel.stream_unary(
-                '/RemoteControlService/ManualControlInput',
-                request_serializer=remote__control__pb2.RemoteControlManualControlInputRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/ManualControlInput',
+                request_serializer=device__control__contracts__pb2.ManualControlInputCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.LookAt = channel.unary_unary(
-                '/RemoteControlService/LookAt',
-                request_serializer=remote__control__pb2.RemoteControlLookAtRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/LookAt',
+                request_serializer=device__control__contracts__pb2.LookAtCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
-        self.TakePhoto = channel.unary_unary(
-                '/RemoteControlService/TakePhoto',
-                request_serializer=remote__control__pb2.RemoteControlTakePhotoRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+        self.CapturePhoto = channel.unary_unary(
+                '/zqnt.RemoteControlService/CapturePhoto',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
+                _registered_method=True)
+        self.PlayTTSAudio = channel.unary_unary(
+                '/zqnt.RemoteControlService/PlayTTSAudio',
+                request_serializer=device__control__contracts__pb2.TextToSpeechCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
+                _registered_method=True)
+        self.LiveStreamSplitScreen = channel.unary_unary(
+                '/zqnt.RemoteControlService/LiveStreamSplitScreen',
+                request_serializer=device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
+                _registered_method=True)
+        self.ControlDetection = channel.unary_unary(
+                '/zqnt.RemoteControlService/ControlDetection',
+                request_serializer=device__control__contracts__pb2.DetectionControlCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.OpenCover = channel.unary_unary(
-                '/RemoteControlService/OpenCover',
-                request_serializer=remote__control__pb2.RemoteControlOpenCoverRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/OpenCover',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.CloseCover = channel.unary_unary(
-                '/RemoteControlService/CloseCover',
-                request_serializer=remote__control__pb2.RemoteControlCloseCoverRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/CloseCover',
+                request_serializer=device__control__contracts__pb2.CloseCoverCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StartCharging = channel.unary_unary(
-                '/RemoteControlService/StartCharging',
-                request_serializer=remote__control__pb2.RemoteControlStartChargingRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/StartCharging',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StopCharging = channel.unary_unary(
-                '/RemoteControlService/StopCharging',
-                request_serializer=remote__control__pb2.RemoteControlStopChargingRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/StopCharging',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.RebootAsset = channel.unary_unary(
-                '/RemoteControlService/RebootAsset',
-                request_serializer=remote__control__pb2.RemoteControlRebootAssetRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/RebootAsset',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.BootSubAsset = channel.unary_unary(
-                '/RemoteControlService/BootSubAsset',
-                request_serializer=remote__control__pb2.RemoteControlBootSubAssetRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/BootSubAsset',
+                request_serializer=device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
-        self.EnterOrCloseRemoteDebugMode = channel.unary_unary(
-                '/RemoteControlService/EnterOrCloseRemoteDebugMode',
-                request_serializer=remote__control__pb2.RemoteControlDebugModeRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+        self.SetRemoteDebugMode = channel.unary_unary(
+                '/zqnt.RemoteControlService/SetRemoteDebugMode',
+                request_serializer=device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ChangeAcMode = channel.unary_unary(
-                '/RemoteControlService/ChangeAcMode',
-                request_serializer=remote__control__pb2.RemoteControlChangeAcModeRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlResponse.FromString,
+                '/zqnt.RemoteControlService/ChangeAcMode',
+                request_serializer=device__control__contracts__pb2.ChangeAcModeCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
+                _registered_method=True)
+        self.ChangeLens = channel.unary_unary(
+                '/zqnt.RemoteControlService/ChangeLens',
+                request_serializer=device__control__contracts__pb2.ChangeCameraLensCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
+                _registered_method=True)
+        self.ChangeZoom = channel.unary_unary(
+                '/zqnt.RemoteControlService/ChangeZoom',
+                request_serializer=device__control__contracts__pb2.ChangeCameraZoomCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.SendCustomCommand = channel.unary_unary(
-                '/RemoteControlService/SendCustomCommand',
-                request_serializer=remote__control__pb2.RemoteControlCustomCommandRequest.SerializeToString,
-                response_deserializer=remote__control__pb2.RemoteControlCustomCommandResponse.FromString,
+                '/zqnt.RemoteControlService/SendCustomCommand',
+                request_serializer=device__control__contracts__pb2.CustomCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CustomCommandResponse.FromString,
                 _registered_method=True)
 
 
 class RemoteControlServiceServicer(object):
-    """========== SERVICE ==========
-
-    RemoteControlService provides remote control operations for assets including flight control,
-    manual control, dock operations, and asset management.
+    """RemoteControlService is the client-facing command gateway.
+    It uses the same command contracts as EdgeAdapterService so SDKs and adapters
+    can share validation, mapping, tests, and documentation.
     """
+
+    def ReportAssetRuntime(self, request, context):
+        """Capability Management
+        Edge adapters push complete payload and capability snapshots on a schedule.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetAssetRuntime(self, request, context):
+        """Clients discover detected payloads and their current capabilities atomically.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetCapabilities(self, request, context):
+        """Clients read the latest snapshot maintained by Remote Control.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def TakeOff(self, request, context):
         """Flight Control
@@ -176,14 +236,33 @@ class RemoteControlServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def TakePhoto(self, request, context):
+    def CapturePhoto(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def PlayTTSAudio(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def LiveStreamSplitScreen(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ControlDetection(self, request, context):
+        """Detection
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def OpenCover(self, request, context):
-        """Dock Specific Operations
+        """Dock commands
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -220,7 +299,7 @@ class RemoteControlServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def EnterOrCloseRemoteDebugMode(self, request, context):
+    def SetRemoteDebugMode(self, request, context):
         """Debug & Maintenance
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -228,6 +307,19 @@ class RemoteControlServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ChangeAcMode(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ChangeLens(self, request, context):
+        """Camera
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ChangeZoom(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -243,105 +335,225 @@ class RemoteControlServiceServicer(object):
 
 def add_RemoteControlServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'ReportAssetRuntime': grpc.unary_unary_rpc_method_handler(
+                    servicer.ReportAssetRuntime,
+                    request_deserializer=device__control__contracts__pb2.ReportAssetRuntimeRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.ReportAssetRuntimeResponse.SerializeToString,
+            ),
+            'GetAssetRuntime': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAssetRuntime,
+                    request_deserializer=device__control__contracts__pb2.GetAssetRuntimeRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.AssetRuntimeResponse.SerializeToString,
+            ),
+            'GetCapabilities': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetCapabilities,
+                    request_deserializer=device__control__contracts__pb2.AssetCapabilitiesRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.AssetCapabilitiesResponse.SerializeToString,
+            ),
             'TakeOff': grpc.unary_unary_rpc_method_handler(
                     servicer.TakeOff,
-                    request_deserializer=remote__control__pb2.RemoteControlTakeOffRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.CoordinateCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'GoTo': grpc.unary_unary_rpc_method_handler(
                     servicer.GoTo,
-                    request_deserializer=remote__control__pb2.RemoteControlGoToRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.CoordinateCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ReturnToHome': grpc.unary_unary_rpc_method_handler(
                     servicer.ReturnToHome,
-                    request_deserializer=remote__control__pb2.RemoteControlReturnToHomeRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ReturnToHomeCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'EnterManualControl': grpc.unary_unary_rpc_method_handler(
                     servicer.EnterManualControl,
-                    request_deserializer=remote__control__pb2.RemoteControlManualControlRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ManualControlCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ExitManualControl': grpc.unary_unary_rpc_method_handler(
                     servicer.ExitManualControl,
-                    request_deserializer=remote__control__pb2.RemoteControlManualControlRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ManualControlCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ManualControlInput': grpc.stream_unary_rpc_method_handler(
                     servicer.ManualControlInput,
-                    request_deserializer=remote__control__pb2.RemoteControlManualControlInputRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ManualControlInputCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'LookAt': grpc.unary_unary_rpc_method_handler(
                     servicer.LookAt,
-                    request_deserializer=remote__control__pb2.RemoteControlLookAtRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.LookAtCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
-            'TakePhoto': grpc.unary_unary_rpc_method_handler(
-                    servicer.TakePhoto,
-                    request_deserializer=remote__control__pb2.RemoteControlTakePhotoRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+            'CapturePhoto': grpc.unary_unary_rpc_method_handler(
+                    servicer.CapturePhoto,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
+            ),
+            'PlayTTSAudio': grpc.unary_unary_rpc_method_handler(
+                    servicer.PlayTTSAudio,
+                    request_deserializer=device__control__contracts__pb2.TextToSpeechCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
+            ),
+            'LiveStreamSplitScreen': grpc.unary_unary_rpc_method_handler(
+                    servicer.LiveStreamSplitScreen,
+                    request_deserializer=device__control__contracts__pb2.ToggleCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
+            ),
+            'ControlDetection': grpc.unary_unary_rpc_method_handler(
+                    servicer.ControlDetection,
+                    request_deserializer=device__control__contracts__pb2.DetectionControlCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'OpenCover': grpc.unary_unary_rpc_method_handler(
                     servicer.OpenCover,
-                    request_deserializer=remote__control__pb2.RemoteControlOpenCoverRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'CloseCover': grpc.unary_unary_rpc_method_handler(
                     servicer.CloseCover,
-                    request_deserializer=remote__control__pb2.RemoteControlCloseCoverRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.CloseCoverCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StartCharging': grpc.unary_unary_rpc_method_handler(
                     servicer.StartCharging,
-                    request_deserializer=remote__control__pb2.RemoteControlStartChargingRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StopCharging': grpc.unary_unary_rpc_method_handler(
                     servicer.StopCharging,
-                    request_deserializer=remote__control__pb2.RemoteControlStopChargingRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'RebootAsset': grpc.unary_unary_rpc_method_handler(
                     servicer.RebootAsset,
-                    request_deserializer=remote__control__pb2.RemoteControlRebootAssetRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'BootSubAsset': grpc.unary_unary_rpc_method_handler(
                     servicer.BootSubAsset,
-                    request_deserializer=remote__control__pb2.RemoteControlBootSubAssetRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ToggleCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
-            'EnterOrCloseRemoteDebugMode': grpc.unary_unary_rpc_method_handler(
-                    servicer.EnterOrCloseRemoteDebugMode,
-                    request_deserializer=remote__control__pb2.RemoteControlDebugModeRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+            'SetRemoteDebugMode': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetRemoteDebugMode,
+                    request_deserializer=device__control__contracts__pb2.ToggleCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ChangeAcMode': grpc.unary_unary_rpc_method_handler(
                     servicer.ChangeAcMode,
-                    request_deserializer=remote__control__pb2.RemoteControlChangeAcModeRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ChangeAcModeCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
+            ),
+            'ChangeLens': grpc.unary_unary_rpc_method_handler(
+                    servicer.ChangeLens,
+                    request_deserializer=device__control__contracts__pb2.ChangeCameraLensCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
+            ),
+            'ChangeZoom': grpc.unary_unary_rpc_method_handler(
+                    servicer.ChangeZoom,
+                    request_deserializer=device__control__contracts__pb2.ChangeCameraZoomCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'SendCustomCommand': grpc.unary_unary_rpc_method_handler(
                     servicer.SendCustomCommand,
-                    request_deserializer=remote__control__pb2.RemoteControlCustomCommandRequest.FromString,
-                    response_serializer=remote__control__pb2.RemoteControlCustomCommandResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.CustomCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CustomCommandResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'RemoteControlService', rpc_method_handlers)
+            'zqnt.RemoteControlService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('RemoteControlService', rpc_method_handlers)
+    server.add_registered_method_handlers('zqnt.RemoteControlService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
 class RemoteControlService(object):
-    """========== SERVICE ==========
-
-    RemoteControlService provides remote control operations for assets including flight control,
-    manual control, dock operations, and asset management.
+    """RemoteControlService is the client-facing command gateway.
+    It uses the same command contracts as EdgeAdapterService so SDKs and adapters
+    can share validation, mapping, tests, and documentation.
     """
+
+    @staticmethod
+    def ReportAssetRuntime(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.RemoteControlService/ReportAssetRuntime',
+            device__control__contracts__pb2.ReportAssetRuntimeRequest.SerializeToString,
+            device__control__contracts__pb2.ReportAssetRuntimeResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetAssetRuntime(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.RemoteControlService/GetAssetRuntime',
+            device__control__contracts__pb2.GetAssetRuntimeRequest.SerializeToString,
+            device__control__contracts__pb2.AssetRuntimeResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetCapabilities(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.RemoteControlService/GetCapabilities',
+            device__control__contracts__pb2.AssetCapabilitiesRequest.SerializeToString,
+            device__control__contracts__pb2.AssetCapabilitiesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
 
     @staticmethod
     def TakeOff(request,
@@ -357,9 +569,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/TakeOff',
-            remote__control__pb2.RemoteControlTakeOffRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/TakeOff',
+            device__control__contracts__pb2.CoordinateCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -384,9 +596,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/GoTo',
-            remote__control__pb2.RemoteControlGoToRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/GoTo',
+            device__control__contracts__pb2.CoordinateCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -411,9 +623,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/ReturnToHome',
-            remote__control__pb2.RemoteControlReturnToHomeRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/ReturnToHome',
+            device__control__contracts__pb2.ReturnToHomeCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -438,9 +650,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/EnterManualControl',
-            remote__control__pb2.RemoteControlManualControlRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/EnterManualControl',
+            device__control__contracts__pb2.ManualControlCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -465,9 +677,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/ExitManualControl',
-            remote__control__pb2.RemoteControlManualControlRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/ExitManualControl',
+            device__control__contracts__pb2.ManualControlCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -492,9 +704,9 @@ class RemoteControlService(object):
         return grpc.experimental.stream_unary(
             request_iterator,
             target,
-            '/RemoteControlService/ManualControlInput',
-            remote__control__pb2.RemoteControlManualControlInputRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/ManualControlInput',
+            device__control__contracts__pb2.ManualControlInputCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -519,9 +731,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/LookAt',
-            remote__control__pb2.RemoteControlLookAtRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/LookAt',
+            device__control__contracts__pb2.LookAtCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -533,7 +745,7 @@ class RemoteControlService(object):
             _registered_method=True)
 
     @staticmethod
-    def TakePhoto(request,
+    def CapturePhoto(request,
             target,
             options=(),
             channel_credentials=None,
@@ -546,9 +758,90 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/TakePhoto',
-            remote__control__pb2.RemoteControlTakePhotoRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/CapturePhoto',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PlayTTSAudio(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.RemoteControlService/PlayTTSAudio',
+            device__control__contracts__pb2.TextToSpeechCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def LiveStreamSplitScreen(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.RemoteControlService/LiveStreamSplitScreen',
+            device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ControlDetection(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.RemoteControlService/ControlDetection',
+            device__control__contracts__pb2.DetectionControlCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -573,9 +866,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/OpenCover',
-            remote__control__pb2.RemoteControlOpenCoverRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/OpenCover',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -600,9 +893,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/CloseCover',
-            remote__control__pb2.RemoteControlCloseCoverRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/CloseCover',
+            device__control__contracts__pb2.CloseCoverCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -627,9 +920,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/StartCharging',
-            remote__control__pb2.RemoteControlStartChargingRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/StartCharging',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -654,9 +947,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/StopCharging',
-            remote__control__pb2.RemoteControlStopChargingRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/StopCharging',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -681,9 +974,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/RebootAsset',
-            remote__control__pb2.RemoteControlRebootAssetRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/RebootAsset',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -708,9 +1001,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/BootSubAsset',
-            remote__control__pb2.RemoteControlBootSubAssetRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/BootSubAsset',
+            device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -722,7 +1015,7 @@ class RemoteControlService(object):
             _registered_method=True)
 
     @staticmethod
-    def EnterOrCloseRemoteDebugMode(request,
+    def SetRemoteDebugMode(request,
             target,
             options=(),
             channel_credentials=None,
@@ -735,9 +1028,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/EnterOrCloseRemoteDebugMode',
-            remote__control__pb2.RemoteControlDebugModeRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/SetRemoteDebugMode',
+            device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -762,9 +1055,63 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/ChangeAcMode',
-            remote__control__pb2.RemoteControlChangeAcModeRequest.SerializeToString,
-            remote__control__pb2.RemoteControlResponse.FromString,
+            '/zqnt.RemoteControlService/ChangeAcMode',
+            device__control__contracts__pb2.ChangeAcModeCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ChangeLens(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.RemoteControlService/ChangeLens',
+            device__control__contracts__pb2.ChangeCameraLensCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ChangeZoom(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.RemoteControlService/ChangeZoom',
+            device__control__contracts__pb2.ChangeCameraZoomCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -789,9 +1136,9 @@ class RemoteControlService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/RemoteControlService/SendCustomCommand',
-            remote__control__pb2.RemoteControlCustomCommandRequest.SerializeToString,
-            remote__control__pb2.RemoteControlCustomCommandResponse.FromString,
+            '/zqnt.RemoteControlService/SendCustomCommand',
+            device__control__contracts__pb2.CustomCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CustomCommandResponse.FromString,
             options,
             channel_credentials,
             insecure,

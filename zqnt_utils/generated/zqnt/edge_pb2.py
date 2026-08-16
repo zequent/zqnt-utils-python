@@ -23,12 +23,33 @@ _sym_db = _symbol_database.Default()
 
 
 from . import common_pb2 as common__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
-from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+try:
+  base__pb2 = common__pb2.base__pb2
+except AttributeError:
+  base__pb2 = common__pb2.base_pb2
+try:
+  asset__pb2 = common__pb2.asset__pb2
+except AttributeError:
+  asset__pb2 = common__pb2.asset_pb2
+try:
+  device__control__contracts__pb2 = common__pb2.device__control__contracts__pb2
+except AttributeError:
+  device__control__contracts__pb2 = common__pb2.device_control_contracts_pb2
+try:
+  detection__pb2 = common__pb2.detection__pb2
+except AttributeError:
+  detection__pb2 = common__pb2.detection_pb2
+try:
+  mission__autonomy__types__pb2 = common__pb2.mission__autonomy__types__pb2
+except AttributeError:
+  mission__autonomy__types__pb2 = common__pb2.mission_autonomy_types_pb2
+try:
+  mission__autonomy__dto__pb2 = common__pb2.mission__autonomy__dto__pb2
+except AttributeError:
+  mission__autonomy__dto__pb2 = common__pb2.mission_autonomy_dto_pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nedge.proto\x1a\x0c\x63ommon.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"C\n\x14\x45\x64gePauseTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\"D\n\x15\x45\x64geResumeTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\"E\n\x16\x45\x64gePrepareTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\"C\n\x14\x45\x64geStartTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\"B\n\x13\x45\x64geStopTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\"\xc1\x03\n\x0c\x45\x64geResponse\x12\x17\n\nhas_errors\x18\x01 \x01(\x08H\x01\x88\x01\x01\x12\x0b\n\x03tid\x18\x02 \x01(\t\x12\n\n\x02sn\x18\x03 \x01(\t\x12\x15\n\x08\x61sset_id\x18\x04 \x01(\tH\x02\x88\x01\x01\x12\x1d\n\x10response_message\x18\x05 \x01(\tH\x03\x88\x01\x01\x12-\n\ttimestamp\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x05\x65mpty\x18\x07 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12$\n\x05\x65rror\x18\x08 \x01(\x0b\x32\x13.GlobalErrorMessageH\x00\x12$\n\x08progress\x18\t \x01(\x0b\x32\x10.CommandProgressH\x00\x12>\n\x1alive_stream_start_response\x18\n \x01(\x0b\x32\x18.LiveStreamStartResponseH\x00\x12\x18\n\x0b\x65xternal_id\x18\x0b \x01(\tH\x04\x88\x01\x01\x42\n\n\x08responseB\r\n\x0b_has_errorsB\x0b\n\t_asset_idB\x13\n\x11_response_messageB\x0e\n\x0c_external_id\"y\n\x12\x45\x64geTakeOffRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x1d\n\x07request\x18\x02 \x01(\x0b\x32\x0c.Coordinates\x12\x18\n\x0b\x65xternal_id\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x0e\n\x0c_external_id\"v\n\x0f\x45\x64geGoToRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x1d\n\x07request\x18\x02 \x01(\x0b\x32\x0c.Coordinates\x12\x18\n\x0b\x65xternal_id\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x0e\n\x0c_external_id\"\\\n\x17\x45\x64geReturnToHomeRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12%\n\x07request\x18\x02 \x01(\x0b\x32\x14.ReturnToHomeRequest\"^\n\x18\x45\x64geManualControlRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12&\n\x07request\x18\x02 \x01(\x0b\x32\x15.ManualControlRequest\"a\n\x1d\x45\x64geManualControlInputRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12$\n\x07request\x18\x02 \x01(\x0b\x32\x13.ManualControlInput\"\x9c\x01\n\x11\x45\x64geLookAtRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x1d\n\x07request\x18\x02 \x01(\x0b\x32\x0c.Coordinates\x12\x1a\n\rpayload_index\x18\x03 \x01(\tH\x00\x88\x01\x01\x12\x13\n\x06locked\x18\x04 \x01(\x08H\x01\x88\x01\x01\x42\x10\n\x0e_payload_indexB\t\n\x07_locked\"2\n\x14\x45\x64geTakePhotoRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"N\n\x1f\x45\x64geEnableGimbalTrackingRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08\"^\n\x18\x45\x64geGetDetectionsRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x17\n\nstream_url\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\r\n\x0b_stream_url\"\xcd\x02\n\x15\x45\x64geDetectionResponse\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12:\n\ndetections\x18\x02 \x03(\x0b\x32&.EdgeDetectionResponse.DetectionResult\x1a\xdb\x01\n\x0f\x44\x65tectionResult\x12\x11\n\tobject_id\x18\x01 \x01(\t\x12\x13\n\x0bobject_type\x18\x02 \x01(\t\x12\x12\n\nconfidence\x18\x03 \x01(\x02\x12H\n\x0c\x62ounding_box\x18\x04 \x01(\x0b\x32\x32.EdgeDetectionResponse.DetectionResult.BoundingBox\x1a\x42\n\x0b\x42oundingBox\x12\t\n\x01x\x18\x01 \x01(\x02\x12\t\n\x01y\x18\x02 \x01(\x02\x12\r\n\x05width\x18\x03 \x01(\x02\x12\x0e\n\x06height\x18\x04 \x01(\x02\"L\n\x1a\x45\x64geGetCapabilitiesRequest\x12\n\n\x02sn\x18\x01 \x01(\t\x12\x15\n\x08\x61sset_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x0b\n\t_asset_id\"|\n\x1b\x45\x64geGetCapabilitiesResponse\x12*\n\x0c\x63\x61pabilities\x18\x01 \x01(\x0b\x32\x14.CurrentCapabilities\x12\'\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x13.GlobalErrorMessageH\x00\x88\x01\x01\x42\x08\n\x06_error\"2\n\x14\x45\x64geOpenCoverRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"Q\n\x15\x45\x64geCloseCoverRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x12\n\x05\x66orce\x18\x02 \x01(\x08H\x00\x88\x01\x01\x42\x08\n\x06_force\"6\n\x18\x45\x64geStartChargingRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"5\n\x17\x45\x64geStopChargingRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"4\n\x16\x45\x64geRebootAssetRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"F\n\x17\x45\x64geBootSubAssetRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07\x62oot_up\x18\x02 \x01(\x08\"I\n\x1a\x45\x64geRemoteDebugModeRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08\"b\n\x17\x45\x64geChangeAcModeRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12+\n\x04mode\x18\x02 \x01(\x0e\x32\x1d.AssetAirConditionerStateEnum\"d\n\x1b\x45\x64geChangeCameraLensRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12)\n\x07request\x18\x02 \x01(\x0b\x32\x18.ChangeCameraLensRequest\"d\n\x1b\x45\x64geChangeCameraZoomRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12)\n\x07request\x18\x02 \x01(\x0b\x32\x18.ChangeCameraZoomRequest\"5\n\x17\x45\x64geCapturePhotoRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"7\n\x19\x45\x64geStartRecordingRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"6\n\x18\x45\x64geStopRecordingRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"f\n\x1a\x45\x64geStartLiveStreamRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12,\n\x07request\x18\x02 \x01(\x0b\x32\x1b.EdgeLiveStreamStartRequest\"\x93\x01\n\x1a\x45\x64geLiveStreamStartRequest\x12\x10\n\x08video_id\x18\x01 \x01(\t\x12\x15\n\rstream_server\x18\x02 \x01(\t\x12(\n\x0bstream_type\x18\x03 \x01(\x0e\x32\x13.LiveStreamTypeEnum\x12\"\n\nasset_type\x18\x04 \x01(\x0e\x32\x0e.AssetTypeEnum\"d\n\x19\x45\x64geStopLiveStreamRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12+\n\x07request\x18\x02 \x01(\x0b\x32\x1a.EdgeLiveStreamStopRequest\"-\n\x19\x45\x64geLiveStreamStopRequest\x12\x10\n\x08video_id\x18\x01 \x01(\t\"Y\n\x18\x45\x64geRegisterAssetRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12!\n\tasset_dto\x18\x02 \x01(\x0b\x32\x0e.AssetProtoDTO\"8\n\x1a\x45\x64geDeRegisterAssetRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"u\n\x18\x45\x64geCustomCommandRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x14\n\x0c\x63ommand_type\x18\x02 \x01(\t\x12\'\n\x06params\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct\"\xa5\x03\n\x19\x45\x64geCustomCommandResponse\x12\x17\n\nhas_errors\x18\x01 \x01(\x08H\x01\x88\x01\x01\x12\x0b\n\x03tid\x18\x02 \x01(\t\x12\n\n\x02sn\x18\x03 \x01(\t\x12\x15\n\x08\x61sset_id\x18\x04 \x01(\tH\x02\x88\x01\x01\x12\x1d\n\x10response_message\x18\x05 \x01(\tH\x03\x88\x01\x01\x12-\n\ttimestamp\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x14\n\x0c\x63ommand_type\x18\x07 \x01(\t\x12)\n\x06result\x18\x08 \x01(\x0b\x32\x17.google.protobuf.StructH\x00\x12\'\n\x05\x65mpty\x18\t \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12$\n\x05\x65rror\x18\n \x01(\x0b\x32\x13.GlobalErrorMessageH\x00\x12$\n\x08progress\x18\x0b \x01(\x0b\x32\x10.CommandProgressH\x00\x42\n\n\x08responseB\r\n\x0b_has_errorsB\x0b\n\t_asset_idB\x13\n\x11_response_message2\xa3\x10\n\x12\x45\x64geAdapterService\x12L\n\x0fGetCapabilities\x12\x1b.EdgeGetCapabilitiesRequest\x1a\x1c.EdgeGetCapabilitiesResponse\x12-\n\x07TakeOff\x12\x13.EdgeTakeOffRequest\x1a\r.EdgeResponse\x12\'\n\x04GoTo\x12\x10.EdgeGoToRequest\x1a\r.EdgeResponse\x12\x37\n\x0cReturnToHome\x12\x18.EdgeReturnToHomeRequest\x1a\r.EdgeResponse\x12>\n\x12\x45nterManualControl\x12\x19.EdgeManualControlRequest\x1a\r.EdgeResponse\x12=\n\x11\x45xitManualControl\x12\x19.EdgeManualControlRequest\x1a\r.EdgeResponse\x12\x45\n\x12ManualControlInput\x12\x1e.EdgeManualControlInputRequest\x1a\r.EdgeResponse(\x01\x12+\n\x06LookAt\x12\x12.EdgeLookAtRequest\x1a\r.EdgeResponse\x12\x31\n\tTakePhoto\x12\x15.EdgeTakePhotoRequest\x1a\r.EdgeResponse\x12G\n\x14\x45nableGimbalTracking\x12 .EdgeEnableGimbalTrackingRequest\x1a\r.EdgeResponse\x12\x44\n\rGetDetections\x12\x19.EdgeGetDetectionsRequest\x1a\x16.EdgeDetectionResponse0\x01\x12\x31\n\tOpenCover\x12\x15.EdgeOpenCoverRequest\x1a\r.EdgeResponse\x12\x33\n\nCloseCover\x12\x16.EdgeCloseCoverRequest\x1a\r.EdgeResponse\x12\x39\n\rStartCharging\x12\x19.EdgeStartChargingRequest\x1a\r.EdgeResponse\x12\x37\n\x0cStopCharging\x12\x18.EdgeStopChargingRequest\x1a\r.EdgeResponse\x12\x35\n\x0bRebootAsset\x12\x17.EdgeRebootAssetRequest\x1a\r.EdgeResponse\x12\x39\n\x0e\x42ootUpSubAsset\x12\x18.EdgeBootSubAssetRequest\x1a\r.EdgeResponse\x12;\n\x10\x42ootDownSubAsset\x12\x18.EdgeBootSubAssetRequest\x1a\r.EdgeResponse\x12\x39\n\rRegisterAsset\x12\x19.EdgeRegisterAssetRequest\x1a\r.EdgeResponse\x12=\n\x0f\x44\x65RegisterAsset\x12\x1b.EdgeDeRegisterAssetRequest\x1a\r.EdgeResponse\x12I\n\x1b\x45nterOrCloseRemoteDebugMode\x12\x1b.EdgeRemoteDebugModeRequest\x1a\r.EdgeResponse\x12\x37\n\x0c\x43hangeAcMode\x12\x18.EdgeChangeAcModeRequest\x1a\r.EdgeResponse\x12=\n\x0fStartLiveStream\x12\x1b.EdgeStartLiveStreamRequest\x1a\r.EdgeResponse\x12;\n\x0eStopLiveStream\x12\x1a.EdgeStopLiveStreamRequest\x1a\r.EdgeResponse\x12\x39\n\nChangeLens\x12\x1c.EdgeChangeCameraLensRequest\x1a\r.EdgeResponse\x12\x39\n\nChangeZoom\x12\x1c.EdgeChangeCameraZoomRequest\x1a\r.EdgeResponse\x12\x37\n\x0c\x43\x61pturePhoto\x12\x18.EdgeCapturePhotoRequest\x1a\r.EdgeResponse\x12;\n\x0eStartRecording\x12\x1a.EdgeStartRecordingRequest\x1a\r.EdgeResponse\x12\x39\n\rStopRecording\x12\x19.EdgeStopRecordingRequest\x1a\r.EdgeResponse\x12\x31\n\tStartTask\x12\x15.EdgeStartTaskRequest\x1a\r.EdgeResponse\x12/\n\x08StopTask\x12\x14.EdgeStopTaskRequest\x1a\r.EdgeResponse\x12\x31\n\tPauseTask\x12\x15.EdgePauseTaskRequest\x1a\r.EdgeResponse\x12\x33\n\nResumeTask\x12\x16.EdgeResumeTaskRequest\x1a\r.EdgeResponse\x12\x35\n\x0bPrepareTask\x12\x17.EdgePrepareTaskRequest\x1a\r.EdgeResponse\x12J\n\x11SendCustomCommand\x12\x19.EdgeCustomCommandRequest\x1a\x1a.EdgeCustomCommandResponseBC\n\x1d\x63om.zqnt.utils.edge.sdk.protoB\x0c\x45\x64geSdkProtoP\x01Z\x12gen/edge/sdk/protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nedge.proto\x12\x04zqnt\x1a\x0c\x63ommon.proto2\xbc\x13\n\x12\x45\x64geAdapterService\x12R\n\x0fGetCapabilities\x12\x1e.zqnt.AssetCapabilitiesRequest\x1a\x1f.zqnt.AssetCapabilitiesResponse\x12@\n\x07TakeOff\x12\x1e.zqnt.CoordinateCommandRequest\x1a\x15.zqnt.CommandResponse\x12=\n\x04GoTo\x12\x1e.zqnt.CoordinateCommandRequest\x1a\x15.zqnt.CommandResponse\x12G\n\x0cReturnToHome\x12 .zqnt.ReturnToHomeCommandRequest\x1a\x15.zqnt.CommandResponse\x12N\n\x12\x45nterManualControl\x12!.zqnt.ManualControlCommandRequest\x1a\x15.zqnt.CommandResponse\x12M\n\x11\x45xitManualControl\x12!.zqnt.ManualControlCommandRequest\x1a\x15.zqnt.CommandResponse\x12U\n\x12ManualControlInput\x12&.zqnt.ManualControlInputCommandRequest\x1a\x15.zqnt.CommandResponse(\x01\x12;\n\x06LookAt\x12\x1a.zqnt.LookAtCommandRequest\x1a\x15.zqnt.CommandResponse\x12I\n\x14\x45nableGimbalTracking\x12\x1a.zqnt.ToggleCommandRequest\x1a\x15.zqnt.CommandResponse\x12\x45\n\rGetDetections\x12\x1c.zqnt.DetectionStreamRequest\x1a\x14.zqnt.DetectionBatch0\x01\x12G\n\x0cPlayTTSAudio\x12 .zqnt.TextToSpeechCommandRequest\x1a\x15.zqnt.CommandResponse\x12=\n\tOpenCover\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12\x43\n\nCloseCover\x12\x1e.zqnt.CloseCoverCommandRequest\x1a\x15.zqnt.CommandResponse\x12\x41\n\rStartCharging\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12@\n\x0cStopCharging\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12?\n\x0bRebootAsset\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12\x41\n\x0c\x42ootSubAsset\x12\x1a.zqnt.ToggleCommandRequest\x1a\x15.zqnt.CommandResponse\x12I\n\rRegisterAsset\x12!.zqnt.RegisterAssetCommandRequest\x1a\x15.zqnt.CommandResponse\x12\x43\n\x0f\x44\x65registerAsset\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12G\n\x12SetRemoteDebugMode\x12\x1a.zqnt.ToggleCommandRequest\x1a\x15.zqnt.CommandResponse\x12G\n\x0c\x43hangeAcMode\x12 .zqnt.ChangeAcModeCommandRequest\x1a\x15.zqnt.CommandResponse\x12M\n\x0fStartLiveStream\x12#.zqnt.LiveStreamStartCommandRequest\x1a\x15.zqnt.CommandResponse\x12K\n\x0eStopLiveStream\x12\".zqnt.LiveStreamStopCommandRequest\x1a\x15.zqnt.CommandResponse\x12I\n\nChangeLens\x12$.zqnt.ChangeCameraLensCommandRequest\x1a\x15.zqnt.CommandResponse\x12I\n\nChangeZoom\x12$.zqnt.ChangeCameraZoomCommandRequest\x1a\x15.zqnt.CommandResponse\x12@\n\x0c\x43\x61pturePhoto\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12\x42\n\x0eStartRecording\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12\x41\n\rStopRecording\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12J\n\x15LiveStreamSplitScreen\x12\x1a.zqnt.ToggleCommandRequest\x1a\x15.zqnt.CommandResponse\x12>\n\x0bPrepareTask\x12\x18.zqnt.TaskCommandRequest\x1a\x15.zqnt.CommandResponse\x12<\n\tStartTask\x12\x18.zqnt.TaskCommandRequest\x1a\x15.zqnt.CommandResponse\x12;\n\x08StopTask\x12\x18.zqnt.TaskCommandRequest\x1a\x15.zqnt.CommandResponse\x12<\n\tPauseTask\x12\x18.zqnt.TaskCommandRequest\x1a\x15.zqnt.CommandResponse\x12=\n\nResumeTask\x12\x18.zqnt.TaskCommandRequest\x1a\x15.zqnt.CommandResponse\x12L\n\x11SendCustomCommand\x12\x1a.zqnt.CustomCommandRequest\x1a\x1b.zqnt.CustomCommandResponseBC\n\x1d\x63om.zqnt.utils.edge.sdk.protoB\x0c\x45\x64geSdkProtoP\x01Z\x12gen/edge/sdk/protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -36,88 +57,6 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'edge_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\035com.zqnt.utils.edge.sdk.protoB\014EdgeSdkProtoP\001Z\022gen/edge/sdk/proto'
-  _globals['_EDGEPAUSETASKREQUEST']._serialized_start=120
-  _globals['_EDGEPAUSETASKREQUEST']._serialized_end=187
-  _globals['_EDGERESUMETASKREQUEST']._serialized_start=189
-  _globals['_EDGERESUMETASKREQUEST']._serialized_end=257
-  _globals['_EDGEPREPARETASKREQUEST']._serialized_start=259
-  _globals['_EDGEPREPARETASKREQUEST']._serialized_end=328
-  _globals['_EDGESTARTTASKREQUEST']._serialized_start=330
-  _globals['_EDGESTARTTASKREQUEST']._serialized_end=397
-  _globals['_EDGESTOPTASKREQUEST']._serialized_start=399
-  _globals['_EDGESTOPTASKREQUEST']._serialized_end=465
-  _globals['_EDGERESPONSE']._serialized_start=468
-  _globals['_EDGERESPONSE']._serialized_end=917
-  _globals['_EDGETAKEOFFREQUEST']._serialized_start=919
-  _globals['_EDGETAKEOFFREQUEST']._serialized_end=1040
-  _globals['_EDGEGOTOREQUEST']._serialized_start=1042
-  _globals['_EDGEGOTOREQUEST']._serialized_end=1160
-  _globals['_EDGERETURNTOHOMEREQUEST']._serialized_start=1162
-  _globals['_EDGERETURNTOHOMEREQUEST']._serialized_end=1254
-  _globals['_EDGEMANUALCONTROLREQUEST']._serialized_start=1256
-  _globals['_EDGEMANUALCONTROLREQUEST']._serialized_end=1350
-  _globals['_EDGEMANUALCONTROLINPUTREQUEST']._serialized_start=1352
-  _globals['_EDGEMANUALCONTROLINPUTREQUEST']._serialized_end=1449
-  _globals['_EDGELOOKATREQUEST']._serialized_start=1452
-  _globals['_EDGELOOKATREQUEST']._serialized_end=1608
-  _globals['_EDGETAKEPHOTOREQUEST']._serialized_start=1610
-  _globals['_EDGETAKEPHOTOREQUEST']._serialized_end=1660
-  _globals['_EDGEENABLEGIMBALTRACKINGREQUEST']._serialized_start=1662
-  _globals['_EDGEENABLEGIMBALTRACKINGREQUEST']._serialized_end=1740
-  _globals['_EDGEGETDETECTIONSREQUEST']._serialized_start=1742
-  _globals['_EDGEGETDETECTIONSREQUEST']._serialized_end=1836
-  _globals['_EDGEDETECTIONRESPONSE']._serialized_start=1839
-  _globals['_EDGEDETECTIONRESPONSE']._serialized_end=2172
-  _globals['_EDGEDETECTIONRESPONSE_DETECTIONRESULT']._serialized_start=1953
-  _globals['_EDGEDETECTIONRESPONSE_DETECTIONRESULT']._serialized_end=2172
-  _globals['_EDGEDETECTIONRESPONSE_DETECTIONRESULT_BOUNDINGBOX']._serialized_start=2106
-  _globals['_EDGEDETECTIONRESPONSE_DETECTIONRESULT_BOUNDINGBOX']._serialized_end=2172
-  _globals['_EDGEGETCAPABILITIESREQUEST']._serialized_start=2174
-  _globals['_EDGEGETCAPABILITIESREQUEST']._serialized_end=2250
-  _globals['_EDGEGETCAPABILITIESRESPONSE']._serialized_start=2252
-  _globals['_EDGEGETCAPABILITIESRESPONSE']._serialized_end=2376
-  _globals['_EDGEOPENCOVERREQUEST']._serialized_start=2378
-  _globals['_EDGEOPENCOVERREQUEST']._serialized_end=2428
-  _globals['_EDGECLOSECOVERREQUEST']._serialized_start=2430
-  _globals['_EDGECLOSECOVERREQUEST']._serialized_end=2511
-  _globals['_EDGESTARTCHARGINGREQUEST']._serialized_start=2513
-  _globals['_EDGESTARTCHARGINGREQUEST']._serialized_end=2567
-  _globals['_EDGESTOPCHARGINGREQUEST']._serialized_start=2569
-  _globals['_EDGESTOPCHARGINGREQUEST']._serialized_end=2622
-  _globals['_EDGEREBOOTASSETREQUEST']._serialized_start=2624
-  _globals['_EDGEREBOOTASSETREQUEST']._serialized_end=2676
-  _globals['_EDGEBOOTSUBASSETREQUEST']._serialized_start=2678
-  _globals['_EDGEBOOTSUBASSETREQUEST']._serialized_end=2748
-  _globals['_EDGEREMOTEDEBUGMODEREQUEST']._serialized_start=2750
-  _globals['_EDGEREMOTEDEBUGMODEREQUEST']._serialized_end=2823
-  _globals['_EDGECHANGEACMODEREQUEST']._serialized_start=2825
-  _globals['_EDGECHANGEACMODEREQUEST']._serialized_end=2923
-  _globals['_EDGECHANGECAMERALENSREQUEST']._serialized_start=2925
-  _globals['_EDGECHANGECAMERALENSREQUEST']._serialized_end=3025
-  _globals['_EDGECHANGECAMERAZOOMREQUEST']._serialized_start=3027
-  _globals['_EDGECHANGECAMERAZOOMREQUEST']._serialized_end=3127
-  _globals['_EDGECAPTUREPHOTOREQUEST']._serialized_start=3129
-  _globals['_EDGECAPTUREPHOTOREQUEST']._serialized_end=3182
-  _globals['_EDGESTARTRECORDINGREQUEST']._serialized_start=3184
-  _globals['_EDGESTARTRECORDINGREQUEST']._serialized_end=3239
-  _globals['_EDGESTOPRECORDINGREQUEST']._serialized_start=3241
-  _globals['_EDGESTOPRECORDINGREQUEST']._serialized_end=3295
-  _globals['_EDGESTARTLIVESTREAMREQUEST']._serialized_start=3297
-  _globals['_EDGESTARTLIVESTREAMREQUEST']._serialized_end=3399
-  _globals['_EDGELIVESTREAMSTARTREQUEST']._serialized_start=3402
-  _globals['_EDGELIVESTREAMSTARTREQUEST']._serialized_end=3549
-  _globals['_EDGESTOPLIVESTREAMREQUEST']._serialized_start=3551
-  _globals['_EDGESTOPLIVESTREAMREQUEST']._serialized_end=3651
-  _globals['_EDGELIVESTREAMSTOPREQUEST']._serialized_start=3653
-  _globals['_EDGELIVESTREAMSTOPREQUEST']._serialized_end=3698
-  _globals['_EDGEREGISTERASSETREQUEST']._serialized_start=3700
-  _globals['_EDGEREGISTERASSETREQUEST']._serialized_end=3789
-  _globals['_EDGEDEREGISTERASSETREQUEST']._serialized_start=3791
-  _globals['_EDGEDEREGISTERASSETREQUEST']._serialized_end=3847
-  _globals['_EDGECUSTOMCOMMANDREQUEST']._serialized_start=3849
-  _globals['_EDGECUSTOMCOMMANDREQUEST']._serialized_end=3966
-  _globals['_EDGECUSTOMCOMMANDRESPONSE']._serialized_start=3969
-  _globals['_EDGECUSTOMCOMMANDRESPONSE']._serialized_end=4390
-  _globals['_EDGEADAPTERSERVICE']._serialized_start=4393
-  _globals['_EDGEADAPTERSERVICE']._serialized_end=6476
+  _globals['_EDGEADAPTERSERVICE']._serialized_start=35
+  _globals['_EDGEADAPTERSERVICE']._serialized_end=2527
 # @@protoc_insertion_point(module_scope)

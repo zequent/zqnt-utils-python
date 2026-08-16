@@ -6,9 +6,11 @@ isort:skip_file
 from collections import abc as _abc
 from grpc import aio as _aio
 import abc as _abc_1
-from . import common_pb2 as _common_pb2
+from . import detection_pb2 as _detection_pb2
+from . import device_control_contracts_pb2 as _device_control_contracts_pb2
+from . import events_pb2 as _events_pb2
 import grpc as _grpc
-from . import live_data_pb2 as _live_data_pb2
+from . import live_data_types_pb2 as _live_data_types_pb2
 import sys
 import typing as _typing
 
@@ -28,167 +30,143 @@ GRPC_GENERATED_VERSION: str
 GRPC_VERSION: str
 
 class LiveDataServiceStub:
-    """========== SERVICE ==========
-
-    LiveDataService provides RPC methods for telemetry streaming, production, and live stream management.
+    """LiveDataService provides RPC methods for telemetry, detections, notifications,
+    and live stream management. Payload models are defined in live-data-types.proto.
     """
 
     @_typing.overload
     def __new__(cls, channel: _grpc.Channel) -> _Self: ...
     @_typing.overload
     def __new__(cls, channel: _aio.Channel) -> LiveDataServiceAsyncStub: ...
-    StreamTelemetry: _grpc.UnaryStreamMultiCallable[_live_data_pb2.LiveDataStreamTelemetryRequest, _live_data_pb2.LiveDataTelemetryResponse]
-    """Telemetry Streaming - Server sends telemetry to clients"""
-    ProduceTelemetry: _grpc.StreamUnaryMultiCallable[_live_data_pb2.ProduceTelemetryRequest, _live_data_pb2.LiveDataResponse]
-    """Telemetry Production - Edge adapters push telemetry to server"""
-    StreamDetections: _grpc.UnaryStreamMultiCallable[_live_data_pb2.LiveDataStreamDetectionsRequest, _live_data_pb2.LiveDataDetectionResponse]
-    """Detection Streaming - clients subscribe to detection events"""
-    ProduceDetection: _grpc.StreamUnaryMultiCallable[_common_pb2.DetectionBatch, _live_data_pb2.LiveDataResponse]
-    """Detection Production - Edge adapters push detection batches to server"""
-    StreamNotifications: _grpc.UnaryStreamMultiCallable[_live_data_pb2.LiveDataStreamNotificationsRequest, _live_data_pb2.LiveDataNotificationResponse]
-    """Notification Streaming - clients subscribe to system/lifecycle events"""
-    ProduceNotification: _grpc.StreamUnaryMultiCallable[_live_data_pb2.ProduceNotificationRequest, _live_data_pb2.LiveDataResponse]
-    """Notification Production - server-side services push notification events"""
-    StartLiveStream: _grpc.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataStartLiveStreamRequest, _live_data_pb2.LiveDataResponse]
-    """Live Stream Management"""
-    StopLiveStream: _grpc.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataStopLiveStreamRequest, _live_data_pb2.LiveDataResponse]
-    ChangeLens: _grpc.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataChangeLensRequest, _live_data_pb2.LiveDataResponse]
-    ChangeZoom: _grpc.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataChangeZoomRequest, _live_data_pb2.LiveDataResponse]
-    StartRecording: _grpc.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataStartRecordingRequest, _live_data_pb2.LiveDataResponse]
-    StopRecording: _grpc.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataStopRecordingRequest, _live_data_pb2.LiveDataResponse]
-    CapturePhoto: _grpc.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataCapturePhotoRequest, _live_data_pb2.LiveDataResponse]
+    StreamTelemetry: _grpc.UnaryStreamMultiCallable[_live_data_types_pb2.StreamTelemetryRequest, _live_data_types_pb2.LiveDataTelemetryResponse]
+    ProduceTelemetry: _grpc.StreamUnaryMultiCallable[_live_data_types_pb2.ProduceTelemetryRequest, _live_data_types_pb2.LiveDataResponse]
+    StreamDetections: _grpc.UnaryStreamMultiCallable[_detection_pb2.DetectionStreamRequest, _live_data_types_pb2.LiveDataDetectionResponse]
+    ProduceDetection: _grpc.StreamUnaryMultiCallable[_detection_pb2.DetectionBatch, _live_data_types_pb2.LiveDataResponse]
+    StreamNotifications: _grpc.UnaryStreamMultiCallable[_events_pb2.StreamNotificationsRequest, _events_pb2.NotificationResponse]
+    ProduceNotification: _grpc.StreamUnaryMultiCallable[_events_pb2.ProduceNotificationRequest, _live_data_types_pb2.LiveDataResponse]
+    StartLiveStream: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LiveStreamStartCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StopLiveStream: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LiveStreamStopCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ChangeLens: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraLensCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    ChangeZoom: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraZoomCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StartRecording: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    StopRecording: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
+    CapturePhoto: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
 
 @_typing.type_check_only
 class LiveDataServiceAsyncStub(LiveDataServiceStub):
-    """========== SERVICE ==========
-
-    LiveDataService provides RPC methods for telemetry streaming, production, and live stream management.
+    """LiveDataService provides RPC methods for telemetry, detections, notifications,
+    and live stream management. Payload models are defined in live-data-types.proto.
     """
 
     def __init__(self, channel: _aio.Channel) -> None: ...
-    StreamTelemetry: _aio.UnaryStreamMultiCallable[_live_data_pb2.LiveDataStreamTelemetryRequest, _live_data_pb2.LiveDataTelemetryResponse]  # type: ignore[assignment]
-    """Telemetry Streaming - Server sends telemetry to clients"""
-    ProduceTelemetry: _aio.StreamUnaryMultiCallable[_live_data_pb2.ProduceTelemetryRequest, _live_data_pb2.LiveDataResponse]  # type: ignore[assignment]
-    """Telemetry Production - Edge adapters push telemetry to server"""
-    StreamDetections: _aio.UnaryStreamMultiCallable[_live_data_pb2.LiveDataStreamDetectionsRequest, _live_data_pb2.LiveDataDetectionResponse]  # type: ignore[assignment]
-    """Detection Streaming - clients subscribe to detection events"""
-    ProduceDetection: _aio.StreamUnaryMultiCallable[_common_pb2.DetectionBatch, _live_data_pb2.LiveDataResponse]  # type: ignore[assignment]
-    """Detection Production - Edge adapters push detection batches to server"""
-    StreamNotifications: _aio.UnaryStreamMultiCallable[_live_data_pb2.LiveDataStreamNotificationsRequest, _live_data_pb2.LiveDataNotificationResponse]  # type: ignore[assignment]
-    """Notification Streaming - clients subscribe to system/lifecycle events"""
-    ProduceNotification: _aio.StreamUnaryMultiCallable[_live_data_pb2.ProduceNotificationRequest, _live_data_pb2.LiveDataResponse]  # type: ignore[assignment]
-    """Notification Production - server-side services push notification events"""
-    StartLiveStream: _aio.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataStartLiveStreamRequest, _live_data_pb2.LiveDataResponse]  # type: ignore[assignment]
-    """Live Stream Management"""
-    StopLiveStream: _aio.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataStopLiveStreamRequest, _live_data_pb2.LiveDataResponse]  # type: ignore[assignment]
-    ChangeLens: _aio.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataChangeLensRequest, _live_data_pb2.LiveDataResponse]  # type: ignore[assignment]
-    ChangeZoom: _aio.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataChangeZoomRequest, _live_data_pb2.LiveDataResponse]  # type: ignore[assignment]
-    StartRecording: _aio.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataStartRecordingRequest, _live_data_pb2.LiveDataResponse]  # type: ignore[assignment]
-    StopRecording: _aio.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataStopRecordingRequest, _live_data_pb2.LiveDataResponse]  # type: ignore[assignment]
-    CapturePhoto: _aio.UnaryUnaryMultiCallable[_live_data_pb2.LiveDataCapturePhotoRequest, _live_data_pb2.LiveDataResponse]  # type: ignore[assignment]
+    StreamTelemetry: _aio.UnaryStreamMultiCallable[_live_data_types_pb2.StreamTelemetryRequest, _live_data_types_pb2.LiveDataTelemetryResponse]  # type: ignore[assignment]
+    ProduceTelemetry: _aio.StreamUnaryMultiCallable[_live_data_types_pb2.ProduceTelemetryRequest, _live_data_types_pb2.LiveDataResponse]  # type: ignore[assignment]
+    StreamDetections: _aio.UnaryStreamMultiCallable[_detection_pb2.DetectionStreamRequest, _live_data_types_pb2.LiveDataDetectionResponse]  # type: ignore[assignment]
+    ProduceDetection: _aio.StreamUnaryMultiCallable[_detection_pb2.DetectionBatch, _live_data_types_pb2.LiveDataResponse]  # type: ignore[assignment]
+    StreamNotifications: _aio.UnaryStreamMultiCallable[_events_pb2.StreamNotificationsRequest, _events_pb2.NotificationResponse]  # type: ignore[assignment]
+    ProduceNotification: _aio.StreamUnaryMultiCallable[_events_pb2.ProduceNotificationRequest, _live_data_types_pb2.LiveDataResponse]  # type: ignore[assignment]
+    StartLiveStream: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LiveStreamStartCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StopLiveStream: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LiveStreamStopCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ChangeLens: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraLensCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    ChangeZoom: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ChangeCameraZoomCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StartRecording: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    StopRecording: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
+    CapturePhoto: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
 
 class LiveDataServiceServicer(metaclass=_abc_1.ABCMeta):
-    """========== SERVICE ==========
-
-    LiveDataService provides RPC methods for telemetry streaming, production, and live stream management.
+    """LiveDataService provides RPC methods for telemetry, detections, notifications,
+    and live stream management. Payload models are defined in live-data-types.proto.
     """
 
     @_abc_1.abstractmethod
     def StreamTelemetry(
         self,
-        request: _live_data_pb2.LiveDataStreamTelemetryRequest,
+        request: _live_data_types_pb2.StreamTelemetryRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_abc.Iterator[_live_data_pb2.LiveDataTelemetryResponse], _abc.AsyncIterator[_live_data_pb2.LiveDataTelemetryResponse]]:
-        """Telemetry Streaming - Server sends telemetry to clients"""
+    ) -> _typing.Union[_abc.Iterator[_live_data_types_pb2.LiveDataTelemetryResponse], _abc.AsyncIterator[_live_data_types_pb2.LiveDataTelemetryResponse]]: ...
 
     @_abc_1.abstractmethod
     def ProduceTelemetry(
         self,
-        request_iterator: _MaybeAsyncIterator[_live_data_pb2.ProduceTelemetryRequest],
+        request_iterator: _MaybeAsyncIterator[_live_data_types_pb2.ProduceTelemetryRequest],
         context: _ServicerContext,
-    ) -> _typing.Union[_live_data_pb2.LiveDataResponse, _abc.Awaitable[_live_data_pb2.LiveDataResponse]]:
-        """Telemetry Production - Edge adapters push telemetry to server"""
+    ) -> _typing.Union[_live_data_types_pb2.LiveDataResponse, _abc.Awaitable[_live_data_types_pb2.LiveDataResponse]]: ...
 
     @_abc_1.abstractmethod
     def StreamDetections(
         self,
-        request: _live_data_pb2.LiveDataStreamDetectionsRequest,
+        request: _detection_pb2.DetectionStreamRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_abc.Iterator[_live_data_pb2.LiveDataDetectionResponse], _abc.AsyncIterator[_live_data_pb2.LiveDataDetectionResponse]]:
-        """Detection Streaming - clients subscribe to detection events"""
+    ) -> _typing.Union[_abc.Iterator[_live_data_types_pb2.LiveDataDetectionResponse], _abc.AsyncIterator[_live_data_types_pb2.LiveDataDetectionResponse]]: ...
 
     @_abc_1.abstractmethod
     def ProduceDetection(
         self,
-        request_iterator: _MaybeAsyncIterator[_common_pb2.DetectionBatch],
+        request_iterator: _MaybeAsyncIterator[_detection_pb2.DetectionBatch],
         context: _ServicerContext,
-    ) -> _typing.Union[_live_data_pb2.LiveDataResponse, _abc.Awaitable[_live_data_pb2.LiveDataResponse]]:
-        """Detection Production - Edge adapters push detection batches to server"""
+    ) -> _typing.Union[_live_data_types_pb2.LiveDataResponse, _abc.Awaitable[_live_data_types_pb2.LiveDataResponse]]: ...
 
     @_abc_1.abstractmethod
     def StreamNotifications(
         self,
-        request: _live_data_pb2.LiveDataStreamNotificationsRequest,
+        request: _events_pb2.StreamNotificationsRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_abc.Iterator[_live_data_pb2.LiveDataNotificationResponse], _abc.AsyncIterator[_live_data_pb2.LiveDataNotificationResponse]]:
-        """Notification Streaming - clients subscribe to system/lifecycle events"""
+    ) -> _typing.Union[_abc.Iterator[_events_pb2.NotificationResponse], _abc.AsyncIterator[_events_pb2.NotificationResponse]]: ...
 
     @_abc_1.abstractmethod
     def ProduceNotification(
         self,
-        request_iterator: _MaybeAsyncIterator[_live_data_pb2.ProduceNotificationRequest],
+        request_iterator: _MaybeAsyncIterator[_events_pb2.ProduceNotificationRequest],
         context: _ServicerContext,
-    ) -> _typing.Union[_live_data_pb2.LiveDataResponse, _abc.Awaitable[_live_data_pb2.LiveDataResponse]]:
-        """Notification Production - server-side services push notification events"""
+    ) -> _typing.Union[_live_data_types_pb2.LiveDataResponse, _abc.Awaitable[_live_data_types_pb2.LiveDataResponse]]: ...
 
     @_abc_1.abstractmethod
     def StartLiveStream(
         self,
-        request: _live_data_pb2.LiveDataStartLiveStreamRequest,
+        request: _device_control_contracts_pb2.LiveStreamStartCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_live_data_pb2.LiveDataResponse, _abc.Awaitable[_live_data_pb2.LiveDataResponse]]:
-        """Live Stream Management"""
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def StopLiveStream(
         self,
-        request: _live_data_pb2.LiveDataStopLiveStreamRequest,
+        request: _device_control_contracts_pb2.LiveStreamStopCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_live_data_pb2.LiveDataResponse, _abc.Awaitable[_live_data_pb2.LiveDataResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def ChangeLens(
         self,
-        request: _live_data_pb2.LiveDataChangeLensRequest,
+        request: _device_control_contracts_pb2.ChangeCameraLensCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_live_data_pb2.LiveDataResponse, _abc.Awaitable[_live_data_pb2.LiveDataResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def ChangeZoom(
         self,
-        request: _live_data_pb2.LiveDataChangeZoomRequest,
+        request: _device_control_contracts_pb2.ChangeCameraZoomCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_live_data_pb2.LiveDataResponse, _abc.Awaitable[_live_data_pb2.LiveDataResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def StartRecording(
         self,
-        request: _live_data_pb2.LiveDataStartRecordingRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_live_data_pb2.LiveDataResponse, _abc.Awaitable[_live_data_pb2.LiveDataResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def StopRecording(
         self,
-        request: _live_data_pb2.LiveDataStopRecordingRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_live_data_pb2.LiveDataResponse, _abc.Awaitable[_live_data_pb2.LiveDataResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def CapturePhoto(
         self,
-        request: _live_data_pb2.LiveDataCapturePhotoRequest,
+        request: _device_control_contracts_pb2.EmptyCommandRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_live_data_pb2.LiveDataResponse, _abc.Awaitable[_live_data_pb2.LiveDataResponse]]: ...
+    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
 def add_LiveDataServiceServicer_to_server(servicer: LiveDataServiceServicer, server: _typing.Union[_grpc.Server, _aio.Server]) -> None: ...

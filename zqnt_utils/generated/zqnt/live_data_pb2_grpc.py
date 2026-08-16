@@ -3,8 +3,10 @@
 import grpc
 import warnings
 
-from . import common_pb2 as common__pb2
-from . import live_data_pb2 as live__data__pb2
+from . import detection_pb2 as detection__pb2
+from . import device_control_contracts_pb2 as device__control__contracts__pb2
+from . import events_pb2 as events__pb2
+from . import live_data_types_pb2 as live__data__types__pb2
 
 GRPC_GENERATED_VERSION = '1.80.0'
 GRPC_VERSION = grpc.__version__
@@ -27,9 +29,8 @@ if _version_not_supported:
 
 
 class LiveDataServiceStub(object):
-    """========== SERVICE ==========
-
-    LiveDataService provides RPC methods for telemetry streaming, production, and live stream management.
+    """LiveDataService provides RPC methods for telemetry, detections, notifications,
+    and live stream management. Payload models are defined in live-data-types.proto.
     """
 
     def __init__(self, channel):
@@ -39,123 +40,115 @@ class LiveDataServiceStub(object):
             channel: A grpc.Channel.
         """
         self.StreamTelemetry = channel.unary_stream(
-                '/LiveDataService/StreamTelemetry',
-                request_serializer=live__data__pb2.LiveDataStreamTelemetryRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataTelemetryResponse.FromString,
+                '/zqnt.LiveDataService/StreamTelemetry',
+                request_serializer=live__data__types__pb2.StreamTelemetryRequest.SerializeToString,
+                response_deserializer=live__data__types__pb2.LiveDataTelemetryResponse.FromString,
                 _registered_method=True)
         self.ProduceTelemetry = channel.stream_unary(
-                '/LiveDataService/ProduceTelemetry',
-                request_serializer=live__data__pb2.ProduceTelemetryRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataResponse.FromString,
+                '/zqnt.LiveDataService/ProduceTelemetry',
+                request_serializer=live__data__types__pb2.ProduceTelemetryRequest.SerializeToString,
+                response_deserializer=live__data__types__pb2.LiveDataResponse.FromString,
                 _registered_method=True)
         self.StreamDetections = channel.unary_stream(
-                '/LiveDataService/StreamDetections',
-                request_serializer=live__data__pb2.LiveDataStreamDetectionsRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataDetectionResponse.FromString,
+                '/zqnt.LiveDataService/StreamDetections',
+                request_serializer=detection__pb2.DetectionStreamRequest.SerializeToString,
+                response_deserializer=live__data__types__pb2.LiveDataDetectionResponse.FromString,
                 _registered_method=True)
         self.ProduceDetection = channel.stream_unary(
-                '/LiveDataService/ProduceDetection',
-                request_serializer=common__pb2.DetectionBatch.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataResponse.FromString,
+                '/zqnt.LiveDataService/ProduceDetection',
+                request_serializer=detection__pb2.DetectionBatch.SerializeToString,
+                response_deserializer=live__data__types__pb2.LiveDataResponse.FromString,
                 _registered_method=True)
         self.StreamNotifications = channel.unary_stream(
-                '/LiveDataService/StreamNotifications',
-                request_serializer=live__data__pb2.LiveDataStreamNotificationsRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataNotificationResponse.FromString,
+                '/zqnt.LiveDataService/StreamNotifications',
+                request_serializer=events__pb2.StreamNotificationsRequest.SerializeToString,
+                response_deserializer=events__pb2.NotificationResponse.FromString,
                 _registered_method=True)
         self.ProduceNotification = channel.stream_unary(
-                '/LiveDataService/ProduceNotification',
-                request_serializer=live__data__pb2.ProduceNotificationRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataResponse.FromString,
+                '/zqnt.LiveDataService/ProduceNotification',
+                request_serializer=events__pb2.ProduceNotificationRequest.SerializeToString,
+                response_deserializer=live__data__types__pb2.LiveDataResponse.FromString,
                 _registered_method=True)
         self.StartLiveStream = channel.unary_unary(
-                '/LiveDataService/StartLiveStream',
-                request_serializer=live__data__pb2.LiveDataStartLiveStreamRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataResponse.FromString,
+                '/zqnt.LiveDataService/StartLiveStream',
+                request_serializer=device__control__contracts__pb2.LiveStreamStartCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StopLiveStream = channel.unary_unary(
-                '/LiveDataService/StopLiveStream',
-                request_serializer=live__data__pb2.LiveDataStopLiveStreamRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataResponse.FromString,
+                '/zqnt.LiveDataService/StopLiveStream',
+                request_serializer=device__control__contracts__pb2.LiveStreamStopCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ChangeLens = channel.unary_unary(
-                '/LiveDataService/ChangeLens',
-                request_serializer=live__data__pb2.LiveDataChangeLensRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataResponse.FromString,
+                '/zqnt.LiveDataService/ChangeLens',
+                request_serializer=device__control__contracts__pb2.ChangeCameraLensCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ChangeZoom = channel.unary_unary(
-                '/LiveDataService/ChangeZoom',
-                request_serializer=live__data__pb2.LiveDataChangeZoomRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataResponse.FromString,
+                '/zqnt.LiveDataService/ChangeZoom',
+                request_serializer=device__control__contracts__pb2.ChangeCameraZoomCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StartRecording = channel.unary_unary(
-                '/LiveDataService/StartRecording',
-                request_serializer=live__data__pb2.LiveDataStartRecordingRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataResponse.FromString,
+                '/zqnt.LiveDataService/StartRecording',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StopRecording = channel.unary_unary(
-                '/LiveDataService/StopRecording',
-                request_serializer=live__data__pb2.LiveDataStopRecordingRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataResponse.FromString,
+                '/zqnt.LiveDataService/StopRecording',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.CapturePhoto = channel.unary_unary(
-                '/LiveDataService/CapturePhoto',
-                request_serializer=live__data__pb2.LiveDataCapturePhotoRequest.SerializeToString,
-                response_deserializer=live__data__pb2.LiveDataResponse.FromString,
+                '/zqnt.LiveDataService/CapturePhoto',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
 
 
 class LiveDataServiceServicer(object):
-    """========== SERVICE ==========
-
-    LiveDataService provides RPC methods for telemetry streaming, production, and live stream management.
+    """LiveDataService provides RPC methods for telemetry, detections, notifications,
+    and live stream management. Payload models are defined in live-data-types.proto.
     """
 
     def StreamTelemetry(self, request, context):
-        """Telemetry Streaming - Server sends telemetry to clients
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ProduceTelemetry(self, request_iterator, context):
-        """Telemetry Production - Edge adapters push telemetry to server
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def StreamDetections(self, request, context):
-        """Detection Streaming - clients subscribe to detection events
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ProduceDetection(self, request_iterator, context):
-        """Detection Production - Edge adapters push detection batches to server
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def StreamNotifications(self, request, context):
-        """Notification Streaming - clients subscribe to system/lifecycle events
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ProduceNotification(self, request_iterator, context):
-        """Notification Production - server-side services push notification events
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def StartLiveStream(self, request, context):
-        """Live Stream Management
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -201,81 +194,80 @@ def add_LiveDataServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'StreamTelemetry': grpc.unary_stream_rpc_method_handler(
                     servicer.StreamTelemetry,
-                    request_deserializer=live__data__pb2.LiveDataStreamTelemetryRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataTelemetryResponse.SerializeToString,
+                    request_deserializer=live__data__types__pb2.StreamTelemetryRequest.FromString,
+                    response_serializer=live__data__types__pb2.LiveDataTelemetryResponse.SerializeToString,
             ),
             'ProduceTelemetry': grpc.stream_unary_rpc_method_handler(
                     servicer.ProduceTelemetry,
-                    request_deserializer=live__data__pb2.ProduceTelemetryRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataResponse.SerializeToString,
+                    request_deserializer=live__data__types__pb2.ProduceTelemetryRequest.FromString,
+                    response_serializer=live__data__types__pb2.LiveDataResponse.SerializeToString,
             ),
             'StreamDetections': grpc.unary_stream_rpc_method_handler(
                     servicer.StreamDetections,
-                    request_deserializer=live__data__pb2.LiveDataStreamDetectionsRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataDetectionResponse.SerializeToString,
+                    request_deserializer=detection__pb2.DetectionStreamRequest.FromString,
+                    response_serializer=live__data__types__pb2.LiveDataDetectionResponse.SerializeToString,
             ),
             'ProduceDetection': grpc.stream_unary_rpc_method_handler(
                     servicer.ProduceDetection,
-                    request_deserializer=common__pb2.DetectionBatch.FromString,
-                    response_serializer=live__data__pb2.LiveDataResponse.SerializeToString,
+                    request_deserializer=detection__pb2.DetectionBatch.FromString,
+                    response_serializer=live__data__types__pb2.LiveDataResponse.SerializeToString,
             ),
             'StreamNotifications': grpc.unary_stream_rpc_method_handler(
                     servicer.StreamNotifications,
-                    request_deserializer=live__data__pb2.LiveDataStreamNotificationsRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataNotificationResponse.SerializeToString,
+                    request_deserializer=events__pb2.StreamNotificationsRequest.FromString,
+                    response_serializer=events__pb2.NotificationResponse.SerializeToString,
             ),
             'ProduceNotification': grpc.stream_unary_rpc_method_handler(
                     servicer.ProduceNotification,
-                    request_deserializer=live__data__pb2.ProduceNotificationRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataResponse.SerializeToString,
+                    request_deserializer=events__pb2.ProduceNotificationRequest.FromString,
+                    response_serializer=live__data__types__pb2.LiveDataResponse.SerializeToString,
             ),
             'StartLiveStream': grpc.unary_unary_rpc_method_handler(
                     servicer.StartLiveStream,
-                    request_deserializer=live__data__pb2.LiveDataStartLiveStreamRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.LiveStreamStartCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StopLiveStream': grpc.unary_unary_rpc_method_handler(
                     servicer.StopLiveStream,
-                    request_deserializer=live__data__pb2.LiveDataStopLiveStreamRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.LiveStreamStopCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ChangeLens': grpc.unary_unary_rpc_method_handler(
                     servicer.ChangeLens,
-                    request_deserializer=live__data__pb2.LiveDataChangeLensRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ChangeCameraLensCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ChangeZoom': grpc.unary_unary_rpc_method_handler(
                     servicer.ChangeZoom,
-                    request_deserializer=live__data__pb2.LiveDataChangeZoomRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ChangeCameraZoomCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StartRecording': grpc.unary_unary_rpc_method_handler(
                     servicer.StartRecording,
-                    request_deserializer=live__data__pb2.LiveDataStartRecordingRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StopRecording': grpc.unary_unary_rpc_method_handler(
                     servicer.StopRecording,
-                    request_deserializer=live__data__pb2.LiveDataStopRecordingRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'CapturePhoto': grpc.unary_unary_rpc_method_handler(
                     servicer.CapturePhoto,
-                    request_deserializer=live__data__pb2.LiveDataCapturePhotoRequest.FromString,
-                    response_serializer=live__data__pb2.LiveDataResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'LiveDataService', rpc_method_handlers)
+            'zqnt.LiveDataService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('LiveDataService', rpc_method_handlers)
+    server.add_registered_method_handlers('zqnt.LiveDataService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
 class LiveDataService(object):
-    """========== SERVICE ==========
-
-    LiveDataService provides RPC methods for telemetry streaming, production, and live stream management.
+    """LiveDataService provides RPC methods for telemetry, detections, notifications,
+    and live stream management. Payload models are defined in live-data-types.proto.
     """
 
     @staticmethod
@@ -292,9 +284,9 @@ class LiveDataService(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/LiveDataService/StreamTelemetry',
-            live__data__pb2.LiveDataStreamTelemetryRequest.SerializeToString,
-            live__data__pb2.LiveDataTelemetryResponse.FromString,
+            '/zqnt.LiveDataService/StreamTelemetry',
+            live__data__types__pb2.StreamTelemetryRequest.SerializeToString,
+            live__data__types__pb2.LiveDataTelemetryResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -319,9 +311,9 @@ class LiveDataService(object):
         return grpc.experimental.stream_unary(
             request_iterator,
             target,
-            '/LiveDataService/ProduceTelemetry',
-            live__data__pb2.ProduceTelemetryRequest.SerializeToString,
-            live__data__pb2.LiveDataResponse.FromString,
+            '/zqnt.LiveDataService/ProduceTelemetry',
+            live__data__types__pb2.ProduceTelemetryRequest.SerializeToString,
+            live__data__types__pb2.LiveDataResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -346,9 +338,9 @@ class LiveDataService(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/LiveDataService/StreamDetections',
-            live__data__pb2.LiveDataStreamDetectionsRequest.SerializeToString,
-            live__data__pb2.LiveDataDetectionResponse.FromString,
+            '/zqnt.LiveDataService/StreamDetections',
+            detection__pb2.DetectionStreamRequest.SerializeToString,
+            live__data__types__pb2.LiveDataDetectionResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -373,9 +365,9 @@ class LiveDataService(object):
         return grpc.experimental.stream_unary(
             request_iterator,
             target,
-            '/LiveDataService/ProduceDetection',
-            common__pb2.DetectionBatch.SerializeToString,
-            live__data__pb2.LiveDataResponse.FromString,
+            '/zqnt.LiveDataService/ProduceDetection',
+            detection__pb2.DetectionBatch.SerializeToString,
+            live__data__types__pb2.LiveDataResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -400,9 +392,9 @@ class LiveDataService(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/LiveDataService/StreamNotifications',
-            live__data__pb2.LiveDataStreamNotificationsRequest.SerializeToString,
-            live__data__pb2.LiveDataNotificationResponse.FromString,
+            '/zqnt.LiveDataService/StreamNotifications',
+            events__pb2.StreamNotificationsRequest.SerializeToString,
+            events__pb2.NotificationResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -427,9 +419,9 @@ class LiveDataService(object):
         return grpc.experimental.stream_unary(
             request_iterator,
             target,
-            '/LiveDataService/ProduceNotification',
-            live__data__pb2.ProduceNotificationRequest.SerializeToString,
-            live__data__pb2.LiveDataResponse.FromString,
+            '/zqnt.LiveDataService/ProduceNotification',
+            events__pb2.ProduceNotificationRequest.SerializeToString,
+            live__data__types__pb2.LiveDataResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -454,9 +446,9 @@ class LiveDataService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/LiveDataService/StartLiveStream',
-            live__data__pb2.LiveDataStartLiveStreamRequest.SerializeToString,
-            live__data__pb2.LiveDataResponse.FromString,
+            '/zqnt.LiveDataService/StartLiveStream',
+            device__control__contracts__pb2.LiveStreamStartCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -481,9 +473,9 @@ class LiveDataService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/LiveDataService/StopLiveStream',
-            live__data__pb2.LiveDataStopLiveStreamRequest.SerializeToString,
-            live__data__pb2.LiveDataResponse.FromString,
+            '/zqnt.LiveDataService/StopLiveStream',
+            device__control__contracts__pb2.LiveStreamStopCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -508,9 +500,9 @@ class LiveDataService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/LiveDataService/ChangeLens',
-            live__data__pb2.LiveDataChangeLensRequest.SerializeToString,
-            live__data__pb2.LiveDataResponse.FromString,
+            '/zqnt.LiveDataService/ChangeLens',
+            device__control__contracts__pb2.ChangeCameraLensCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -535,9 +527,9 @@ class LiveDataService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/LiveDataService/ChangeZoom',
-            live__data__pb2.LiveDataChangeZoomRequest.SerializeToString,
-            live__data__pb2.LiveDataResponse.FromString,
+            '/zqnt.LiveDataService/ChangeZoom',
+            device__control__contracts__pb2.ChangeCameraZoomCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -562,9 +554,9 @@ class LiveDataService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/LiveDataService/StartRecording',
-            live__data__pb2.LiveDataStartRecordingRequest.SerializeToString,
-            live__data__pb2.LiveDataResponse.FromString,
+            '/zqnt.LiveDataService/StartRecording',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -589,9 +581,9 @@ class LiveDataService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/LiveDataService/StopRecording',
-            live__data__pb2.LiveDataStopRecordingRequest.SerializeToString,
-            live__data__pb2.LiveDataResponse.FromString,
+            '/zqnt.LiveDataService/StopRecording',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -616,9 +608,9 @@ class LiveDataService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/LiveDataService/CapturePhoto',
-            live__data__pb2.LiveDataCapturePhotoRequest.SerializeToString,
-            live__data__pb2.LiveDataResponse.FromString,
+            '/zqnt.LiveDataService/CapturePhoto',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,

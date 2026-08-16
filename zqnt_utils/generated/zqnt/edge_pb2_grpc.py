@@ -3,7 +3,8 @@
 import grpc
 import warnings
 
-from . import edge_pb2 as edge__pb2
+from . import detection_pb2 as detection__pb2
+from . import device_control_contracts_pb2 as device__control__contracts__pb2
 
 GRPC_GENERATED_VERSION = '1.80.0'
 GRPC_VERSION = grpc.__version__
@@ -26,9 +27,10 @@ if _version_not_supported:
 
 
 class EdgeAdapterServiceStub(object):
-    """EdgeAdapterService provides RPC endpoints for controlling edge devices,
-    including flight operations, gimbal control, camera management, dock operations,
-    and asset management.
+    """EdgeAdapterService is the device-facing command API implemented by each Edge SDK.
+    It intentionally uses shared command messages from common.proto so client-facing
+    and device-facing SDKs do not drift into duplicate contracts.
+    Each adapter also pushes scheduled ReportAssetRuntime requests to RemoteControlService.
     """
 
     def __init__(self, channel):
@@ -38,197 +40,198 @@ class EdgeAdapterServiceStub(object):
             channel: A grpc.Channel.
         """
         self.GetCapabilities = channel.unary_unary(
-                '/EdgeAdapterService/GetCapabilities',
-                request_serializer=edge__pb2.EdgeGetCapabilitiesRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeGetCapabilitiesResponse.FromString,
+                '/zqnt.EdgeAdapterService/GetCapabilities',
+                request_serializer=device__control__contracts__pb2.AssetCapabilitiesRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.AssetCapabilitiesResponse.FromString,
                 _registered_method=True)
         self.TakeOff = channel.unary_unary(
-                '/EdgeAdapterService/TakeOff',
-                request_serializer=edge__pb2.EdgeTakeOffRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/TakeOff',
+                request_serializer=device__control__contracts__pb2.CoordinateCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.GoTo = channel.unary_unary(
-                '/EdgeAdapterService/GoTo',
-                request_serializer=edge__pb2.EdgeGoToRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/GoTo',
+                request_serializer=device__control__contracts__pb2.CoordinateCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ReturnToHome = channel.unary_unary(
-                '/EdgeAdapterService/ReturnToHome',
-                request_serializer=edge__pb2.EdgeReturnToHomeRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/ReturnToHome',
+                request_serializer=device__control__contracts__pb2.ReturnToHomeCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.EnterManualControl = channel.unary_unary(
-                '/EdgeAdapterService/EnterManualControl',
-                request_serializer=edge__pb2.EdgeManualControlRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/EnterManualControl',
+                request_serializer=device__control__contracts__pb2.ManualControlCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ExitManualControl = channel.unary_unary(
-                '/EdgeAdapterService/ExitManualControl',
-                request_serializer=edge__pb2.EdgeManualControlRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/ExitManualControl',
+                request_serializer=device__control__contracts__pb2.ManualControlCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ManualControlInput = channel.stream_unary(
-                '/EdgeAdapterService/ManualControlInput',
-                request_serializer=edge__pb2.EdgeManualControlInputRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/ManualControlInput',
+                request_serializer=device__control__contracts__pb2.ManualControlInputCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.LookAt = channel.unary_unary(
-                '/EdgeAdapterService/LookAt',
-                request_serializer=edge__pb2.EdgeLookAtRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
-                _registered_method=True)
-        self.TakePhoto = channel.unary_unary(
-                '/EdgeAdapterService/TakePhoto',
-                request_serializer=edge__pb2.EdgeTakePhotoRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/LookAt',
+                request_serializer=device__control__contracts__pb2.LookAtCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.EnableGimbalTracking = channel.unary_unary(
-                '/EdgeAdapterService/EnableGimbalTracking',
-                request_serializer=edge__pb2.EdgeEnableGimbalTrackingRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/EnableGimbalTracking',
+                request_serializer=device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.GetDetections = channel.unary_stream(
-                '/EdgeAdapterService/GetDetections',
-                request_serializer=edge__pb2.EdgeGetDetectionsRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeDetectionResponse.FromString,
+                '/zqnt.EdgeAdapterService/GetDetections',
+                request_serializer=detection__pb2.DetectionStreamRequest.SerializeToString,
+                response_deserializer=detection__pb2.DetectionBatch.FromString,
+                _registered_method=True)
+        self.PlayTTSAudio = channel.unary_unary(
+                '/zqnt.EdgeAdapterService/PlayTTSAudio',
+                request_serializer=device__control__contracts__pb2.TextToSpeechCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.OpenCover = channel.unary_unary(
-                '/EdgeAdapterService/OpenCover',
-                request_serializer=edge__pb2.EdgeOpenCoverRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/OpenCover',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.CloseCover = channel.unary_unary(
-                '/EdgeAdapterService/CloseCover',
-                request_serializer=edge__pb2.EdgeCloseCoverRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/CloseCover',
+                request_serializer=device__control__contracts__pb2.CloseCoverCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StartCharging = channel.unary_unary(
-                '/EdgeAdapterService/StartCharging',
-                request_serializer=edge__pb2.EdgeStartChargingRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/StartCharging',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StopCharging = channel.unary_unary(
-                '/EdgeAdapterService/StopCharging',
-                request_serializer=edge__pb2.EdgeStopChargingRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/StopCharging',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.RebootAsset = channel.unary_unary(
-                '/EdgeAdapterService/RebootAsset',
-                request_serializer=edge__pb2.EdgeRebootAssetRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/RebootAsset',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
-        self.BootUpSubAsset = channel.unary_unary(
-                '/EdgeAdapterService/BootUpSubAsset',
-                request_serializer=edge__pb2.EdgeBootSubAssetRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
-                _registered_method=True)
-        self.BootDownSubAsset = channel.unary_unary(
-                '/EdgeAdapterService/BootDownSubAsset',
-                request_serializer=edge__pb2.EdgeBootSubAssetRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+        self.BootSubAsset = channel.unary_unary(
+                '/zqnt.EdgeAdapterService/BootSubAsset',
+                request_serializer=device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.RegisterAsset = channel.unary_unary(
-                '/EdgeAdapterService/RegisterAsset',
-                request_serializer=edge__pb2.EdgeRegisterAssetRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/RegisterAsset',
+                request_serializer=device__control__contracts__pb2.RegisterAssetCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
-        self.DeRegisterAsset = channel.unary_unary(
-                '/EdgeAdapterService/DeRegisterAsset',
-                request_serializer=edge__pb2.EdgeDeRegisterAssetRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+        self.DeregisterAsset = channel.unary_unary(
+                '/zqnt.EdgeAdapterService/DeregisterAsset',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
-        self.EnterOrCloseRemoteDebugMode = channel.unary_unary(
-                '/EdgeAdapterService/EnterOrCloseRemoteDebugMode',
-                request_serializer=edge__pb2.EdgeRemoteDebugModeRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+        self.SetRemoteDebugMode = channel.unary_unary(
+                '/zqnt.EdgeAdapterService/SetRemoteDebugMode',
+                request_serializer=device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ChangeAcMode = channel.unary_unary(
-                '/EdgeAdapterService/ChangeAcMode',
-                request_serializer=edge__pb2.EdgeChangeAcModeRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/ChangeAcMode',
+                request_serializer=device__control__contracts__pb2.ChangeAcModeCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StartLiveStream = channel.unary_unary(
-                '/EdgeAdapterService/StartLiveStream',
-                request_serializer=edge__pb2.EdgeStartLiveStreamRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/StartLiveStream',
+                request_serializer=device__control__contracts__pb2.LiveStreamStartCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StopLiveStream = channel.unary_unary(
-                '/EdgeAdapterService/StopLiveStream',
-                request_serializer=edge__pb2.EdgeStopLiveStreamRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/StopLiveStream',
+                request_serializer=device__control__contracts__pb2.LiveStreamStopCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ChangeLens = channel.unary_unary(
-                '/EdgeAdapterService/ChangeLens',
-                request_serializer=edge__pb2.EdgeChangeCameraLensRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/ChangeLens',
+                request_serializer=device__control__contracts__pb2.ChangeCameraLensCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.ChangeZoom = channel.unary_unary(
-                '/EdgeAdapterService/ChangeZoom',
-                request_serializer=edge__pb2.EdgeChangeCameraZoomRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/ChangeZoom',
+                request_serializer=device__control__contracts__pb2.ChangeCameraZoomCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.CapturePhoto = channel.unary_unary(
-                '/EdgeAdapterService/CapturePhoto',
-                request_serializer=edge__pb2.EdgeCapturePhotoRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/CapturePhoto',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StartRecording = channel.unary_unary(
-                '/EdgeAdapterService/StartRecording',
-                request_serializer=edge__pb2.EdgeStartRecordingRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/StartRecording',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.StopRecording = channel.unary_unary(
-                '/EdgeAdapterService/StopRecording',
-                request_serializer=edge__pb2.EdgeStopRecordingRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/StopRecording',
+                request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
-        self.StartTask = channel.unary_unary(
-                '/EdgeAdapterService/StartTask',
-                request_serializer=edge__pb2.EdgeStartTaskRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
-                _registered_method=True)
-        self.StopTask = channel.unary_unary(
-                '/EdgeAdapterService/StopTask',
-                request_serializer=edge__pb2.EdgeStopTaskRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
-                _registered_method=True)
-        self.PauseTask = channel.unary_unary(
-                '/EdgeAdapterService/PauseTask',
-                request_serializer=edge__pb2.EdgePauseTaskRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
-                _registered_method=True)
-        self.ResumeTask = channel.unary_unary(
-                '/EdgeAdapterService/ResumeTask',
-                request_serializer=edge__pb2.EdgeResumeTaskRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+        self.LiveStreamSplitScreen = channel.unary_unary(
+                '/zqnt.EdgeAdapterService/LiveStreamSplitScreen',
+                request_serializer=device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.PrepareTask = channel.unary_unary(
-                '/EdgeAdapterService/PrepareTask',
-                request_serializer=edge__pb2.EdgePrepareTaskRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeResponse.FromString,
+                '/zqnt.EdgeAdapterService/PrepareTask',
+                request_serializer=device__control__contracts__pb2.TaskCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
+                _registered_method=True)
+        self.StartTask = channel.unary_unary(
+                '/zqnt.EdgeAdapterService/StartTask',
+                request_serializer=device__control__contracts__pb2.TaskCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
+                _registered_method=True)
+        self.StopTask = channel.unary_unary(
+                '/zqnt.EdgeAdapterService/StopTask',
+                request_serializer=device__control__contracts__pb2.TaskCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
+                _registered_method=True)
+        self.PauseTask = channel.unary_unary(
+                '/zqnt.EdgeAdapterService/PauseTask',
+                request_serializer=device__control__contracts__pb2.TaskCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
+                _registered_method=True)
+        self.ResumeTask = channel.unary_unary(
+                '/zqnt.EdgeAdapterService/ResumeTask',
+                request_serializer=device__control__contracts__pb2.TaskCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
         self.SendCustomCommand = channel.unary_unary(
-                '/EdgeAdapterService/SendCustomCommand',
-                request_serializer=edge__pb2.EdgeCustomCommandRequest.SerializeToString,
-                response_deserializer=edge__pb2.EdgeCustomCommandResponse.FromString,
+                '/zqnt.EdgeAdapterService/SendCustomCommand',
+                request_serializer=device__control__contracts__pb2.CustomCommandRequest.SerializeToString,
+                response_deserializer=device__control__contracts__pb2.CustomCommandResponse.FromString,
                 _registered_method=True)
 
 
 class EdgeAdapterServiceServicer(object):
-    """EdgeAdapterService provides RPC endpoints for controlling edge devices,
-    including flight operations, gimbal control, camera management, dock operations,
-    and asset management.
+    """EdgeAdapterService is the device-facing command API implemented by each Edge SDK.
+    It intentionally uses shared command messages from common.proto so client-facing
+    and device-facing SDKs do not drift into duplicate contracts.
+    Each adapter also pushes scheduled ReportAssetRuntime requests to RemoteControlService.
     """
 
     def GetCapabilities(self, request, context):
-        """Capability Management
+        """Current self-describing command contract; also used to build runtime snapshots.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def TakeOff(self, request, context):
-        """Flight Control (for drone in dock)
+        """Flight Control
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -266,14 +269,8 @@ class EdgeAdapterServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def LookAt(self, request, context):
-        """Gimbal & Camera Control
+        """Gimbal, Camera & Detection
         """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def TakePhoto(self, request, context):
-        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -285,14 +282,19 @@ class EdgeAdapterServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def GetDetections(self, request, context):
-        """Detection
-        """
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PlayTTSAudio(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def OpenCover(self, request, context):
-        """Dock Specific Operations
+        """Dock commands
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -323,13 +325,7 @@ class EdgeAdapterServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BootUpSubAsset(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def BootDownSubAsset(self, request, context):
+    def BootSubAsset(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -341,13 +337,13 @@ class EdgeAdapterServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DeRegisterAsset(self, request, context):
+    def DeregisterAsset(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def EnterOrCloseRemoteDebugMode(self, request, context):
+    def SetRemoteDebugMode(self, request, context):
         """Debug & Maintenance
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -361,7 +357,7 @@ class EdgeAdapterServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def StartLiveStream(self, request, context):
-        """Live Stream
+        """Live Stream & Camera Capture
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -403,6 +399,19 @@ class EdgeAdapterServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def LiveStreamSplitScreen(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PrepareTask(self, request, context):
+        """Task Lifecycle
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def StartTask(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -427,12 +436,6 @@ class EdgeAdapterServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def PrepareTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def SendCustomCommand(self, request, context):
         """Custom / Integrator-defined commands
         """
@@ -445,191 +448,192 @@ def add_EdgeAdapterServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'GetCapabilities': grpc.unary_unary_rpc_method_handler(
                     servicer.GetCapabilities,
-                    request_deserializer=edge__pb2.EdgeGetCapabilitiesRequest.FromString,
-                    response_serializer=edge__pb2.EdgeGetCapabilitiesResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.AssetCapabilitiesRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.AssetCapabilitiesResponse.SerializeToString,
             ),
             'TakeOff': grpc.unary_unary_rpc_method_handler(
                     servicer.TakeOff,
-                    request_deserializer=edge__pb2.EdgeTakeOffRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.CoordinateCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'GoTo': grpc.unary_unary_rpc_method_handler(
                     servicer.GoTo,
-                    request_deserializer=edge__pb2.EdgeGoToRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.CoordinateCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ReturnToHome': grpc.unary_unary_rpc_method_handler(
                     servicer.ReturnToHome,
-                    request_deserializer=edge__pb2.EdgeReturnToHomeRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ReturnToHomeCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'EnterManualControl': grpc.unary_unary_rpc_method_handler(
                     servicer.EnterManualControl,
-                    request_deserializer=edge__pb2.EdgeManualControlRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ManualControlCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ExitManualControl': grpc.unary_unary_rpc_method_handler(
                     servicer.ExitManualControl,
-                    request_deserializer=edge__pb2.EdgeManualControlRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ManualControlCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ManualControlInput': grpc.stream_unary_rpc_method_handler(
                     servicer.ManualControlInput,
-                    request_deserializer=edge__pb2.EdgeManualControlInputRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ManualControlInputCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'LookAt': grpc.unary_unary_rpc_method_handler(
                     servicer.LookAt,
-                    request_deserializer=edge__pb2.EdgeLookAtRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
-            ),
-            'TakePhoto': grpc.unary_unary_rpc_method_handler(
-                    servicer.TakePhoto,
-                    request_deserializer=edge__pb2.EdgeTakePhotoRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.LookAtCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'EnableGimbalTracking': grpc.unary_unary_rpc_method_handler(
                     servicer.EnableGimbalTracking,
-                    request_deserializer=edge__pb2.EdgeEnableGimbalTrackingRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ToggleCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'GetDetections': grpc.unary_stream_rpc_method_handler(
                     servicer.GetDetections,
-                    request_deserializer=edge__pb2.EdgeGetDetectionsRequest.FromString,
-                    response_serializer=edge__pb2.EdgeDetectionResponse.SerializeToString,
+                    request_deserializer=detection__pb2.DetectionStreamRequest.FromString,
+                    response_serializer=detection__pb2.DetectionBatch.SerializeToString,
+            ),
+            'PlayTTSAudio': grpc.unary_unary_rpc_method_handler(
+                    servicer.PlayTTSAudio,
+                    request_deserializer=device__control__contracts__pb2.TextToSpeechCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'OpenCover': grpc.unary_unary_rpc_method_handler(
                     servicer.OpenCover,
-                    request_deserializer=edge__pb2.EdgeOpenCoverRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'CloseCover': grpc.unary_unary_rpc_method_handler(
                     servicer.CloseCover,
-                    request_deserializer=edge__pb2.EdgeCloseCoverRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.CloseCoverCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StartCharging': grpc.unary_unary_rpc_method_handler(
                     servicer.StartCharging,
-                    request_deserializer=edge__pb2.EdgeStartChargingRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StopCharging': grpc.unary_unary_rpc_method_handler(
                     servicer.StopCharging,
-                    request_deserializer=edge__pb2.EdgeStopChargingRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'RebootAsset': grpc.unary_unary_rpc_method_handler(
                     servicer.RebootAsset,
-                    request_deserializer=edge__pb2.EdgeRebootAssetRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
-            'BootUpSubAsset': grpc.unary_unary_rpc_method_handler(
-                    servicer.BootUpSubAsset,
-                    request_deserializer=edge__pb2.EdgeBootSubAssetRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
-            ),
-            'BootDownSubAsset': grpc.unary_unary_rpc_method_handler(
-                    servicer.BootDownSubAsset,
-                    request_deserializer=edge__pb2.EdgeBootSubAssetRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+            'BootSubAsset': grpc.unary_unary_rpc_method_handler(
+                    servicer.BootSubAsset,
+                    request_deserializer=device__control__contracts__pb2.ToggleCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'RegisterAsset': grpc.unary_unary_rpc_method_handler(
                     servicer.RegisterAsset,
-                    request_deserializer=edge__pb2.EdgeRegisterAssetRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.RegisterAssetCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
-            'DeRegisterAsset': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeRegisterAsset,
-                    request_deserializer=edge__pb2.EdgeDeRegisterAssetRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+            'DeregisterAsset': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeregisterAsset,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
-            'EnterOrCloseRemoteDebugMode': grpc.unary_unary_rpc_method_handler(
-                    servicer.EnterOrCloseRemoteDebugMode,
-                    request_deserializer=edge__pb2.EdgeRemoteDebugModeRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+            'SetRemoteDebugMode': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetRemoteDebugMode,
+                    request_deserializer=device__control__contracts__pb2.ToggleCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ChangeAcMode': grpc.unary_unary_rpc_method_handler(
                     servicer.ChangeAcMode,
-                    request_deserializer=edge__pb2.EdgeChangeAcModeRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ChangeAcModeCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StartLiveStream': grpc.unary_unary_rpc_method_handler(
                     servicer.StartLiveStream,
-                    request_deserializer=edge__pb2.EdgeStartLiveStreamRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.LiveStreamStartCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StopLiveStream': grpc.unary_unary_rpc_method_handler(
                     servicer.StopLiveStream,
-                    request_deserializer=edge__pb2.EdgeStopLiveStreamRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.LiveStreamStopCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ChangeLens': grpc.unary_unary_rpc_method_handler(
                     servicer.ChangeLens,
-                    request_deserializer=edge__pb2.EdgeChangeCameraLensRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ChangeCameraLensCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'ChangeZoom': grpc.unary_unary_rpc_method_handler(
                     servicer.ChangeZoom,
-                    request_deserializer=edge__pb2.EdgeChangeCameraZoomRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.ChangeCameraZoomCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'CapturePhoto': grpc.unary_unary_rpc_method_handler(
                     servicer.CapturePhoto,
-                    request_deserializer=edge__pb2.EdgeCapturePhotoRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StartRecording': grpc.unary_unary_rpc_method_handler(
                     servicer.StartRecording,
-                    request_deserializer=edge__pb2.EdgeStartRecordingRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'StopRecording': grpc.unary_unary_rpc_method_handler(
                     servicer.StopRecording,
-                    request_deserializer=edge__pb2.EdgeStopRecordingRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
-            'StartTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.StartTask,
-                    request_deserializer=edge__pb2.EdgeStartTaskRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
-            ),
-            'StopTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.StopTask,
-                    request_deserializer=edge__pb2.EdgeStopTaskRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
-            ),
-            'PauseTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.PauseTask,
-                    request_deserializer=edge__pb2.EdgePauseTaskRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
-            ),
-            'ResumeTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.ResumeTask,
-                    request_deserializer=edge__pb2.EdgeResumeTaskRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+            'LiveStreamSplitScreen': grpc.unary_unary_rpc_method_handler(
+                    servicer.LiveStreamSplitScreen,
+                    request_deserializer=device__control__contracts__pb2.ToggleCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'PrepareTask': grpc.unary_unary_rpc_method_handler(
                     servicer.PrepareTask,
-                    request_deserializer=edge__pb2.EdgePrepareTaskRequest.FromString,
-                    response_serializer=edge__pb2.EdgeResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.TaskCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
+            ),
+            'StartTask': grpc.unary_unary_rpc_method_handler(
+                    servicer.StartTask,
+                    request_deserializer=device__control__contracts__pb2.TaskCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
+            ),
+            'StopTask': grpc.unary_unary_rpc_method_handler(
+                    servicer.StopTask,
+                    request_deserializer=device__control__contracts__pb2.TaskCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
+            ),
+            'PauseTask': grpc.unary_unary_rpc_method_handler(
+                    servicer.PauseTask,
+                    request_deserializer=device__control__contracts__pb2.TaskCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
+            ),
+            'ResumeTask': grpc.unary_unary_rpc_method_handler(
+                    servicer.ResumeTask,
+                    request_deserializer=device__control__contracts__pb2.TaskCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'SendCustomCommand': grpc.unary_unary_rpc_method_handler(
                     servicer.SendCustomCommand,
-                    request_deserializer=edge__pb2.EdgeCustomCommandRequest.FromString,
-                    response_serializer=edge__pb2.EdgeCustomCommandResponse.SerializeToString,
+                    request_deserializer=device__control__contracts__pb2.CustomCommandRequest.FromString,
+                    response_serializer=device__control__contracts__pb2.CustomCommandResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'EdgeAdapterService', rpc_method_handlers)
+            'zqnt.EdgeAdapterService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('EdgeAdapterService', rpc_method_handlers)
+    server.add_registered_method_handlers('zqnt.EdgeAdapterService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
 class EdgeAdapterService(object):
-    """EdgeAdapterService provides RPC endpoints for controlling edge devices,
-    including flight operations, gimbal control, camera management, dock operations,
-    and asset management.
+    """EdgeAdapterService is the device-facing command API implemented by each Edge SDK.
+    It intentionally uses shared command messages from common.proto so client-facing
+    and device-facing SDKs do not drift into duplicate contracts.
+    Each adapter also pushes scheduled ReportAssetRuntime requests to RemoteControlService.
     """
 
     @staticmethod
@@ -646,9 +650,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/GetCapabilities',
-            edge__pb2.EdgeGetCapabilitiesRequest.SerializeToString,
-            edge__pb2.EdgeGetCapabilitiesResponse.FromString,
+            '/zqnt.EdgeAdapterService/GetCapabilities',
+            device__control__contracts__pb2.AssetCapabilitiesRequest.SerializeToString,
+            device__control__contracts__pb2.AssetCapabilitiesResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -673,9 +677,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/TakeOff',
-            edge__pb2.EdgeTakeOffRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/TakeOff',
+            device__control__contracts__pb2.CoordinateCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -700,9 +704,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/GoTo',
-            edge__pb2.EdgeGoToRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/GoTo',
+            device__control__contracts__pb2.CoordinateCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -727,9 +731,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/ReturnToHome',
-            edge__pb2.EdgeReturnToHomeRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/ReturnToHome',
+            device__control__contracts__pb2.ReturnToHomeCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -754,9 +758,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/EnterManualControl',
-            edge__pb2.EdgeManualControlRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/EnterManualControl',
+            device__control__contracts__pb2.ManualControlCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -781,9 +785,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/ExitManualControl',
-            edge__pb2.EdgeManualControlRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/ExitManualControl',
+            device__control__contracts__pb2.ManualControlCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -808,9 +812,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.stream_unary(
             request_iterator,
             target,
-            '/EdgeAdapterService/ManualControlInput',
-            edge__pb2.EdgeManualControlInputRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/ManualControlInput',
+            device__control__contracts__pb2.ManualControlInputCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -835,36 +839,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/LookAt',
-            edge__pb2.EdgeLookAtRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def TakePhoto(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/EdgeAdapterService/TakePhoto',
-            edge__pb2.EdgeTakePhotoRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/LookAt',
+            device__control__contracts__pb2.LookAtCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -889,9 +866,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/EnableGimbalTracking',
-            edge__pb2.EdgeEnableGimbalTrackingRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/EnableGimbalTracking',
+            device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -916,9 +893,36 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/EdgeAdapterService/GetDetections',
-            edge__pb2.EdgeGetDetectionsRequest.SerializeToString,
-            edge__pb2.EdgeDetectionResponse.FromString,
+            '/zqnt.EdgeAdapterService/GetDetections',
+            detection__pb2.DetectionStreamRequest.SerializeToString,
+            detection__pb2.DetectionBatch.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PlayTTSAudio(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.EdgeAdapterService/PlayTTSAudio',
+            device__control__contracts__pb2.TextToSpeechCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -943,9 +947,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/OpenCover',
-            edge__pb2.EdgeOpenCoverRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/OpenCover',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -970,9 +974,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/CloseCover',
-            edge__pb2.EdgeCloseCoverRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/CloseCover',
+            device__control__contracts__pb2.CloseCoverCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -997,9 +1001,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/StartCharging',
-            edge__pb2.EdgeStartChargingRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/StartCharging',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1024,9 +1028,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/StopCharging',
-            edge__pb2.EdgeStopChargingRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/StopCharging',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1051,9 +1055,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/RebootAsset',
-            edge__pb2.EdgeRebootAssetRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/RebootAsset',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1065,7 +1069,7 @@ class EdgeAdapterService(object):
             _registered_method=True)
 
     @staticmethod
-    def BootUpSubAsset(request,
+    def BootSubAsset(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1078,36 +1082,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/BootUpSubAsset',
-            edge__pb2.EdgeBootSubAssetRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def BootDownSubAsset(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/EdgeAdapterService/BootDownSubAsset',
-            edge__pb2.EdgeBootSubAssetRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/BootSubAsset',
+            device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1132,9 +1109,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/RegisterAsset',
-            edge__pb2.EdgeRegisterAssetRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/RegisterAsset',
+            device__control__contracts__pb2.RegisterAssetCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1146,7 +1123,7 @@ class EdgeAdapterService(object):
             _registered_method=True)
 
     @staticmethod
-    def DeRegisterAsset(request,
+    def DeregisterAsset(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1159,9 +1136,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/DeRegisterAsset',
-            edge__pb2.EdgeDeRegisterAssetRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/DeregisterAsset',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1173,7 +1150,7 @@ class EdgeAdapterService(object):
             _registered_method=True)
 
     @staticmethod
-    def EnterOrCloseRemoteDebugMode(request,
+    def SetRemoteDebugMode(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1186,9 +1163,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/EnterOrCloseRemoteDebugMode',
-            edge__pb2.EdgeRemoteDebugModeRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/SetRemoteDebugMode',
+            device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1213,9 +1190,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/ChangeAcMode',
-            edge__pb2.EdgeChangeAcModeRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/ChangeAcMode',
+            device__control__contracts__pb2.ChangeAcModeCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1240,9 +1217,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/StartLiveStream',
-            edge__pb2.EdgeStartLiveStreamRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/StartLiveStream',
+            device__control__contracts__pb2.LiveStreamStartCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1267,9 +1244,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/StopLiveStream',
-            edge__pb2.EdgeStopLiveStreamRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/StopLiveStream',
+            device__control__contracts__pb2.LiveStreamStopCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1294,9 +1271,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/ChangeLens',
-            edge__pb2.EdgeChangeCameraLensRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/ChangeLens',
+            device__control__contracts__pb2.ChangeCameraLensCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1321,9 +1298,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/ChangeZoom',
-            edge__pb2.EdgeChangeCameraZoomRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/ChangeZoom',
+            device__control__contracts__pb2.ChangeCameraZoomCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1348,9 +1325,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/CapturePhoto',
-            edge__pb2.EdgeCapturePhotoRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/CapturePhoto',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1375,9 +1352,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/StartRecording',
-            edge__pb2.EdgeStartRecordingRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/StartRecording',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1402,9 +1379,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/StopRecording',
-            edge__pb2.EdgeStopRecordingRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/StopRecording',
+            device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1416,7 +1393,7 @@ class EdgeAdapterService(object):
             _registered_method=True)
 
     @staticmethod
-    def StartTask(request,
+    def LiveStreamSplitScreen(request,
             target,
             options=(),
             channel_credentials=None,
@@ -1429,90 +1406,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/StartTask',
-            edge__pb2.EdgeStartTaskRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def StopTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/EdgeAdapterService/StopTask',
-            edge__pb2.EdgeStopTaskRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def PauseTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/EdgeAdapterService/PauseTask',
-            edge__pb2.EdgePauseTaskRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ResumeTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/EdgeAdapterService/ResumeTask',
-            edge__pb2.EdgeResumeTaskRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/LiveStreamSplitScreen',
+            device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1537,9 +1433,117 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/PrepareTask',
-            edge__pb2.EdgePrepareTaskRequest.SerializeToString,
-            edge__pb2.EdgeResponse.FromString,
+            '/zqnt.EdgeAdapterService/PrepareTask',
+            device__control__contracts__pb2.TaskCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def StartTask(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.EdgeAdapterService/StartTask',
+            device__control__contracts__pb2.TaskCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def StopTask(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.EdgeAdapterService/StopTask',
+            device__control__contracts__pb2.TaskCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PauseTask(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.EdgeAdapterService/PauseTask',
+            device__control__contracts__pb2.TaskCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ResumeTask(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.EdgeAdapterService/ResumeTask',
+            device__control__contracts__pb2.TaskCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1564,9 +1568,9 @@ class EdgeAdapterService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/EdgeAdapterService/SendCustomCommand',
-            edge__pb2.EdgeCustomCommandRequest.SerializeToString,
-            edge__pb2.EdgeCustomCommandResponse.FromString,
+            '/zqnt.EdgeAdapterService/SendCustomCommand',
+            device__control__contracts__pb2.CustomCommandRequest.SerializeToString,
+            device__control__contracts__pb2.CustomCommandResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -2,7 +2,20 @@ import datetime
 
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf import field_mask_pb2 as _field_mask_pb2
+from google.protobuf import struct_pb2 as _struct_pb2
 from . import common_pb2 as _common_pb2
+from . import base_pb2 as _base_pb2
+from . import asset_pb2 as _asset_pb2
+from . import device_control_contracts_pb2 as _device_control_contracts_pb2
+from . import detection_pb2 as _detection_pb2
+from . import mission_autonomy_types_pb2 as _mission_autonomy_types_pb2
+from . import mission_autonomy_dto_pb2 as _mission_autonomy_dto_pb2
+from . import events_pb2 as _events_pb2
+from . import mission_autonomy_contracts_pb2 as _mission_autonomy_contracts_pb2
+from . import capability_execution_contracts_pb2 as _capability_execution_contracts_pb2
+from . import capability_execution_dto_pb2 as _capability_execution_dto_pb2
+from . import device_control_contracts_pb2 as _device_control_contracts_pb2_1
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -12,149 +25,327 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class SkillContractStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    SKILL_CONTRACT_STATUS_ACTIVE: _ClassVar[SkillContractStatus]
+    SKILL_CONTRACT_STATUS_DRAFT: _ClassVar[SkillContractStatus]
+    SKILL_CONTRACT_STATUS_DEPRECATED: _ClassVar[SkillContractStatus]
+    SKILL_CONTRACT_STATUS_RETIRED: _ClassVar[SkillContractStatus]
+
+class SkillContractCompatibility(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    SKILL_CONTRACT_COMPATIBILITY_UNKNOWN: _ClassVar[SkillContractCompatibility]
+    SKILL_CONTRACT_COMPATIBILITY_NEW: _ClassVar[SkillContractCompatibility]
+    SKILL_CONTRACT_COMPATIBILITY_COMPATIBLE: _ClassVar[SkillContractCompatibility]
+    SKILL_CONTRACT_COMPATIBILITY_BREAKING: _ClassVar[SkillContractCompatibility]
+
 class TelemetryType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     TELEMETRY_TYPE_UNSPECIFIED: _ClassVar[TelemetryType]
     TELEMETRY_TYPE_ASSET: _ClassVar[TelemetryType]
     TELEMETRY_TYPE_SUBASSET: _ClassVar[TelemetryType]
+SKILL_CONTRACT_STATUS_ACTIVE: SkillContractStatus
+SKILL_CONTRACT_STATUS_DRAFT: SkillContractStatus
+SKILL_CONTRACT_STATUS_DEPRECATED: SkillContractStatus
+SKILL_CONTRACT_STATUS_RETIRED: SkillContractStatus
+SKILL_CONTRACT_COMPATIBILITY_UNKNOWN: SkillContractCompatibility
+SKILL_CONTRACT_COMPATIBILITY_NEW: SkillContractCompatibility
+SKILL_CONTRACT_COMPATIBILITY_COMPATIBLE: SkillContractCompatibility
+SKILL_CONTRACT_COMPATIBILITY_BREAKING: SkillContractCompatibility
 TELEMETRY_TYPE_UNSPECIFIED: TelemetryType
 TELEMETRY_TYPE_ASSET: TelemetryType
 TELEMETRY_TYPE_SUBASSET: TelemetryType
 
-class ConnectorDeleteSchedulersByTaskRequest(_message.Message):
-    __slots__ = ("base", "task_id")
+class PersistSkillExecutionRequest(_message.Message):
+    __slots__ = ("base", "execution")
     BASE_FIELD_NUMBER: _ClassVar[int]
-    TASK_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    task_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., task_id: _Optional[str] = ...) -> None: ...
+    EXECUTION_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    execution: _capability_execution_dto_pb2.SkillExecutionProtoDTO
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., execution: _Optional[_Union[_capability_execution_dto_pb2.SkillExecutionProtoDTO, _Mapping]] = ...) -> None: ...
 
-class ConnectorCreateSchedulersRequest(_message.Message):
-    __slots__ = ("base", "schedulers")
+class AppendSkillExecutionEventRequest(_message.Message):
+    __slots__ = ("base", "event")
     BASE_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULERS_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    schedulers: _containers.RepeatedCompositeFieldContainer[_common_pb2.SchedulerProtoDTO]
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., schedulers: _Optional[_Iterable[_Union[_common_pb2.SchedulerProtoDTO, _Mapping]]] = ...) -> None: ...
+    EVENT_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    event: _capability_execution_dto_pb2.SkillExecutionEventProto
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., event: _Optional[_Union[_capability_execution_dto_pb2.SkillExecutionEventProto, _Mapping]] = ...) -> None: ...
 
-class ConnectorDeleteSchedulersRequest(_message.Message):
-    __slots__ = ("base", "ids")
+class UpsertAssetPayloadRequest(_message.Message):
+    __slots__ = ("base", "payload", "sub_asset_sn", "owner", "update_mask")
     BASE_FIELD_NUMBER: _ClassVar[int]
-    IDS_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    ids: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., ids: _Optional[_Iterable[str]] = ...) -> None: ...
+    PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+    SUB_ASSET_SN_FIELD_NUMBER: _ClassVar[int]
+    OWNER_FIELD_NUMBER: _ClassVar[int]
+    UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    payload: _asset_pb2.AssetPayloadProtoDTO
+    sub_asset_sn: str
+    owner: AssetPayloadOwner
+    update_mask: _field_mask_pb2.FieldMask
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., payload: _Optional[_Union[_asset_pb2.AssetPayloadProtoDTO, _Mapping]] = ..., sub_asset_sn: _Optional[str] = ..., owner: _Optional[_Union[AssetPayloadOwner, _Mapping]] = ..., update_mask: _Optional[_Union[_field_mask_pb2.FieldMask, _Mapping]] = ...) -> None: ...
 
-class ConnectorGetAssetByIdRequest(_message.Message):
-    __slots__ = ("base", "id")
+class AssetPayloadOwner(_message.Message):
+    __slots__ = ("asset_id", "sub_asset_id")
+    ASSET_ID_FIELD_NUMBER: _ClassVar[int]
+    SUB_ASSET_ID_FIELD_NUMBER: _ClassVar[int]
+    asset_id: str
+    sub_asset_id: str
+    def __init__(self, asset_id: _Optional[str] = ..., sub_asset_id: _Optional[str] = ...) -> None: ...
+
+class ListAssetPayloadsRequest(_message.Message):
+    __slots__ = ("base", "owner")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    OWNER_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    owner: AssetPayloadOwner
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., owner: _Optional[_Union[AssetPayloadOwner, _Mapping]] = ...) -> None: ...
+
+class DeleteAssetPayloadRequest(_message.Message):
+    __slots__ = ("base", "owner", "payload_id")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    OWNER_FIELD_NUMBER: _ClassVar[int]
+    PAYLOAD_ID_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    owner: AssetPayloadOwner
+    payload_id: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., owner: _Optional[_Union[AssetPayloadOwner, _Mapping]] = ..., payload_id: _Optional[str] = ...) -> None: ...
+
+class AssetPayloadResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "payload", "error")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    PAYLOAD_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    payload: _asset_pb2.AssetPayloadProtoDTO
+    error: _base_pb2.GlobalErrorMessage
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., payload: _Optional[_Union[_asset_pb2.AssetPayloadProtoDTO, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
+
+class AssetPayloadListResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "payloads", "error")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    PAYLOADS_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    payloads: _containers.RepeatedCompositeFieldContainer[_asset_pb2.AssetPayloadProtoDTO]
+    error: _base_pb2.GlobalErrorMessage
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., payloads: _Optional[_Iterable[_Union[_asset_pb2.AssetPayloadProtoDTO, _Mapping]]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
+
+class SetAssetPropertyRequest(_message.Message):
+    __slots__ = ("base", "sn", "key", "value", "description")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    SN_FIELD_NUMBER: _ClassVar[int]
+    KEY_FIELD_NUMBER: _ClassVar[int]
+    VALUE_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    sn: str
+    key: str
+    value: _struct_pb2.Value
+    description: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., sn: _Optional[str] = ..., key: _Optional[str] = ..., value: _Optional[_Union[_struct_pb2.Value, _Mapping]] = ..., description: _Optional[str] = ...) -> None: ...
+
+class ListAssetPropertiesRequest(_message.Message):
+    __slots__ = ("base", "sn")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    SN_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    sn: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., sn: _Optional[str] = ...) -> None: ...
+
+class DeleteAssetPropertyRequest(_message.Message):
+    __slots__ = ("base", "sn", "key")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    SN_FIELD_NUMBER: _ClassVar[int]
+    KEY_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    sn: str
+    key: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., sn: _Optional[str] = ..., key: _Optional[str] = ...) -> None: ...
+
+class AssetPropertyResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "property", "error")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    PROPERTY_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    property: _asset_pb2.AssetPropertyProtoDTO
+    error: _base_pb2.GlobalErrorMessage
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., property: _Optional[_Union[_asset_pb2.AssetPropertyProtoDTO, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
+
+class AssetPropertyListResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "properties", "error")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    PROPERTIES_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    properties: _containers.RepeatedCompositeFieldContainer[_asset_pb2.AssetPropertyProtoDTO]
+    error: _base_pb2.GlobalErrorMessage
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., properties: _Optional[_Iterable[_Union[_asset_pb2.AssetPropertyProtoDTO, _Mapping]]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
+
+class SkillContractProtoDTO(_message.Message):
+    __slots__ = ("id", "command_id", "skill_id", "display_name", "description", "schema_version", "input_schema", "output_schema", "errors", "events", "requirements", "source", "provider", "status", "first_seen_at", "last_seen_at", "previous_schema_version", "compatibility", "compatibility_notes", "required_permissions")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
+    SKILL_ID_FIELD_NUMBER: _ClassVar[int]
+    DISPLAY_NAME_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    SCHEMA_VERSION_FIELD_NUMBER: _ClassVar[int]
+    INPUT_SCHEMA_FIELD_NUMBER: _ClassVar[int]
+    OUTPUT_SCHEMA_FIELD_NUMBER: _ClassVar[int]
+    ERRORS_FIELD_NUMBER: _ClassVar[int]
+    EVENTS_FIELD_NUMBER: _ClassVar[int]
+    REQUIREMENTS_FIELD_NUMBER: _ClassVar[int]
+    SOURCE_FIELD_NUMBER: _ClassVar[int]
+    PROVIDER_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    FIRST_SEEN_AT_FIELD_NUMBER: _ClassVar[int]
+    LAST_SEEN_AT_FIELD_NUMBER: _ClassVar[int]
+    PREVIOUS_SCHEMA_VERSION_FIELD_NUMBER: _ClassVar[int]
+    COMPATIBILITY_FIELD_NUMBER: _ClassVar[int]
+    COMPATIBILITY_NOTES_FIELD_NUMBER: _ClassVar[int]
+    REQUIRED_PERMISSIONS_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    command_id: str
+    skill_id: str
+    display_name: str
+    description: str
+    schema_version: str
+    input_schema: _struct_pb2.Struct
+    output_schema: _struct_pb2.Struct
+    errors: _containers.RepeatedCompositeFieldContainer[_device_control_contracts_pb2_1.CapabilityErrorProto]
+    events: _containers.RepeatedCompositeFieldContainer[_device_control_contracts_pb2_1.CapabilityEventProto]
+    requirements: _device_control_contracts_pb2_1.CapabilityRequirementsProto
+    source: _device_control_contracts_pb2_1.CapabilitySourceProto
+    provider: str
+    status: SkillContractStatus
+    first_seen_at: _timestamp_pb2.Timestamp
+    last_seen_at: _timestamp_pb2.Timestamp
+    previous_schema_version: str
+    compatibility: SkillContractCompatibility
+    compatibility_notes: _containers.RepeatedScalarFieldContainer[str]
+    required_permissions: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, id: _Optional[str] = ..., command_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., display_name: _Optional[str] = ..., description: _Optional[str] = ..., schema_version: _Optional[str] = ..., input_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., output_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., errors: _Optional[_Iterable[_Union[_device_control_contracts_pb2_1.CapabilityErrorProto, _Mapping]]] = ..., events: _Optional[_Iterable[_Union[_device_control_contracts_pb2_1.CapabilityEventProto, _Mapping]]] = ..., requirements: _Optional[_Union[_device_control_contracts_pb2_1.CapabilityRequirementsProto, _Mapping]] = ..., source: _Optional[_Union[_device_control_contracts_pb2_1.CapabilitySourceProto, str]] = ..., provider: _Optional[str] = ..., status: _Optional[_Union[SkillContractStatus, str]] = ..., first_seen_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_seen_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., previous_schema_version: _Optional[str] = ..., compatibility: _Optional[_Union[SkillContractCompatibility, str]] = ..., compatibility_notes: _Optional[_Iterable[str]] = ..., required_permissions: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class UpsertSkillContractRequest(_message.Message):
+    __slots__ = ("base", "contract")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    contract: SkillContractProtoDTO
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., contract: _Optional[_Union[SkillContractProtoDTO, _Mapping]] = ...) -> None: ...
+
+class ListSkillContractsRequest(_message.Message):
+    __slots__ = ("base", "status", "command_id")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    status: SkillContractStatus
+    command_id: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., status: _Optional[_Union[SkillContractStatus, str]] = ..., command_id: _Optional[str] = ...) -> None: ...
+
+class SetSkillContractStatusRequest(_message.Message):
+    __slots__ = ("base", "id", "status")
     BASE_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
     id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., id: _Optional[str] = ...) -> None: ...
+    status: SkillContractStatus
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., id: _Optional[str] = ..., status: _Optional[_Union[SkillContractStatus, str]] = ...) -> None: ...
 
-class ConnectorGetWaypointsByTaskId(_message.Message):
-    __slots__ = ("base", "task_id")
+class SetSkillContractPermissionsRequest(_message.Message):
+    __slots__ = ("base", "id", "required_permissions")
     BASE_FIELD_NUMBER: _ClassVar[int]
-    TASK_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    task_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., task_id: _Optional[str] = ...) -> None: ...
+    ID_FIELD_NUMBER: _ClassVar[int]
+    REQUIRED_PERMISSIONS_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    id: str
+    required_permissions: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., id: _Optional[str] = ..., required_permissions: _Optional[_Iterable[str]] = ...) -> None: ...
 
-class ConnectorDeleteSchedulerRequest(_message.Message):
-    __slots__ = ("base", "scheduler_id")
+class SkillContractResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "contract", "error")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    CONTRACT_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    contract: SkillContractProtoDTO
+    error: _base_pb2.GlobalErrorMessage
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., contract: _Optional[_Union[SkillContractProtoDTO, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
+
+class SkillContractListResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "contracts", "error")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    CONTRACTS_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    contracts: _containers.RepeatedCompositeFieldContainer[SkillContractProtoDTO]
+    error: _base_pb2.GlobalErrorMessage
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., contracts: _Optional[_Iterable[_Union[SkillContractProtoDTO, _Mapping]]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
+
+class ConnectorGetAssetByIdRequest(_message.Message):
+    __slots__ = ("base", "asset_id")
     BASE_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULER_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    scheduler_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., scheduler_id: _Optional[str] = ...) -> None: ...
+    ASSET_ID_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    asset_id: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., asset_id: _Optional[str] = ...) -> None: ...
 
-class ConnectorUpdateSchedulerRequest(_message.Message):
-    __slots__ = ("base", "scheduler_dto", "scheduler_id")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULER_DTO_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULER_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    scheduler_dto: _common_pb2.SchedulerProtoDTO
-    scheduler_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., scheduler_dto: _Optional[_Union[_common_pb2.SchedulerProtoDTO, _Mapping]] = ..., scheduler_id: _Optional[str] = ...) -> None: ...
-
-class ConnectorCreateSchedulerRequest(_message.Message):
-    __slots__ = ("base", "scheduler_dto")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULER_DTO_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    scheduler_dto: _common_pb2.SchedulerProtoDTO
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., scheduler_dto: _Optional[_Union[_common_pb2.SchedulerProtoDTO, _Mapping]] = ...) -> None: ...
-
-class ConnectorGetSchedulerRequest(_message.Message):
-    __slots__ = ("base", "scheduler_id")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULER_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    scheduler_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., scheduler_id: _Optional[str] = ...) -> None: ...
-
-class ConnectorDeleteTaskRequest(_message.Message):
-    __slots__ = ("base", "task_id")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    TASK_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    task_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., task_id: _Optional[str] = ...) -> None: ...
-
-class ConnectorUpdateTaskRequest(_message.Message):
-    __slots__ = ("base", "task_dto", "task_id")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    TASK_DTO_FIELD_NUMBER: _ClassVar[int]
-    TASK_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    task_dto: _common_pb2.TaskProtoDTO
-    task_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., task_dto: _Optional[_Union[_common_pb2.TaskProtoDTO, _Mapping]] = ..., task_id: _Optional[str] = ...) -> None: ...
-
-class AssetDTOList(_message.Message):
+class ConnectorAssetList(_message.Message):
     __slots__ = ("assets",)
     ASSETS_FIELD_NUMBER: _ClassVar[int]
-    assets: _containers.RepeatedCompositeFieldContainer[_common_pb2.AssetProtoDTO]
-    def __init__(self, assets: _Optional[_Iterable[_Union[_common_pb2.AssetProtoDTO, _Mapping]]] = ...) -> None: ...
+    assets: _containers.RepeatedCompositeFieldContainer[_asset_pb2.AssetProtoDTO]
+    def __init__(self, assets: _Optional[_Iterable[_Union[_asset_pb2.AssetProtoDTO, _Mapping]]] = ...) -> None: ...
 
 class ConnectorRegisterAssetRequest(_message.Message):
-    __slots__ = ("base", "asset_dto")
+    __slots__ = ("base", "asset")
     BASE_FIELD_NUMBER: _ClassVar[int]
-    ASSET_DTO_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    asset_dto: _common_pb2.AssetProtoDTO
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., asset_dto: _Optional[_Union[_common_pb2.AssetProtoDTO, _Mapping]] = ...) -> None: ...
+    ASSET_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    asset: _asset_pb2.AssetProtoDTO
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., asset: _Optional[_Union[_asset_pb2.AssetProtoDTO, _Mapping]] = ...) -> None: ...
 
 class ConnectorUpdateAssetRequest(_message.Message):
-    __slots__ = ("base", "asset_dto", "asset_id")
+    __slots__ = ("base", "asset", "asset_id", "update_mask")
     BASE_FIELD_NUMBER: _ClassVar[int]
-    ASSET_DTO_FIELD_NUMBER: _ClassVar[int]
+    ASSET_FIELD_NUMBER: _ClassVar[int]
     ASSET_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    asset_dto: _common_pb2.AssetProtoDTO
+    UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    asset: _asset_pb2.AssetProtoDTO
     asset_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., asset_dto: _Optional[_Union[_common_pb2.AssetProtoDTO, _Mapping]] = ..., asset_id: _Optional[str] = ...) -> None: ...
+    update_mask: _field_mask_pb2.FieldMask
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., asset: _Optional[_Union[_asset_pb2.AssetProtoDTO, _Mapping]] = ..., asset_id: _Optional[str] = ..., update_mask: _Optional[_Union[_field_mask_pb2.FieldMask, _Mapping]] = ...) -> None: ...
 
 class ConnectorUpdateSubAssetRequest(_message.Message):
-    __slots__ = ("base", "sub_asset_dto", "sub_asset_id")
+    __slots__ = ("base", "sub_asset", "sub_asset_id", "update_mask")
     BASE_FIELD_NUMBER: _ClassVar[int]
-    SUB_ASSET_DTO_FIELD_NUMBER: _ClassVar[int]
+    SUB_ASSET_FIELD_NUMBER: _ClassVar[int]
     SUB_ASSET_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    sub_asset_dto: _common_pb2.SubAssetProtoDTO
+    UPDATE_MASK_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    sub_asset: _asset_pb2.SubAssetProtoDTO
     sub_asset_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., sub_asset_dto: _Optional[_Union[_common_pb2.SubAssetProtoDTO, _Mapping]] = ..., sub_asset_id: _Optional[str] = ...) -> None: ...
-
-class WaypointsListDTO(_message.Message):
-    __slots__ = ("waypoints",)
-    WAYPOINTS_FIELD_NUMBER: _ClassVar[int]
-    waypoints: _containers.RepeatedCompositeFieldContainer[_common_pb2.WaypointProtoDTO]
-    def __init__(self, waypoints: _Optional[_Iterable[_Union[_common_pb2.WaypointProtoDTO, _Mapping]]] = ...) -> None: ...
+    update_mask: _field_mask_pb2.FieldMask
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., sub_asset: _Optional[_Union[_asset_pb2.SubAssetProtoDTO, _Mapping]] = ..., sub_asset_id: _Optional[str] = ..., update_mask: _Optional[_Union[_field_mask_pb2.FieldMask, _Mapping]] = ...) -> None: ...
 
 class ConnectorResponse(_message.Message):
-    __slots__ = ("tid", "id", "timestamp", "has_errors", "asset_id", "response_message", "empty", "error", "asset_dto", "sub_asset_dto", "organization_dto", "mission_dto", "task_dto", "scheduler_dto", "waypoint_dto_list", "scheduler_dto_list")
+    __slots__ = ("tid", "id", "timestamp", "has_errors", "asset_id", "response_message", "empty", "error", "asset", "sub_asset", "organization")
     TID_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
@@ -163,14 +354,9 @@ class ConnectorResponse(_message.Message):
     RESPONSE_MESSAGE_FIELD_NUMBER: _ClassVar[int]
     EMPTY_FIELD_NUMBER: _ClassVar[int]
     ERROR_FIELD_NUMBER: _ClassVar[int]
-    ASSET_DTO_FIELD_NUMBER: _ClassVar[int]
-    SUB_ASSET_DTO_FIELD_NUMBER: _ClassVar[int]
-    ORGANIZATION_DTO_FIELD_NUMBER: _ClassVar[int]
-    MISSION_DTO_FIELD_NUMBER: _ClassVar[int]
-    TASK_DTO_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULER_DTO_FIELD_NUMBER: _ClassVar[int]
-    WAYPOINT_DTO_LIST_FIELD_NUMBER: _ClassVar[int]
-    SCHEDULER_DTO_LIST_FIELD_NUMBER: _ClassVar[int]
+    ASSET_FIELD_NUMBER: _ClassVar[int]
+    SUB_ASSET_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_FIELD_NUMBER: _ClassVar[int]
     tid: str
     id: str
     timestamp: _timestamp_pb2.Timestamp
@@ -178,114 +364,35 @@ class ConnectorResponse(_message.Message):
     asset_id: str
     response_message: str
     empty: _empty_pb2.Empty
-    error: _common_pb2.GlobalErrorMessage
-    asset_dto: _common_pb2.AssetProtoDTO
-    sub_asset_dto: _common_pb2.SubAssetProtoDTO
-    organization_dto: _common_pb2.OrganizationProtoDTO
-    mission_dto: _common_pb2.MissionProtoDTO
-    task_dto: _common_pb2.TaskProtoDTO
-    scheduler_dto: _common_pb2.SchedulerProtoDTO
-    waypoint_dto_list: WaypointsListDTO
-    scheduler_dto_list: _common_pb2.SchedulerProtoDTOList
-    def __init__(self, tid: _Optional[str] = ..., id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., has_errors: bool = ..., asset_id: _Optional[str] = ..., response_message: _Optional[str] = ..., empty: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., error: _Optional[_Union[_common_pb2.GlobalErrorMessage, _Mapping]] = ..., asset_dto: _Optional[_Union[_common_pb2.AssetProtoDTO, _Mapping]] = ..., sub_asset_dto: _Optional[_Union[_common_pb2.SubAssetProtoDTO, _Mapping]] = ..., organization_dto: _Optional[_Union[_common_pb2.OrganizationProtoDTO, _Mapping]] = ..., mission_dto: _Optional[_Union[_common_pb2.MissionProtoDTO, _Mapping]] = ..., task_dto: _Optional[_Union[_common_pb2.TaskProtoDTO, _Mapping]] = ..., scheduler_dto: _Optional[_Union[_common_pb2.SchedulerProtoDTO, _Mapping]] = ..., waypoint_dto_list: _Optional[_Union[WaypointsListDTO, _Mapping]] = ..., scheduler_dto_list: _Optional[_Union[_common_pb2.SchedulerProtoDTOList, _Mapping]] = ...) -> None: ...
+    error: _base_pb2.GlobalErrorMessage
+    asset: _asset_pb2.AssetProtoDTO
+    sub_asset: _asset_pb2.SubAssetProtoDTO
+    organization: _asset_pb2.OrganizationProtoDTO
+    def __init__(self, tid: _Optional[str] = ..., id: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., has_errors: bool = ..., asset_id: _Optional[str] = ..., response_message: _Optional[str] = ..., empty: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., asset: _Optional[_Union[_asset_pb2.AssetProtoDTO, _Mapping]] = ..., sub_asset: _Optional[_Union[_asset_pb2.SubAssetProtoDTO, _Mapping]] = ..., organization: _Optional[_Union[_asset_pb2.OrganizationProtoDTO, _Mapping]] = ...) -> None: ...
 
 class AssetMonitoringResponse(_message.Message):
-    __slots__ = ("tid", "timestamp", "has_errors", "empty", "error", "asset_list")
+    __slots__ = ("tid", "timestamp", "has_errors", "empty", "error", "assets")
     TID_FIELD_NUMBER: _ClassVar[int]
     TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
     HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
     EMPTY_FIELD_NUMBER: _ClassVar[int]
     ERROR_FIELD_NUMBER: _ClassVar[int]
-    ASSET_LIST_FIELD_NUMBER: _ClassVar[int]
+    ASSETS_FIELD_NUMBER: _ClassVar[int]
     tid: str
     timestamp: _timestamp_pb2.Timestamp
     has_errors: bool
     empty: _empty_pb2.Empty
-    error: _common_pb2.GlobalErrorMessage
-    asset_list: AssetDTOList
-    def __init__(self, tid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., has_errors: bool = ..., empty: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., error: _Optional[_Union[_common_pb2.GlobalErrorMessage, _Mapping]] = ..., asset_list: _Optional[_Union[AssetDTOList, _Mapping]] = ...) -> None: ...
-
-class ConnectorDeRegisterAssetRequest(_message.Message):
-    __slots__ = ("base",)
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ...) -> None: ...
-
-class ConnectorAssetMonitorRequest(_message.Message):
-    __slots__ = ("base",)
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ...) -> None: ...
-
-class ConnectorGetAssetBySnRequest(_message.Message):
-    __slots__ = ("base",)
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ...) -> None: ...
-
-class ConnectorGetSubAssetBySnRequest(_message.Message):
-    __slots__ = ("base",)
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ...) -> None: ...
+    error: _base_pb2.GlobalErrorMessage
+    assets: ConnectorAssetList
+    def __init__(self, tid: _Optional[str] = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., has_errors: bool = ..., empty: _Optional[_Union[_empty_pb2.Empty, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., assets: _Optional[_Union[ConnectorAssetList, _Mapping]] = ...) -> None: ...
 
 class ConnectorGetOrganizationRequest(_message.Message):
     __slots__ = ("base", "bind_code")
     BASE_FIELD_NUMBER: _ClassVar[int]
     BIND_CODE_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
+    base: _base_pb2.RequestBase
     bind_code: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., bind_code: _Optional[str] = ...) -> None: ...
-
-class ConnectorGetMissionRequest(_message.Message):
-    __slots__ = ("base", "mission_id")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    MISSION_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    mission_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., mission_id: _Optional[str] = ...) -> None: ...
-
-class ConnectorCreateMissionRequest(_message.Message):
-    __slots__ = ("base", "mission_dto")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    MISSION_DTO_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    mission_dto: _common_pb2.MissionProtoDTO
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., mission_dto: _Optional[_Union[_common_pb2.MissionProtoDTO, _Mapping]] = ...) -> None: ...
-
-class ConnectorUpdateMissionRequest(_message.Message):
-    __slots__ = ("base", "mission_id", "mission_dto")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    MISSION_ID_FIELD_NUMBER: _ClassVar[int]
-    MISSION_DTO_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    mission_id: str
-    mission_dto: _common_pb2.MissionProtoDTO
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., mission_id: _Optional[str] = ..., mission_dto: _Optional[_Union[_common_pb2.MissionProtoDTO, _Mapping]] = ...) -> None: ...
-
-class ConnectorDeleteMissionRequest(_message.Message):
-    __slots__ = ("base", "mission_id")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    MISSION_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    mission_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., mission_id: _Optional[str] = ...) -> None: ...
-
-class ConnectorGetTaskRequest(_message.Message):
-    __slots__ = ("base", "task_id")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    TASK_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    task_id: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., task_id: _Optional[str] = ...) -> None: ...
-
-class ConnectorCreateTaskRequest(_message.Message):
-    __slots__ = ("base", "task_dto")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    TASK_DTO_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    task_dto: _common_pb2.TaskProtoDTO
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., task_dto: _Optional[_Union[_common_pb2.TaskProtoDTO, _Mapping]] = ...) -> None: ...
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., bind_code: _Optional[str] = ...) -> None: ...
 
 class ConnectorStoreTelemetryRequest(_message.Message):
     __slots__ = ("base", "type", "asset_telemetry", "sub_asset_telemetry")
@@ -293,11 +400,11 @@ class ConnectorStoreTelemetryRequest(_message.Message):
     TYPE_FIELD_NUMBER: _ClassVar[int]
     ASSET_TELEMETRY_FIELD_NUMBER: _ClassVar[int]
     SUB_ASSET_TELEMETRY_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
+    base: _base_pb2.RequestBase
     type: TelemetryType
     asset_telemetry: AssetTelemetryProto
     sub_asset_telemetry: SubAssetTelemetryProto
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., type: _Optional[_Union[TelemetryType, str]] = ..., asset_telemetry: _Optional[_Union[AssetTelemetryProto, _Mapping]] = ..., sub_asset_telemetry: _Optional[_Union[SubAssetTelemetryProto, _Mapping]] = ...) -> None: ...
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., type: _Optional[_Union[TelemetryType, str]] = ..., asset_telemetry: _Optional[_Union[AssetTelemetryProto, _Mapping]] = ..., sub_asset_telemetry: _Optional[_Union[SubAssetTelemetryProto, _Mapping]] = ...) -> None: ...
 
 class ConnectorStoreDetectionRequest(_message.Message):
     __slots__ = ("base", "asset_sn", "sub_asset_sn", "task_id", "object_id", "object_type", "confidence", "bounding_box_x", "bounding_box_y", "bounding_box_width", "bounding_box_height", "stream_url", "detected_at")
@@ -314,7 +421,7 @@ class ConnectorStoreDetectionRequest(_message.Message):
     BOUNDING_BOX_HEIGHT_FIELD_NUMBER: _ClassVar[int]
     STREAM_URL_FIELD_NUMBER: _ClassVar[int]
     DETECTED_AT_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
+    base: _base_pb2.RequestBase
     asset_sn: str
     sub_asset_sn: str
     task_id: str
@@ -327,31 +434,7 @@ class ConnectorStoreDetectionRequest(_message.Message):
     bounding_box_height: float
     stream_url: str
     detected_at: _timestamp_pb2.Timestamp
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., asset_sn: _Optional[str] = ..., sub_asset_sn: _Optional[str] = ..., task_id: _Optional[str] = ..., object_id: _Optional[str] = ..., object_type: _Optional[str] = ..., confidence: _Optional[float] = ..., bounding_box_x: _Optional[float] = ..., bounding_box_y: _Optional[float] = ..., bounding_box_width: _Optional[float] = ..., bounding_box_height: _Optional[float] = ..., stream_url: _Optional[str] = ..., detected_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
-
-class ConnectorStoreNotificationRequest(_message.Message):
-    __slots__ = ("base", "event_type", "asset_sn", "asset_id", "title", "message", "task_id", "operation_id", "progress", "task_type")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    EVENT_TYPE_FIELD_NUMBER: _ClassVar[int]
-    ASSET_SN_FIELD_NUMBER: _ClassVar[int]
-    ASSET_ID_FIELD_NUMBER: _ClassVar[int]
-    TITLE_FIELD_NUMBER: _ClassVar[int]
-    MESSAGE_FIELD_NUMBER: _ClassVar[int]
-    TASK_ID_FIELD_NUMBER: _ClassVar[int]
-    OPERATION_ID_FIELD_NUMBER: _ClassVar[int]
-    PROGRESS_FIELD_NUMBER: _ClassVar[int]
-    TASK_TYPE_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    event_type: str
-    asset_sn: str
-    asset_id: str
-    title: str
-    message: str
-    task_id: str
-    operation_id: str
-    progress: float
-    task_type: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., event_type: _Optional[str] = ..., asset_sn: _Optional[str] = ..., asset_id: _Optional[str] = ..., title: _Optional[str] = ..., message: _Optional[str] = ..., task_id: _Optional[str] = ..., operation_id: _Optional[str] = ..., progress: _Optional[float] = ..., task_type: _Optional[str] = ...) -> None: ...
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., asset_sn: _Optional[str] = ..., sub_asset_sn: _Optional[str] = ..., task_id: _Optional[str] = ..., object_id: _Optional[str] = ..., object_type: _Optional[str] = ..., confidence: _Optional[float] = ..., bounding_box_x: _Optional[float] = ..., bounding_box_y: _Optional[float] = ..., bounding_box_width: _Optional[float] = ..., bounding_box_height: _Optional[float] = ..., stream_url: _Optional[str] = ..., detected_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class AssetTelemetryProto(_message.Message):
     __slots__ = ("asset_id", "timestamp", "latitude", "longitude", "altitude", "relative_altitude", "heading", "temperature", "humidity", "wind_speed", "battery_percentage", "network_type", "network_quality", "operational_mode", "is_online", "source_system", "telemetry_data")
@@ -477,15 +560,15 @@ class ConnectorGetPoliciesRequest(_message.Message):
     __slots__ = ("base", "policy_type")
     BASE_FIELD_NUMBER: _ClassVar[int]
     POLICY_TYPE_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
+    base: _base_pb2.RequestBase
     policy_type: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., policy_type: _Optional[str] = ...) -> None: ...
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., policy_type: _Optional[str] = ...) -> None: ...
 
 class ConnectorGetAllPoliciesRequest(_message.Message):
     __slots__ = ("base",)
     BASE_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ...) -> None: ...
+    base: _base_pb2.RequestBase
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ...) -> None: ...
 
 class ConnectorPolicyResponse(_message.Message):
     __slots__ = ("tid", "has_errors", "timestamp", "error", "policy_list")
@@ -497,9 +580,9 @@ class ConnectorPolicyResponse(_message.Message):
     tid: str
     has_errors: bool
     timestamp: _timestamp_pb2.Timestamp
-    error: _common_pb2.GlobalErrorMessage
+    error: _base_pb2.GlobalErrorMessage
     policy_list: PolicyProtoDTOList
-    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_common_pb2.GlobalErrorMessage, _Mapping]] = ..., policy_list: _Optional[_Union[PolicyProtoDTOList, _Mapping]] = ...) -> None: ...
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., policy_list: _Optional[_Union[PolicyProtoDTOList, _Mapping]] = ...) -> None: ...
 
 class TechnicalConfigProtoDTO(_message.Message):
     __slots__ = ("id", "config_key", "config_value", "value_type", "scope", "scope_target", "active", "description")
@@ -532,10 +615,10 @@ class ConnectorGetConfigsRequest(_message.Message):
     BASE_FIELD_NUMBER: _ClassVar[int]
     SCOPE_FIELD_NUMBER: _ClassVar[int]
     SCOPE_TARGET_FIELD_NUMBER: _ClassVar[int]
-    base: _common_pb2.RequestBase
+    base: _base_pb2.RequestBase
     scope: str
     scope_target: str
-    def __init__(self, base: _Optional[_Union[_common_pb2.RequestBase, _Mapping]] = ..., scope: _Optional[str] = ..., scope_target: _Optional[str] = ...) -> None: ...
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., scope: _Optional[str] = ..., scope_target: _Optional[str] = ...) -> None: ...
 
 class ConnectorConfigResponse(_message.Message):
     __slots__ = ("tid", "has_errors", "timestamp", "error", "config_list")
@@ -547,6 +630,6 @@ class ConnectorConfigResponse(_message.Message):
     tid: str
     has_errors: bool
     timestamp: _timestamp_pb2.Timestamp
-    error: _common_pb2.GlobalErrorMessage
+    error: _base_pb2.GlobalErrorMessage
     config_list: TechnicalConfigProtoDTOList
-    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_common_pb2.GlobalErrorMessage, _Mapping]] = ..., config_list: _Optional[_Union[TechnicalConfigProtoDTOList, _Mapping]] = ...) -> None: ...
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., config_list: _Optional[_Union[TechnicalConfigProtoDTOList, _Mapping]] = ...) -> None: ...

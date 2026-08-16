@@ -23,12 +23,33 @@ _sym_db = _symbol_database.Default()
 
 
 from . import common_pb2 as common__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
-from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
+try:
+  base__pb2 = common__pb2.base__pb2
+except AttributeError:
+  base__pb2 = common__pb2.base_pb2
+try:
+  asset__pb2 = common__pb2.asset__pb2
+except AttributeError:
+  asset__pb2 = common__pb2.asset_pb2
+try:
+  device__control__contracts__pb2 = common__pb2.device__control__contracts__pb2
+except AttributeError:
+  device__control__contracts__pb2 = common__pb2.device_control_contracts_pb2
+try:
+  detection__pb2 = common__pb2.detection__pb2
+except AttributeError:
+  detection__pb2 = common__pb2.detection_pb2
+try:
+  mission__autonomy__types__pb2 = common__pb2.mission__autonomy__types__pb2
+except AttributeError:
+  mission__autonomy__types__pb2 = common__pb2.mission_autonomy_types_pb2
+try:
+  mission__autonomy__dto__pb2 = common__pb2.mission__autonomy__dto__pb2
+except AttributeError:
+  mission__autonomy__dto__pb2 = common__pb2.mission_autonomy_dto_pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14remote-control.proto\x1a\x0c\x63ommon.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8a\x03\n\x15RemoteControlResponse\x12\x17\n\nhas_errors\x18\x01 \x01(\x08H\x01\x88\x01\x01\x12\x0b\n\x03tid\x18\x02 \x01(\t\x12\n\n\x02sn\x18\x03 \x01(\t\x12\x15\n\x08\x61sset_id\x18\x04 \x01(\tH\x02\x88\x01\x01\x12-\n\ttimestamp\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1d\n\x10response_message\x18\x06 \x01(\tH\x03\x88\x01\x01\x12\'\n\x05\x65mpty\x18\x07 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12$\n\x05\x65rror\x18\x08 \x01(\x0b\x32\x13.GlobalErrorMessageH\x00\x12$\n\x08progress\x18\t \x01(\x0b\x32\x10.CommandProgressH\x00\x12\x18\n\x0b\x65xternal_id\x18\n \x01(\tH\x04\x88\x01\x01\x42\n\n\x08responseB\r\n\x0b_has_errorsB\x0b\n\t_asset_idB\x13\n\x11_response_messageB\x0e\n\x0c_external_id\"\x82\x01\n\x1bRemoteControlTakeOffRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x1d\n\x07request\x18\x02 \x01(\x0b\x32\x0c.Coordinates\x12\x18\n\x0b\x65xternal_id\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x0e\n\x0c_external_id\"\x7f\n\x18RemoteControlGoToRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x1d\n\x07request\x18\x02 \x01(\x0b\x32\x0c.Coordinates\x12\x18\n\x0b\x65xternal_id\x18\x03 \x01(\tH\x00\x88\x01\x01\x42\x0e\n\x0c_external_id\"e\n RemoteControlReturnToHomeRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12%\n\x07request\x18\x02 \x01(\x0b\x32\x14.ReturnToHomeRequest\"g\n!RemoteControlManualControlRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12&\n\x07request\x18\x02 \x01(\x0b\x32\x15.ManualControlRequest\"j\n&RemoteControlManualControlInputRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12$\n\x07request\x18\x02 \x01(\x0b\x32\x13.ManualControlInput\"W\n\x1aRemoteControlLookAtRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x1d\n\x07request\x18\x02 \x01(\x0b\x32\x0c.Coordinates\"f\n\x1dRemoteControlDetectionRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12)\n\x07request\x18\x02 \x01(\x0b\x32\x18.DetectionControlRequest\"m\n$RemoteControlChangeCameraLensRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12)\n\x07request\x18\x02 \x01(\x0b\x32\x18.ChangeCameraLensRequest\"m\n$RemoteControlChangeCameraZoomRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12)\n\x07request\x18\x02 \x01(\x0b\x32\x18.ChangeCameraZoomRequest\";\n\x1dRemoteControlOpenCoverRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"Z\n\x1eRemoteControlCloseCoverRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x12\n\x05\x66orce\x18\x02 \x01(\x08H\x00\x88\x01\x01\x42\x08\n\x06_force\"?\n!RemoteControlStartChargingRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\">\n RemoteControlStopChargingRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"=\n\x1fRemoteControlRebootAssetRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\"O\n RemoteControlBootSubAssetRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07\x62oot_up\x18\x02 \x01(\x08\"L\n\x1dRemoteControlDebugModeRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07\x65nabled\x18\x02 \x01(\x08\"k\n RemoteControlChangeAcModeRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12+\n\x04mode\x18\x02 \x01(\x0e\x32\x1d.AssetAirConditionerStateEnum\"~\n!RemoteControlCustomCommandRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x14\n\x0c\x63ommand_type\x18\x02 \x01(\t\x12\'\n\x06params\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct\"\xae\x03\n\"RemoteControlCustomCommandResponse\x12\x17\n\nhas_errors\x18\x01 \x01(\x08H\x01\x88\x01\x01\x12\x0b\n\x03tid\x18\x02 \x01(\t\x12\n\n\x02sn\x18\x03 \x01(\t\x12\x15\n\x08\x61sset_id\x18\x04 \x01(\tH\x02\x88\x01\x01\x12\x1d\n\x10response_message\x18\x05 \x01(\tH\x03\x88\x01\x01\x12-\n\ttimestamp\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x14\n\x0c\x63ommand_type\x18\x07 \x01(\t\x12)\n\x06result\x18\x08 \x01(\x0b\x32\x17.google.protobuf.StructH\x00\x12\'\n\x05\x65mpty\x18\t \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12$\n\x05\x65rror\x18\n \x01(\x0b\x32\x13.GlobalErrorMessageH\x00\x12$\n\x08progress\x18\x0b \x01(\x0b\x32\x10.CommandProgressH\x00\x42\n\n\x08responseB\r\n\x0b_has_errorsB\x0b\n\t_asset_idB\x13\n\x11_response_message\";\n\x1dRemoteControlTakePhotoRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase2\x95\n\n\x14RemoteControlService\x12?\n\x07TakeOff\x12\x1c.RemoteControlTakeOffRequest\x1a\x16.RemoteControlResponse\x12\x39\n\x04GoTo\x12\x19.RemoteControlGoToRequest\x1a\x16.RemoteControlResponse\x12I\n\x0cReturnToHome\x12!.RemoteControlReturnToHomeRequest\x1a\x16.RemoteControlResponse\x12P\n\x12\x45nterManualControl\x12\".RemoteControlManualControlRequest\x1a\x16.RemoteControlResponse\x12O\n\x11\x45xitManualControl\x12\".RemoteControlManualControlRequest\x1a\x16.RemoteControlResponse\x12W\n\x12ManualControlInput\x12\'.RemoteControlManualControlInputRequest\x1a\x16.RemoteControlResponse(\x01\x12=\n\x06LookAt\x12\x1b.RemoteControlLookAtRequest\x1a\x16.RemoteControlResponse\x12\x43\n\tTakePhoto\x12\x1e.RemoteControlTakePhotoRequest\x1a\x16.RemoteControlResponse\x12\x43\n\tOpenCover\x12\x1e.RemoteControlOpenCoverRequest\x1a\x16.RemoteControlResponse\x12\x45\n\nCloseCover\x12\x1f.RemoteControlCloseCoverRequest\x1a\x16.RemoteControlResponse\x12K\n\rStartCharging\x12\".RemoteControlStartChargingRequest\x1a\x16.RemoteControlResponse\x12I\n\x0cStopCharging\x12!.RemoteControlStopChargingRequest\x1a\x16.RemoteControlResponse\x12G\n\x0bRebootAsset\x12 .RemoteControlRebootAssetRequest\x1a\x16.RemoteControlResponse\x12I\n\x0c\x42ootSubAsset\x12!.RemoteControlBootSubAssetRequest\x1a\x16.RemoteControlResponse\x12U\n\x1b\x45nterOrCloseRemoteDebugMode\x12\x1e.RemoteControlDebugModeRequest\x1a\x16.RemoteControlResponse\x12I\n\x0c\x43hangeAcMode\x12!.RemoteControlChangeAcModeRequest\x1a\x16.RemoteControlResponse\x12\\\n\x11SendCustomCommand\x12\".RemoteControlCustomCommandRequest\x1a#.RemoteControlCustomCommandResponseBS\n\"com.zqnt.utils.remotecontrol.protoB\x12RemoteControlProtoP\x01Z\x17gen/remotecontrol/protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14remote-control.proto\x12\x04zqnt\x1a\x0c\x63ommon.proto2\xb8\x0e\n\x14RemoteControlService\x12W\n\x12ReportAssetRuntime\x12\x1f.zqnt.ReportAssetRuntimeRequest\x1a .zqnt.ReportAssetRuntimeResponse\x12K\n\x0fGetAssetRuntime\x12\x1c.zqnt.GetAssetRuntimeRequest\x1a\x1a.zqnt.AssetRuntimeResponse\x12R\n\x0fGetCapabilities\x12\x1e.zqnt.AssetCapabilitiesRequest\x1a\x1f.zqnt.AssetCapabilitiesResponse\x12@\n\x07TakeOff\x12\x1e.zqnt.CoordinateCommandRequest\x1a\x15.zqnt.CommandResponse\x12=\n\x04GoTo\x12\x1e.zqnt.CoordinateCommandRequest\x1a\x15.zqnt.CommandResponse\x12G\n\x0cReturnToHome\x12 .zqnt.ReturnToHomeCommandRequest\x1a\x15.zqnt.CommandResponse\x12N\n\x12\x45nterManualControl\x12!.zqnt.ManualControlCommandRequest\x1a\x15.zqnt.CommandResponse\x12M\n\x11\x45xitManualControl\x12!.zqnt.ManualControlCommandRequest\x1a\x15.zqnt.CommandResponse\x12U\n\x12ManualControlInput\x12&.zqnt.ManualControlInputCommandRequest\x1a\x15.zqnt.CommandResponse(\x01\x12;\n\x06LookAt\x12\x1a.zqnt.LookAtCommandRequest\x1a\x15.zqnt.CommandResponse\x12@\n\x0c\x43\x61pturePhoto\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12G\n\x0cPlayTTSAudio\x12 .zqnt.TextToSpeechCommandRequest\x1a\x15.zqnt.CommandResponse\x12J\n\x15LiveStreamSplitScreen\x12\x1a.zqnt.ToggleCommandRequest\x1a\x15.zqnt.CommandResponse\x12O\n\x10\x43ontrolDetection\x12$.zqnt.DetectionControlCommandRequest\x1a\x15.zqnt.CommandResponse\x12=\n\tOpenCover\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12\x43\n\nCloseCover\x12\x1e.zqnt.CloseCoverCommandRequest\x1a\x15.zqnt.CommandResponse\x12\x41\n\rStartCharging\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12@\n\x0cStopCharging\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12?\n\x0bRebootAsset\x12\x19.zqnt.EmptyCommandRequest\x1a\x15.zqnt.CommandResponse\x12\x41\n\x0c\x42ootSubAsset\x12\x1a.zqnt.ToggleCommandRequest\x1a\x15.zqnt.CommandResponse\x12G\n\x12SetRemoteDebugMode\x12\x1a.zqnt.ToggleCommandRequest\x1a\x15.zqnt.CommandResponse\x12G\n\x0c\x43hangeAcMode\x12 .zqnt.ChangeAcModeCommandRequest\x1a\x15.zqnt.CommandResponse\x12I\n\nChangeLens\x12$.zqnt.ChangeCameraLensCommandRequest\x1a\x15.zqnt.CommandResponse\x12I\n\nChangeZoom\x12$.zqnt.ChangeCameraZoomCommandRequest\x1a\x15.zqnt.CommandResponse\x12L\n\x11SendCustomCommand\x12\x1a.zqnt.CustomCommandRequest\x1a\x1b.zqnt.CustomCommandResponseBS\n\"com.zqnt.utils.remotecontrol.protoB\x12RemoteControlProtoP\x01Z\x17gen/remotecontrol/protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -36,48 +57,6 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'remote_control_pb2', _globa
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n\"com.zqnt.utils.remotecontrol.protoB\022RemoteControlProtoP\001Z\027gen/remotecontrol/proto'
-  _globals['_REMOTECONTROLRESPONSE']._serialized_start=131
-  _globals['_REMOTECONTROLRESPONSE']._serialized_end=525
-  _globals['_REMOTECONTROLTAKEOFFREQUEST']._serialized_start=528
-  _globals['_REMOTECONTROLTAKEOFFREQUEST']._serialized_end=658
-  _globals['_REMOTECONTROLGOTOREQUEST']._serialized_start=660
-  _globals['_REMOTECONTROLGOTOREQUEST']._serialized_end=787
-  _globals['_REMOTECONTROLRETURNTOHOMEREQUEST']._serialized_start=789
-  _globals['_REMOTECONTROLRETURNTOHOMEREQUEST']._serialized_end=890
-  _globals['_REMOTECONTROLMANUALCONTROLREQUEST']._serialized_start=892
-  _globals['_REMOTECONTROLMANUALCONTROLREQUEST']._serialized_end=995
-  _globals['_REMOTECONTROLMANUALCONTROLINPUTREQUEST']._serialized_start=997
-  _globals['_REMOTECONTROLMANUALCONTROLINPUTREQUEST']._serialized_end=1103
-  _globals['_REMOTECONTROLLOOKATREQUEST']._serialized_start=1105
-  _globals['_REMOTECONTROLLOOKATREQUEST']._serialized_end=1192
-  _globals['_REMOTECONTROLDETECTIONREQUEST']._serialized_start=1194
-  _globals['_REMOTECONTROLDETECTIONREQUEST']._serialized_end=1296
-  _globals['_REMOTECONTROLCHANGECAMERALENSREQUEST']._serialized_start=1298
-  _globals['_REMOTECONTROLCHANGECAMERALENSREQUEST']._serialized_end=1407
-  _globals['_REMOTECONTROLCHANGECAMERAZOOMREQUEST']._serialized_start=1409
-  _globals['_REMOTECONTROLCHANGECAMERAZOOMREQUEST']._serialized_end=1518
-  _globals['_REMOTECONTROLOPENCOVERREQUEST']._serialized_start=1520
-  _globals['_REMOTECONTROLOPENCOVERREQUEST']._serialized_end=1579
-  _globals['_REMOTECONTROLCLOSECOVERREQUEST']._serialized_start=1581
-  _globals['_REMOTECONTROLCLOSECOVERREQUEST']._serialized_end=1671
-  _globals['_REMOTECONTROLSTARTCHARGINGREQUEST']._serialized_start=1673
-  _globals['_REMOTECONTROLSTARTCHARGINGREQUEST']._serialized_end=1736
-  _globals['_REMOTECONTROLSTOPCHARGINGREQUEST']._serialized_start=1738
-  _globals['_REMOTECONTROLSTOPCHARGINGREQUEST']._serialized_end=1800
-  _globals['_REMOTECONTROLREBOOTASSETREQUEST']._serialized_start=1802
-  _globals['_REMOTECONTROLREBOOTASSETREQUEST']._serialized_end=1863
-  _globals['_REMOTECONTROLBOOTSUBASSETREQUEST']._serialized_start=1865
-  _globals['_REMOTECONTROLBOOTSUBASSETREQUEST']._serialized_end=1944
-  _globals['_REMOTECONTROLDEBUGMODEREQUEST']._serialized_start=1946
-  _globals['_REMOTECONTROLDEBUGMODEREQUEST']._serialized_end=2022
-  _globals['_REMOTECONTROLCHANGEACMODEREQUEST']._serialized_start=2024
-  _globals['_REMOTECONTROLCHANGEACMODEREQUEST']._serialized_end=2131
-  _globals['_REMOTECONTROLCUSTOMCOMMANDREQUEST']._serialized_start=2133
-  _globals['_REMOTECONTROLCUSTOMCOMMANDREQUEST']._serialized_end=2259
-  _globals['_REMOTECONTROLCUSTOMCOMMANDRESPONSE']._serialized_start=2262
-  _globals['_REMOTECONTROLCUSTOMCOMMANDRESPONSE']._serialized_end=2692
-  _globals['_REMOTECONTROLTAKEPHOTOREQUEST']._serialized_start=2694
-  _globals['_REMOTECONTROLTAKEPHOTOREQUEST']._serialized_end=2753
-  _globals['_REMOTECONTROLSERVICE']._serialized_start=2756
-  _globals['_REMOTECONTROLSERVICE']._serialized_end=4057
+  _globals['_REMOTECONTROLSERVICE']._serialized_start=45
+  _globals['_REMOTECONTROLSERVICE']._serialized_end=1893
 # @@protoc_insertion_point(module_scope)

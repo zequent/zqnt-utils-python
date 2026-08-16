@@ -23,11 +23,36 @@ _sym_db = _symbol_database.Default()
 
 
 from . import common_pb2 as common__pb2
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+try:
+  base__pb2 = common__pb2.base__pb2
+except AttributeError:
+  base__pb2 = common__pb2.base_pb2
+try:
+  asset__pb2 = common__pb2.asset__pb2
+except AttributeError:
+  asset__pb2 = common__pb2.asset_pb2
+try:
+  device__control__contracts__pb2 = common__pb2.device__control__contracts__pb2
+except AttributeError:
+  device__control__contracts__pb2 = common__pb2.device_control_contracts_pb2
+try:
+  detection__pb2 = common__pb2.detection__pb2
+except AttributeError:
+  detection__pb2 = common__pb2.detection_pb2
+try:
+  mission__autonomy__types__pb2 = common__pb2.mission__autonomy__types__pb2
+except AttributeError:
+  mission__autonomy__types__pb2 = common__pb2.mission_autonomy_types_pb2
+try:
+  mission__autonomy__dto__pb2 = common__pb2.mission__autonomy__dto__pb2
+except AttributeError:
+  mission__autonomy__dto__pb2 = common__pb2.mission_autonomy_dto_pb2
+from . import capability_execution_contracts_pb2 as capability__execution__contracts__pb2
+from . import mission_autonomy_contracts_pb2 as mission__autonomy__contracts__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16mission-autonomy.proto\x1a\x0c\x63ommon.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"?\n\x10PauseTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\"@\n\x11ResumeTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\"?\n\x10StartTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\">\n\x0fStopTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\"C\n\x11GetMissionRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x12\n\nmission_id\x18\x02 \x01(\t\"Y\n\x14\x43reateMissionRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12%\n\x0bmission_dto\x18\x02 \x01(\x0b\x32\x10.MissionProtoDTO\"m\n\x14UpdateMissionRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12%\n\x0bmission_dto\x18\x02 \x01(\x0b\x32\x10.MissionProtoDTO\x12\x12\n\nmission_id\x18\x03 \x01(\t\"F\n\x14\x44\x65leteMissionRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x12\n\nmission_id\x18\x02 \x01(\t\"t\n\x0eGetTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x14\n\x07task_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x16\n\tflight_id\x18\x03 \x01(\tH\x01\x88\x01\x01\x42\n\n\x08_task_idB\x0c\n\n_flight_id\"P\n\x11\x43reateTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x1f\n\x08task_dto\x18\x02 \x01(\x0b\x32\r.TaskProtoDTO\"a\n\x11UpdateTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\x12\x1f\n\x08task_dto\x18\x03 \x01(\x0b\x32\r.TaskProtoDTO\"@\n\x11\x44\x65leteTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\"_\n\x16\x43reateSchedulerRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12)\n\rscheduler_dto\x18\x02 \x01(\x0b\x32\x12.SchedulerProtoDTO\"a\n\x17\x43reateSchedulersRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12*\n\x0escheduler_dtos\x18\x02 \x03(\x0b\x32\x12.SchedulerProtoDTO\"u\n\x16UpdateSchedulerRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12)\n\rscheduler_dto\x18\x02 \x01(\x0b\x32\x12.SchedulerProtoDTO\x12\x14\n\x0cscheduler_id\x18\x03 \x01(\t\"J\n\x16\x44\x65leteSchedulerRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x14\n\x0cscheduler_id\x18\x02 \x01(\t\"L\n\x17\x44\x65leteSchedulersRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x15\n\rscheduler_ids\x18\x02 \x03(\t\"L\n\x1d\x44\x65leteSchedulersByTaskRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x0f\n\x07task_id\x18\x02 \x01(\t\"]\n\x13GetSchedulerRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x19\n\x0cscheduler_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x0f\n\r_scheduler_id\"\xb3\x02\n\x0fMissionResponse\x12\x17\n\nhas_errors\x18\x01 \x01(\x08H\x01\x88\x01\x01\x12\x0b\n\x03tid\x18\x02 \x01(\t\x12\x12\n\nmission_id\x18\x03 \x01(\t\x12-\n\ttimestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x05\x65mpty\x18\x05 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12$\n\x05\x65rror\x18\x06 \x01(\x0b\x32\x13.GlobalErrorMessageH\x00\x12$\n\x08progress\x18\x07 \x01(\x0b\x32\x10.CommandProgressH\x00\x12\'\n\x0bmission_dto\x18\x08 \x01(\x0b\x32\x10.MissionProtoDTOH\x00\x42\n\n\x08responseB\r\n\x0b_has_errors\"\xa7\x02\n\x0cTaskResponse\x12\x17\n\nhas_errors\x18\x01 \x01(\x08H\x01\x88\x01\x01\x12\x0b\n\x03tid\x18\x02 \x01(\t\x12\x0f\n\x07task_id\x18\x03 \x01(\t\x12-\n\ttimestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x05\x65mpty\x18\x05 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12$\n\x05\x65rror\x18\x06 \x01(\x0b\x32\x13.GlobalErrorMessageH\x00\x12$\n\x08progress\x18\x07 \x01(\x0b\x32\x10.CommandProgressH\x00\x12!\n\x08task_dto\x18\x08 \x01(\x0b\x32\r.TaskProtoDTOH\x00\x42\n\n\x08responseB\r\n\x0b_has_errors\"\xf1\x02\n\x11SchedulerResponse\x12\x17\n\nhas_errors\x18\x01 \x01(\x08H\x01\x88\x01\x01\x12\x0b\n\x03tid\x18\x02 \x01(\t\x12\x14\n\x0cscheduler_id\x18\x03 \x01(\t\x12-\n\ttimestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\'\n\x05\x65mpty\x18\x05 \x01(\x0b\x32\x16.google.protobuf.EmptyH\x00\x12$\n\x05\x65rror\x18\x06 \x01(\x0b\x32\x13.GlobalErrorMessageH\x00\x12$\n\x08progress\x18\x07 \x01(\x0b\x32\x10.CommandProgressH\x00\x12+\n\rscheduler_dto\x18\x08 \x01(\x0b\x32\x12.SchedulerProtoDTOH\x00\x12\x34\n\x12scheduler_dto_list\x18\t \x01(\x0b\x32\x16.SchedulerProtoDTOListH\x00\x42\n\n\x08responseB\r\n\x0b_has_errors\"\xb6\x02\n\x18\x45valuateDetectionRequest\x12\x1a\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x0c.RequestBase\x12\x14\n\x0c\x64\x65tection_id\x18\x02 \x01(\t\x12\x10\n\x08\x61sset_sn\x18\x03 \x01(\t\x12\x13\n\x0bobject_type\x18\x04 \x01(\t\x12\x12\n\nconfidence\x18\x05 \x01(\x02\x12\x1a\n\x12\x64\x65tection_latitude\x18\x06 \x01(\x01\x12\x1b\n\x13\x64\x65tection_longitude\x18\x07 \x01(\x01\x12\x1a\n\x12\x64\x65tection_altitude\x18\x08 \x01(\x01\x12\x17\n\nmission_id\x18\t \x01(\tH\x00\x88\x01\x01\x12\x1c\n\x0forganization_id\x18\n \x01(\tH\x01\x88\x01\x01\x42\r\n\x0b_mission_idB\x12\n\x10_organization_id\"\x82\x03\n\x13\x44\x65\x63isionResultProto\x12\x13\n\x0b\x64\x65\x63ision_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64\x65tection_id\x18\x02 \x01(\t\x12\x1e\n\x11selected_asset_sn\x18\x03 \x01(\tH\x00\x88\x01\x01\x12\x1a\n\rstrategy_used\x18\x04 \x01(\tH\x01\x88\x01\x01\x12\x0e\n\x06status\x18\x05 \x01(\t\x12\x1c\n\x14\x63onsidered_asset_sns\x18\x06 \x03(\t\x12\x45\n\x11rejection_reasons\x18\x07 \x03(\x0b\x32*.DecisionResultProto.RejectionReasonsEntry\x12.\n\ndecided_at\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x1a\x37\n\x15RejectionReasonsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x14\n\x12_selected_asset_snB\x10\n\x0e_strategy_used\"\xc5\x01\n\x10\x44\x65\x63isionResponse\x12\x12\n\nhas_errors\x18\x01 \x01(\x08\x12\x0b\n\x03tid\x18\x02 \x01(\t\x12-\n\ttimestamp\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12$\n\x05\x65rror\x18\x04 \x01(\x0b\x32\x13.GlobalErrorMessageH\x00\x12/\n\x0f\x64\x65\x63ision_result\x18\x05 \x01(\x0b\x32\x14.DecisionResultProtoH\x00\x42\n\n\x08response2\xf1\t\n\x16MissionAutonomyService\x12\x32\n\nGetMission\x12\x12.GetMissionRequest\x1a\x10.MissionResponse\x12\x38\n\rCreateMission\x12\x15.CreateMissionRequest\x1a\x10.MissionResponse\x12\x38\n\rUpdateMission\x12\x15.UpdateMissionRequest\x1a\x10.MissionResponse\x12\x38\n\rDeleteMission\x12\x15.DeleteMissionRequest\x1a\x10.MissionResponse\x12)\n\x07GetTask\x12\x0f.GetTaskRequest\x1a\r.TaskResponse\x12\x33\n\x11GetTaskByFlightId\x12\x0f.GetTaskRequest\x1a\r.TaskResponse\x12/\n\nCreateTask\x12\x12.CreateTaskRequest\x1a\r.TaskResponse\x12/\n\nUpdateTask\x12\x12.UpdateTaskRequest\x1a\r.TaskResponse\x12/\n\nDeleteTask\x12\x12.DeleteTaskRequest\x1a\r.TaskResponse\x12\x37\n\x10GetAllSchedulers\x12\x0f.GetTaskRequest\x1a\x12.SchedulerResponse\x12\x38\n\x0cGetScheduler\x12\x14.GetSchedulerRequest\x1a\x12.SchedulerResponse\x12>\n\x0f\x43reateScheduler\x12\x17.CreateSchedulerRequest\x1a\x12.SchedulerResponse\x12>\n\x0fUpdateScheduler\x12\x17.UpdateSchedulerRequest\x1a\x12.SchedulerResponse\x12>\n\x0f\x44\x65leteScheduler\x12\x17.DeleteSchedulerRequest\x1a\x12.SchedulerResponse\x12@\n\x10\x43reateSchedulers\x12\x18.CreateSchedulersRequest\x1a\x12.SchedulerResponse\x12@\n\x10\x44\x65leteSchedulers\x12\x18.DeleteSchedulersRequest\x1a\x12.SchedulerResponse\x12L\n\x16\x44\x65leteSchedulersByTask\x12\x1e.DeleteSchedulersByTaskRequest\x1a\x12.SchedulerResponse\x12-\n\tStartTask\x12\x11.StartTaskRequest\x1a\r.TaskResponse\x12+\n\x08StopTask\x12\x10.StopTaskRequest\x1a\r.TaskResponse\x12-\n\tPauseTask\x12\x11.PauseTaskRequest\x1a\r.TaskResponse\x12/\n\nResumeTask\x12\x12.ResumeTaskRequest\x1a\r.TaskResponse\x12\x41\n\x11\x45valuateDetection\x12\x19.EvaluateDetectionRequest\x1a\x11.DecisionResponseBQ\n\x1c\x63om.zqnt.utils.mission.protoB\x14MissionAutonomyProtoP\x01Z\x19gen/missionautonomy/protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16mission-autonomy.proto\x12\x04zqnt\x1a\x0c\x63ommon.proto\x1a$capability-execution-contracts.proto\x1a mission-autonomy-contracts.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe4\x03\n\x18\x45valuateDetectionRequest\x12\x1f\n\x04\x62\x61se\x18\x01 \x01(\x0b\x32\x11.zqnt.RequestBase\x12\x14\n\x0c\x64\x65tection_id\x18\x02 \x01(\t\x12\x10\n\x08\x61sset_sn\x18\x03 \x01(\t\x12\x13\n\x0bobject_type\x18\x04 \x01(\t\x12\x12\n\nconfidence\x18\x05 \x01(\x02\x12\x1a\n\x12\x64\x65tection_latitude\x18\x06 \x01(\x01\x12\x1b\n\x13\x64\x65tection_longitude\x18\x07 \x01(\x01\x12\x1a\n\x12\x64\x65tection_altitude\x18\x08 \x01(\x01\x12\x1c\n\x0forganization_id\x18\n \x01(\tH\x00\x88\x01\x01\x12\x30\n\x0eruntime_config\x18\x0f \x01(\x0b\x32\x18.zqnt.DynamicConfigProto\x12\x17\n\ntheatre_id\x18\x10 \x01(\tH\x01\x88\x01\x01\x12\x1a\n\rcapability_id\x18\x11 \x01(\tH\x02\x88\x01\x01\x42\x12\n\x10_organization_idB\r\n\x0b_theatre_idB\x10\n\x0e_capability_idJ\x04\x08\t\x10\nJ\x04\x08\x0b\x10\x0cJ\x04\x08\x0c\x10\rJ\x04\x08\r\x10\x0eJ\x04\x08\x0e\x10\x0fR\nmission_idR\x0fmission_contextR\x0ctask_context\"\xa8\x04\n\x13\x44\x65\x63isionResultProto\x12\x13\n\x0b\x64\x65\x63ision_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64\x65tection_id\x18\x02 \x01(\t\x12\x1e\n\x11selected_asset_sn\x18\x03 \x01(\tH\x00\x88\x01\x01\x12\x1a\n\rstrategy_used\x18\x04 \x01(\tH\x01\x88\x01\x01\x12\x0e\n\x06status\x18\x05 \x01(\t\x12\x1c\n\x14\x63onsidered_asset_sns\x18\x06 \x03(\t\x12J\n\x11rejection_reasons\x18\x07 \x03(\x0b\x32/.zqnt.DecisionResultProto.RejectionReasonsEntry\x12.\n\ndecided_at\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x31\n\x0fresolved_config\x18\x0c \x01(\x0b\x32\x18.zqnt.DynamicConfigProto\x12\x33\n\x10selected_actions\x18\r \x03(\x0b\x32\x19.zqnt.DecisionActionProto\x1a\x37\n\x15RejectionReasonsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x14\n\x12_selected_asset_snB\x10\n\x0e_strategy_usedJ\x04\x08\t\x10\nJ\x04\x08\n\x10\x0bJ\x04\x08\x0b\x10\x0cR\x13selected_mission_idR\x10selected_task_id\"\xcf\x01\n\x10\x44\x65\x63isionResponse\x12\x12\n\nhas_errors\x18\x01 \x01(\x08\x12\x0b\n\x03tid\x18\x02 \x01(\t\x12-\n\ttimestamp\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12)\n\x05\x65rror\x18\x04 \x01(\x0b\x32\x18.zqnt.GlobalErrorMessageH\x00\x12\x34\n\x0f\x64\x65\x63ision_result\x18\x05 \x01(\x0b\x32\x19.zqnt.DecisionResultProtoH\x00\x42\n\n\x08response2\xf9\x0f\n\x16MissionAutonomyService\x12N\n\x11UpsertApplication\x12\x1e.zqnt.UpsertApplicationRequest\x1a\x19.zqnt.ApplicationResponse\x12H\n\x0eGetApplication\x12\x1b.zqnt.GetApplicationRequest\x1a\x19.zqnt.ApplicationResponse\x12P\n\x10ListApplications\x12\x1d.zqnt.ListApplicationsRequest\x1a\x1d.zqnt.ApplicationListResponse\x12N\n\x11\x44\x65leteApplication\x12\x1e.zqnt.DeleteApplicationRequest\x1a\x19.zqnt.ApplicationResponse\x12l\n\x1aGetApplicationEnvironments\x12\'.zqnt.GetApplicationEnvironmentsRequest\x1a%.zqnt.ApplicationEnvironmentsResponse\x12j\n\x19PromoteApplicationVersion\x12&.zqnt.PromoteApplicationVersionRequest\x1a%.zqnt.ApplicationEnvironmentsResponse\x12W\n\x14\x43reateSkillExecution\x12!.zqnt.CreateSkillExecutionRequest\x1a\x1c.zqnt.SkillExecutionResponse\x12G\n\x0c\x45xecuteSkill\x12\x19.zqnt.ExecuteSkillRequest\x1a\x1c.zqnt.SkillExecutionResponse\x12Q\n\x11GetSkillExecution\x12\x1e.zqnt.GetSkillExecutionRequest\x1a\x1c.zqnt.SkillExecutionResponse\x12Y\n\x13ListSkillExecutions\x12 .zqnt.ListSkillExecutionsRequest\x1a .zqnt.SkillExecutionListResponse\x12Y\n\x13StartSkillExecution\x12$.zqnt.SkillExecutionLifecycleRequest\x1a\x1c.zqnt.SkillExecutionResponse\x12Y\n\x13PauseSkillExecution\x12$.zqnt.SkillExecutionLifecycleRequest\x1a\x1c.zqnt.SkillExecutionResponse\x12Z\n\x14ResumeSkillExecution\x12$.zqnt.SkillExecutionLifecycleRequest\x1a\x1c.zqnt.SkillExecutionResponse\x12Z\n\x14\x43\x61ncelSkillExecution\x12$.zqnt.SkillExecutionLifecycleRequest\x1a\x1c.zqnt.SkillExecutionResponse\x12W\n\x14SignalSkillExecution\x12!.zqnt.SignalSkillExecutionRequest\x1a\x1c.zqnt.SkillExecutionResponse\x12\x63\n\x16ResolveExecutionConfig\x12#.zqnt.ResolveExecutionConfigRequest\x1a$.zqnt.ResolveExecutionConfigResponse\x12\x46\n\x0eListSchedulers\x12\x1b.zqnt.ListSchedulersRequest\x1a\x17.zqnt.SchedulerResponse\x12\x42\n\x0cGetScheduler\x12\x19.zqnt.GetSchedulerRequest\x1a\x17.zqnt.SchedulerResponse\x12H\n\x0f\x43reateScheduler\x12\x1c.zqnt.CreateSchedulerRequest\x1a\x17.zqnt.SchedulerResponse\x12H\n\x0fUpdateScheduler\x12\x1c.zqnt.UpdateSchedulerRequest\x1a\x17.zqnt.SchedulerResponse\x12H\n\x0f\x44\x65leteScheduler\x12\x1c.zqnt.DeleteSchedulerRequest\x1a\x17.zqnt.SchedulerResponse\x12J\n\x10\x43reateSchedulers\x12\x1d.zqnt.CreateSchedulersRequest\x1a\x17.zqnt.SchedulerResponse\x12J\n\x10\x44\x65leteSchedulers\x12\x1d.zqnt.DeleteSchedulersRequest\x1a\x17.zqnt.SchedulerResponse\x12K\n\x11\x45valuateDetection\x12\x1e.zqnt.EvaluateDetectionRequest\x1a\x16.zqnt.DecisionResponseBQ\n\x1c\x63om.zqnt.utils.mission.protoB\x14MissionAutonomyProtoP\x01Z\x19gen/missionautonomy/protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -37,58 +62,14 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._serialized_options = b'\n\034com.zqnt.utils.mission.protoB\024MissionAutonomyProtoP\001Z\031gen/missionautonomy/proto'
   _globals['_DECISIONRESULTPROTO_REJECTIONREASONSENTRY']._loaded_options = None
   _globals['_DECISIONRESULTPROTO_REJECTIONREASONSENTRY']._serialized_options = b'8\001'
-  _globals['_PAUSETASKREQUEST']._serialized_start=102
-  _globals['_PAUSETASKREQUEST']._serialized_end=165
-  _globals['_RESUMETASKREQUEST']._serialized_start=167
-  _globals['_RESUMETASKREQUEST']._serialized_end=231
-  _globals['_STARTTASKREQUEST']._serialized_start=233
-  _globals['_STARTTASKREQUEST']._serialized_end=296
-  _globals['_STOPTASKREQUEST']._serialized_start=298
-  _globals['_STOPTASKREQUEST']._serialized_end=360
-  _globals['_GETMISSIONREQUEST']._serialized_start=362
-  _globals['_GETMISSIONREQUEST']._serialized_end=429
-  _globals['_CREATEMISSIONREQUEST']._serialized_start=431
-  _globals['_CREATEMISSIONREQUEST']._serialized_end=520
-  _globals['_UPDATEMISSIONREQUEST']._serialized_start=522
-  _globals['_UPDATEMISSIONREQUEST']._serialized_end=631
-  _globals['_DELETEMISSIONREQUEST']._serialized_start=633
-  _globals['_DELETEMISSIONREQUEST']._serialized_end=703
-  _globals['_GETTASKREQUEST']._serialized_start=705
-  _globals['_GETTASKREQUEST']._serialized_end=821
-  _globals['_CREATETASKREQUEST']._serialized_start=823
-  _globals['_CREATETASKREQUEST']._serialized_end=903
-  _globals['_UPDATETASKREQUEST']._serialized_start=905
-  _globals['_UPDATETASKREQUEST']._serialized_end=1002
-  _globals['_DELETETASKREQUEST']._serialized_start=1004
-  _globals['_DELETETASKREQUEST']._serialized_end=1068
-  _globals['_CREATESCHEDULERREQUEST']._serialized_start=1070
-  _globals['_CREATESCHEDULERREQUEST']._serialized_end=1165
-  _globals['_CREATESCHEDULERSREQUEST']._serialized_start=1167
-  _globals['_CREATESCHEDULERSREQUEST']._serialized_end=1264
-  _globals['_UPDATESCHEDULERREQUEST']._serialized_start=1266
-  _globals['_UPDATESCHEDULERREQUEST']._serialized_end=1383
-  _globals['_DELETESCHEDULERREQUEST']._serialized_start=1385
-  _globals['_DELETESCHEDULERREQUEST']._serialized_end=1459
-  _globals['_DELETESCHEDULERSREQUEST']._serialized_start=1461
-  _globals['_DELETESCHEDULERSREQUEST']._serialized_end=1537
-  _globals['_DELETESCHEDULERSBYTASKREQUEST']._serialized_start=1539
-  _globals['_DELETESCHEDULERSBYTASKREQUEST']._serialized_end=1615
-  _globals['_GETSCHEDULERREQUEST']._serialized_start=1617
-  _globals['_GETSCHEDULERREQUEST']._serialized_end=1710
-  _globals['_MISSIONRESPONSE']._serialized_start=1713
-  _globals['_MISSIONRESPONSE']._serialized_end=2020
-  _globals['_TASKRESPONSE']._serialized_start=2023
-  _globals['_TASKRESPONSE']._serialized_end=2318
-  _globals['_SCHEDULERRESPONSE']._serialized_start=2321
-  _globals['_SCHEDULERRESPONSE']._serialized_end=2690
-  _globals['_EVALUATEDETECTIONREQUEST']._serialized_start=2693
-  _globals['_EVALUATEDETECTIONREQUEST']._serialized_end=3003
-  _globals['_DECISIONRESULTPROTO']._serialized_start=3006
-  _globals['_DECISIONRESULTPROTO']._serialized_end=3392
-  _globals['_DECISIONRESULTPROTO_REJECTIONREASONSENTRY']._serialized_start=3297
-  _globals['_DECISIONRESULTPROTO_REJECTIONREASONSENTRY']._serialized_end=3352
-  _globals['_DECISIONRESPONSE']._serialized_start=3395
-  _globals['_DECISIONRESPONSE']._serialized_end=3592
-  _globals['_MISSIONAUTONOMYSERVICE']._serialized_start=3595
-  _globals['_MISSIONAUTONOMYSERVICE']._serialized_end=4860
+  _globals['_EVALUATEDETECTIONREQUEST']._serialized_start=152
+  _globals['_EVALUATEDETECTIONREQUEST']._serialized_end=636
+  _globals['_DECISIONRESULTPROTO']._serialized_start=639
+  _globals['_DECISIONRESULTPROTO']._serialized_end=1191
+  _globals['_DECISIONRESULTPROTO_REJECTIONREASONSENTRY']._serialized_start=1039
+  _globals['_DECISIONRESULTPROTO_REJECTIONREASONSENTRY']._serialized_end=1094
+  _globals['_DECISIONRESPONSE']._serialized_start=1194
+  _globals['_DECISIONRESPONSE']._serialized_end=1401
+  _globals['_MISSIONAUTONOMYSERVICE']._serialized_start=1404
+  _globals['_MISSIONAUTONOMYSERVICE']._serialized_end=3445
 # @@protoc_insertion_point(module_scope)
