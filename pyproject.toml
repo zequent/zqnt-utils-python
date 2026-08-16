@@ -5,7 +5,7 @@ requires-python = ">=3.12"
 dependencies = [
     "redis[asyncio]>=8.0.0",
     "grpcio>=1.60.0",
-    "protobuf>=4.25.0",
+    "protobuf>=7.35.1",
 ]
 
 [dependency-groups]
