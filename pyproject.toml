@@ -10,7 +10,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "ruff>=0.15.15",
+    "ruff>=0.16.3",
     "pytest>=9.0.3",
     "grpcio-tools>=1.60.0",
     "mypy-protobuf>=3.5.0",
