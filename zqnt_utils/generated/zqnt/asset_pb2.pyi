@@ -121,6 +121,7 @@ class AssetVendor(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     ASSET_VENDOR_SAPIENT: _ClassVar[AssetVendor]
     ASSET_VENDOR_BETAFLIGHT: _ClassVar[AssetVendor]
     ASSET_VENDOR_RNS: _ClassVar[AssetVendor]
+    ASSET_VENDOR_ZQNT: _ClassVar[AssetVendor]
 
 class AssetConnection(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -215,6 +216,7 @@ ASSET_VENDOR_RTMP_RTSP: AssetVendor
 ASSET_VENDOR_SAPIENT: AssetVendor
 ASSET_VENDOR_BETAFLIGHT: AssetVendor
 ASSET_VENDOR_RNS: AssetVendor
+ASSET_VENDOR_ZQNT: AssetVendor
 MQTT: AssetConnection
 TCP: AssetConnection
 SERIAL: AssetConnection
