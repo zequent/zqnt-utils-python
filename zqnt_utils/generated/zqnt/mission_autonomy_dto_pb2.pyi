@@ -1,7 +1,6 @@
 import datetime
 
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
-from google.protobuf import struct_pb2 as _struct_pb2
 from . import mission_autonomy_types_pb2 as _mission_autonomy_types_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
@@ -218,36 +217,28 @@ class TaskProtoDTO(_message.Message):
     def __init__(self, id: _Optional[str] = ..., mission_id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_from: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., task_type: _Optional[_Union[_mission_autonomy_types_pb2.TaskTypeProto, str]] = ..., config: _Optional[str] = ..., status: _Optional[_Union[_mission_autonomy_types_pb2.TaskStatus, str]] = ..., asset_id: _Optional[str] = ..., sn_number: _Optional[str] = ..., current_progress: _Optional[int] = ..., current_step: _Optional[str] = ..., break_reason: _Optional[_Union[_mission_autonomy_types_pb2.FlighttaskBreakReasonEnumProto, str]] = ..., external_command_type: _Optional[str] = ..., external_task_id: _Optional[str] = ..., task_config_template: _Optional[_Union[_mission_autonomy_types_pb2.DynamicConfigProto, _Mapping]] = ..., execution_order: _Optional[int] = ..., decision_engine_enabled: bool = ..., autonomy_config: _Optional[_Union[_mission_autonomy_types_pb2.AutonomyConfigProto, _Mapping]] = ..., priority: _Optional[int] = ..., timeout_seconds: _Optional[int] = ..., retry_policy: _Optional[_Union[RetryPolicyProtoDTO, _Mapping]] = ..., waypoint_config: _Optional[_Union[_mission_autonomy_types_pb2.WaypointTaskConfigProto, _Mapping]] = ..., detect_config: _Optional[_Union[_mission_autonomy_types_pb2.DetectTaskConfigProto, _Mapping]] = ..., area_mapping_config: _Optional[_Union[_mission_autonomy_types_pb2.AreaMappingTaskConfigProto, _Mapping]] = ..., poi_config: _Optional[_Union[_mission_autonomy_types_pb2.PoiTaskConfigProto, _Mapping]] = ..., follow_config: _Optional[_Union[_mission_autonomy_types_pb2.FollowTaskConfigProto, _Mapping]] = ..., track_config: _Optional[_Union[_mission_autonomy_types_pb2.TrackTaskConfigProto, _Mapping]] = ..., dynamic_command_config: _Optional[_Union[_mission_autonomy_types_pb2.DynamicCommandTaskConfigProto, _Mapping]] = ...) -> None: ...
 
 class SchedulerProtoDTO(_message.Message):
-    __slots__ = ("id", "name", "cron_expression", "active", "type", "client_time_zone", "created_at", "modified_at", "asset_sn", "command_id", "application_id", "skill_id", "execution_parameters", "auto_start")
+    __slots__ = ("id", "name", "mission_id", "task_id", "cron_expression", "active", "type", "client_time_zone", "created_at", "modified_at")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
+    MISSION_ID_FIELD_NUMBER: _ClassVar[int]
+    TASK_ID_FIELD_NUMBER: _ClassVar[int]
     CRON_EXPRESSION_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     CLIENT_TIME_ZONE_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     MODIFIED_AT_FIELD_NUMBER: _ClassVar[int]
-    ASSET_SN_FIELD_NUMBER: _ClassVar[int]
-    COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
-    APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
-    SKILL_ID_FIELD_NUMBER: _ClassVar[int]
-    EXECUTION_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
-    AUTO_START_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
+    mission_id: str
+    task_id: str
     cron_expression: str
     active: bool
     type: _mission_autonomy_types_pb2.SchedulerType
     client_time_zone: str
     created_at: _timestamp_pb2.Timestamp
     modified_at: _timestamp_pb2.Timestamp
-    asset_sn: str
-    command_id: str
-    application_id: str
-    skill_id: str
-    execution_parameters: _struct_pb2.Struct
-    auto_start: bool
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., cron_expression: _Optional[str] = ..., active: bool = ..., type: _Optional[_Union[_mission_autonomy_types_pb2.SchedulerType, str]] = ..., client_time_zone: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., asset_sn: _Optional[str] = ..., command_id: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., execution_parameters: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., auto_start: bool = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., mission_id: _Optional[str] = ..., task_id: _Optional[str] = ..., cron_expression: _Optional[str] = ..., active: bool = ..., type: _Optional[_Union[_mission_autonomy_types_pb2.SchedulerType, str]] = ..., client_time_zone: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SchedulerProtoDTOList(_message.Message):
     __slots__ = ("scheduler_dto_list",)

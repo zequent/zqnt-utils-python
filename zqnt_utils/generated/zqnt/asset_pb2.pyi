@@ -1,7 +1,6 @@
 import datetime
 
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
-from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -121,7 +120,6 @@ class AssetVendor(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     ASSET_VENDOR_SAPIENT: _ClassVar[AssetVendor]
     ASSET_VENDOR_BETAFLIGHT: _ClassVar[AssetVendor]
     ASSET_VENDOR_RNS: _ClassVar[AssetVendor]
-    ASSET_VENDOR_ZQNT: _ClassVar[AssetVendor]
 
 class AssetConnection(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -216,7 +214,6 @@ ASSET_VENDOR_RTMP_RTSP: AssetVendor
 ASSET_VENDOR_SAPIENT: AssetVendor
 ASSET_VENDOR_BETAFLIGHT: AssetVendor
 ASSET_VENDOR_RNS: AssetVendor
-ASSET_VENDOR_ZQNT: AssetVendor
 MQTT: AssetConnection
 TCP: AssetConnection
 SERIAL: AssetConnection
@@ -266,20 +263,6 @@ class AssetProtoDTO(_message.Message):
     live_stream_push_url: str
     live_stream_pull_url: str
     def __init__(self, id: _Optional[str] = ..., sn: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[AssetTypeEnum, str]] = ..., vendor: _Optional[_Union[AssetVendor, str]] = ..., connection: _Optional[_Union[AssetConnection, str]] = ..., system_connection_string: _Optional[str] = ..., model: _Optional[str] = ..., external_device_type: _Optional[str] = ..., external_device_sub_type: _Optional[str] = ..., organization: _Optional[str] = ..., external_id: _Optional[str] = ..., payloads: _Optional[_Iterable[_Union[AssetPayloadProtoDTO, _Mapping]]] = ..., sub_assets: _Optional[_Iterable[_Union[SubAssetProtoDTO, _Mapping]]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_from: _Optional[str] = ..., live_stream_push_url: _Optional[str] = ..., live_stream_pull_url: _Optional[str] = ...) -> None: ...
-
-class AssetPropertyProtoDTO(_message.Message):
-    __slots__ = ("key", "value", "description", "created_at", "modified_at")
-    KEY_FIELD_NUMBER: _ClassVar[int]
-    VALUE_FIELD_NUMBER: _ClassVar[int]
-    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
-    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
-    MODIFIED_AT_FIELD_NUMBER: _ClassVar[int]
-    key: str
-    value: _struct_pb2.Value
-    description: str
-    created_at: _timestamp_pb2.Timestamp
-    modified_at: _timestamp_pb2.Timestamp
-    def __init__(self, key: _Optional[str] = ..., value: _Optional[_Union[_struct_pb2.Value, _Mapping]] = ..., description: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class SubAssetProtoDTO(_message.Message):
     __slots__ = ("id", "sn", "name", "type", "vendor", "connection", "system_connection_string", "model", "external_device_type", "external_device_sub_type", "external_id", "stream_url_predefined", "payloads", "created_at", "modified_at", "modified_from", "live_stream_push_url", "live_stream_pull_url")
