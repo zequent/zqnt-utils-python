@@ -48,6 +48,14 @@ class ConnectorServiceStub:
     GetAssetBySn: _grpc.UnaryUnaryMultiCallable[_base_pb2.RequestBase, _connector_pb2.ConnectorResponse]
     GetAssetById: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAssetByIdRequest, _connector_pb2.ConnectorResponse]
     GetSubAssetBySn: _grpc.UnaryUnaryMultiCallable[_base_pb2.RequestBase, _connector_pb2.ConnectorResponse]
+    ListAssets: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListAssetsRequest, _connector_pb2.AssetListResponse]
+    """Every asset that exists for the caller's organization (every asset platform-wide for a
+    system_admin caller — same bypass-tenant-filtering rule as everywhere else), regardless of
+    whether it's currently reporting itself online. Distinct from AssetMonitoring's streamed
+    ConnectorAssetList (that's live/cached status snapshots for already-known SNs); this is the
+    actual system-of-record enumeration — there was no way to list assets at all before this RPC,
+    only look one up by a SN you already knew.
+    """
     UpsertAssetPayload: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpsertAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]
     ListAssetPayloads: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListAssetPayloadsRequest, _connector_pb2.AssetPayloadListResponse]
     DeleteAssetPayload: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]
@@ -72,10 +80,66 @@ class ConnectorServiceStub:
     StoreNotificationBatch: _grpc.StreamUnaryMultiCallable[_events_pb2.ProduceNotificationRequest, _connector_pb2.ConnectorResponse]
     """Notification Storage - batch processing from live-data service"""
     GetActivePoliciesByType: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetPoliciesRequest, _connector_pb2.ConnectorPolicyResponse]
-    """Policy Management - fetched by Mission-Autonomy for decision engine cache"""
+    """Policy Management - fetched by Mission-Autonomy for decision engine cache. Read-only RPCs
+    existed first; the CRUD RPCs below back the admin-console "Operational Policies" management
+    screen (previously a fully mocked/hardcoded frontend with no backend at all -- see
+    OperationalPolicyService, which already did real persistence + push-invalidation eventing for
+    the REST-only connector-internal API these now also front).
+    """
     GetAllActivePolicies: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllPoliciesRequest, _connector_pb2.ConnectorPolicyResponse]
+    GetPolicyById: _grpc.UnaryUnaryMultiCallable[_connector_pb2.GetPolicyByIdRequest, _connector_pb2.ConnectorPolicySingleResponse]
+    CreatePolicy: _grpc.UnaryUnaryMultiCallable[_connector_pb2.CreatePolicyRequest, _connector_pb2.ConnectorPolicySingleResponse]
+    UpdatePolicy: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpdatePolicyRequest, _connector_pb2.ConnectorPolicySingleResponse]
+    DeletePolicy: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeletePolicyRequest, _connector_pb2.ConnectorDeletePolicyResponse]
+    GetAllOrganizations: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllOrganizationsRequest, _connector_pb2.ConnectorOrganizationResponse]
+    """Organization Management - connector's own OrganizationService already had full REST CRUD
+    (/api/organization, orphaned/never called from outside connector, same shape as the old
+    OperationalPolicy REST API) -- these RPCs are the real cross-service front door for it, backing
+    the admin-console "Organizations" management screen.
+    """
+    GetOrganizationById: _grpc.UnaryUnaryMultiCallable[_connector_pb2.GetOrganizationByIdRequest, _connector_pb2.ConnectorOrganizationSingleResponse]
+    CreateOrganization: _grpc.UnaryUnaryMultiCallable[_connector_pb2.CreateOrganizationRequest, _connector_pb2.ConnectorOrganizationSingleResponse]
+    UpdateOrganization: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpdateOrganizationRequest, _connector_pb2.ConnectorOrganizationSingleResponse]
+    DeleteOrganization: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteOrganizationRequest, _connector_pb2.ConnectorDeleteOrganizationResponse]
+    GetAllTheatres: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllTheatresRequest, _connector_pb2.ConnectorTheatreResponse]
+    """Theatre Management - a named operational site within one organization (optional geo zone, the
+    assets stationed there, the users with access to it). Same CRUD shape as Organization above;
+    AssignUserToTheatre/RemoveUserFromTheatre back the many-to-many user<->theatre join table
+    (deliberately not a repeated field on TheatreProtoDTO -- resolved fresh per request, same
+    "don't bake something that can change independently into a cached/long-lived value" reasoning
+    as the refresh-token roles fix).
+    """
+    GetTheatreById: _grpc.UnaryUnaryMultiCallable[_connector_pb2.GetTheatreByIdRequest, _connector_pb2.ConnectorTheatreSingleResponse]
+    CreateTheatre: _grpc.UnaryUnaryMultiCallable[_connector_pb2.CreateTheatreRequest, _connector_pb2.ConnectorTheatreSingleResponse]
+    UpdateTheatre: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpdateTheatreRequest, _connector_pb2.ConnectorTheatreSingleResponse]
+    DeleteTheatre: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteTheatreRequest, _connector_pb2.ConnectorDeleteTheatreResponse]
+    AssignUserToTheatre: _grpc.UnaryUnaryMultiCallable[_connector_pb2.AssignUserToTheatreRequest, _connector_pb2.TheatreAssignmentResponse]
+    RemoveUserFromTheatre: _grpc.UnaryUnaryMultiCallable[_connector_pb2.RemoveUserFromTheatreRequest, _connector_pb2.TheatreAssignmentResponse]
+    GetAllEventTriggers: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllEventTriggersRequest, _connector_pb2.ConnectorEventTriggerResponse]
+    """Event Triggers — "start Application X on event Y" (detection / telemetry threshold / asset
+    status / inbound webhook). CRUD mirrors Theatre's shape; ListRecentDetections and
+    GetLatestTelemetryForAsset back mission-autonomy's polling evaluator (EventTriggerEvaluationService),
+    RecordEventTriggerFired stamps last_fired_at for cooldown bookkeeping after a real fire.
+    """
+    GetEventTriggerById: _grpc.UnaryUnaryMultiCallable[_connector_pb2.GetEventTriggerByIdRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]
+    CreateEventTrigger: _grpc.UnaryUnaryMultiCallable[_connector_pb2.CreateEventTriggerRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]
+    UpdateEventTrigger: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpdateEventTriggerRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]
+    DeleteEventTrigger: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteEventTriggerRequest, _connector_pb2.ConnectorDeleteEventTriggerResponse]
+    RecordEventTriggerFired: _grpc.UnaryUnaryMultiCallable[_connector_pb2.RecordEventTriggerFiredRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]
+    RegenerateEventTriggerWebhookToken: _grpc.UnaryUnaryMultiCallable[_connector_pb2.RegenerateEventTriggerWebhookTokenRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]
+    GetEventTriggerByWebhookToken: _grpc.UnaryUnaryMultiCallable[_connector_pb2.GetEventTriggerByWebhookTokenRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]
+    ListRecentDetections: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListRecentDetectionsRequest, _connector_pb2.ConnectorDetectionListResponse]
+    GetLatestTelemetryForAsset: _grpc.UnaryUnaryMultiCallable[_connector_pb2.GetLatestTelemetryForAssetRequest, _connector_pb2.ConnectorTelemetrySingleResponse]
     GetTechnicalConfigs: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetConfigsRequest, _connector_pb2.ConnectorConfigResponse]
-    """Technical Config - fetched by services for runtime configuration"""
+    """Technical Config - fetched by services for runtime configuration. Read-only GetTechnicalConfigs
+    existed first (services reading their own settings); the CRUD RPCs below back the admin-console
+    "Technical Config" management screen, so the config values these read-only fetches see can
+    actually be changed by an admin without a redeploy.
+    """
+    GetTechnicalConfigById: _grpc.UnaryUnaryMultiCallable[_connector_pb2.GetTechnicalConfigByIdRequest, _connector_pb2.ConnectorConfigSingleResponse]
+    CreateTechnicalConfig: _grpc.UnaryUnaryMultiCallable[_connector_pb2.CreateTechnicalConfigRequest, _connector_pb2.ConnectorConfigSingleResponse]
+    UpdateTechnicalConfig: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpdateTechnicalConfigRequest, _connector_pb2.ConnectorConfigSingleResponse]
+    DeleteTechnicalConfig: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteTechnicalConfigRequest, _connector_pb2.ConnectorDeleteConfigResponse]
     PersistApplication: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.UpsertApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]
     """Application/Skill domain persistence. Mission Autonomy is the orchestration consumer."""
     GetPersistedApplication: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]
@@ -97,6 +161,68 @@ class ConnectorServiceStub:
     SetSkillContractStatus: _grpc.UnaryUnaryMultiCallable[_connector_pb2.SetSkillContractStatusRequest, _connector_pb2.SkillContractResponse]
     SetSkillContractPermissions: _grpc.UnaryUnaryMultiCallable[_connector_pb2.SetSkillContractPermissionsRequest, _connector_pb2.SkillContractResponse]
     """Declarative-only prep for future auth/RBAC — see SkillContractProtoDTO.required_permissions."""
+    AuthenticateUser: _grpc.UnaryUnaryMultiCallable[_connector_pb2.AuthenticateUserRequest, _connector_pb2.AuthenticateUserResponse]
+    """Platform-hosted authentication: verifies email+password against connector's own user store
+    (the system of record) and returns the identity a caller (admin-console) mints a
+    PlatformClaims-shaped auth token from. Connector never issues the token itself — it has no
+    private signing key — it only ever confirms "this is who they say they are, in this org, with
+    these roles."
+    """
+    CreateUser: _grpc.UnaryUnaryMultiCallable[_connector_pb2.CreateUserRequest, _connector_pb2.CreateUserResponse]
+    """Admin-driven user creation — the seat check (does this organization's license have room for
+    one more user) happens one layer up, in admin-console's LicenseCoordinator, BEFORE this is
+    ever called; connector itself has no concept of seats, it only persists the user once
+    admin-console has already confirmed one is available.
+    """
+    ResetPassword: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ResetPasswordRequest, _connector_pb2.ResetPasswordResponse]
+    """Admin-driven password reset — see ResetPasswordRequest's doc."""
+    RecordAuthAuditEvent: _grpc.UnaryUnaryMultiCallable[_connector_pb2.RecordAuthAuditEventRequest, _empty_pb2.Empty]
+    """Durable audit trail for authentication-security-relevant events (login attempts, logout,
+    admin-driven password resets/session revocations) — see the connector-side AuthAuditService's
+    doc. Best-effort from the caller's point of view: a failure to record must never block the
+    actual auth action it's describing, so every call site fires this without letting its outcome
+    affect the real response.
+    """
+    ListUsers: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListUsersRequest, _connector_pb2.ListUsersResponse]
+    """Every user in the caller's own organization (a system_admin caller instead gets every user,
+    platform-wide — same bypass-tenant-filtering rule as everywhere else, see
+    TenantScopedRepository#bypassTenantFilter). What the admin console's user-management screen
+    lists against; there was no read path for the users CreateUser produces until this existed.
+    """
+    GetUserById: _grpc.UnaryUnaryMultiCallable[_connector_pb2.GetUserByIdRequest, _connector_pb2.AuthenticateUserResponse]
+    """Single-user lookup by id — what a "whoami" endpoint resolves an access token's subject claim
+    (a user id, nothing else) into a displayable identity. AuthenticateUser can't serve this: it
+    needs a password and is keyed by email, neither of which a bearer token carries.
+    """
+    UpsertIdentityProvider: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpsertIdentityProviderRequest, _connector_pb2.IdentityProviderResponse]
+    """Pluggable SSO — an organization's own OIDC identity provider config (issuer, client
+    credentials, which email domains it owns, how its claims map to platform roles). Local
+    email+password (AuthenticateUser above) stays the default for every org with no config here;
+    this only ever supplements it, never replaces AuthenticateUser for orgs that don't opt in.
+    """
+    GetIdentityProvider: _grpc.UnaryUnaryMultiCallable[_connector_pb2.GetIdentityProviderRequest, _connector_pb2.IdentityProviderResponse]
+    FindIdentityProviderByEmailDomain: _grpc.UnaryUnaryMultiCallable[_connector_pb2.FindIdentityProviderByEmailDomainRequest, _connector_pb2.IdentityProviderResponse]
+    """Login-screen discovery: given an email address, which org (if any) owns that domain and has
+    SSO configured — admin-console calls this before showing a password field or redirecting to
+    an IdP. Empty response (no error, no provider) means "no SSO for this domain, use local auth."
+    """
+    FindOidcUser: _grpc.UnaryUnaryMultiCallable[_connector_pb2.FindOidcUserRequest, _connector_pb2.AuthenticateUserResponse]
+    """Existence check by (organization_id, external_subject), used by admin-console to decide
+    whether an SSO login needs a seat reserved before UpsertOidcUser below — same "reserve the
+    seat, THEN create" ordering CreateUser's caller already follows for local users. Empty
+    response (has_errors false, no user) means "not provisioned yet."
+    """
+    UpsertOidcUser: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpsertOidcUserRequest, _connector_pb2.AuthenticateUserResponse]
+    """The OIDC counterpart to AuthenticateUser: admin-console has already completed the
+    authorization-code exchange and verified the ID token against the org's own IdP by the time
+    this is called — this only resolves the local user record admin-console mints a
+    PlatformClaims-shaped token from, same as AuthenticateUser does for password logins. Finds by
+    (organization_id, external_subject); auto-provisions on first login (a seat is expected to
+    already be reserved via FindOidcUser+LicenseCoordinator, same division of responsibility as
+    CreateUser — connector has no concept of seats), and re-stamps email/roles from the IdP's
+    claims on every subsequent login so a role change in the customer's own directory takes
+    effect without any action on this platform.
+    """
 
 @_typing.type_check_only
 class ConnectorServiceAsyncStub(ConnectorServiceStub):
@@ -113,6 +239,14 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     GetAssetBySn: _aio.UnaryUnaryMultiCallable[_base_pb2.RequestBase, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
     GetAssetById: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAssetByIdRequest, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
     GetSubAssetBySn: _aio.UnaryUnaryMultiCallable[_base_pb2.RequestBase, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
+    ListAssets: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListAssetsRequest, _connector_pb2.AssetListResponse]  # type: ignore[assignment]
+    """Every asset that exists for the caller's organization (every asset platform-wide for a
+    system_admin caller — same bypass-tenant-filtering rule as everywhere else), regardless of
+    whether it's currently reporting itself online. Distinct from AssetMonitoring's streamed
+    ConnectorAssetList (that's live/cached status snapshots for already-known SNs); this is the
+    actual system-of-record enumeration — there was no way to list assets at all before this RPC,
+    only look one up by a SN you already knew.
+    """
     UpsertAssetPayload: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpsertAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]  # type: ignore[assignment]
     ListAssetPayloads: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListAssetPayloadsRequest, _connector_pb2.AssetPayloadListResponse]  # type: ignore[assignment]
     DeleteAssetPayload: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]  # type: ignore[assignment]
@@ -137,10 +271,66 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     StoreNotificationBatch: _aio.StreamUnaryMultiCallable[_events_pb2.ProduceNotificationRequest, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
     """Notification Storage - batch processing from live-data service"""
     GetActivePoliciesByType: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetPoliciesRequest, _connector_pb2.ConnectorPolicyResponse]  # type: ignore[assignment]
-    """Policy Management - fetched by Mission-Autonomy for decision engine cache"""
+    """Policy Management - fetched by Mission-Autonomy for decision engine cache. Read-only RPCs
+    existed first; the CRUD RPCs below back the admin-console "Operational Policies" management
+    screen (previously a fully mocked/hardcoded frontend with no backend at all -- see
+    OperationalPolicyService, which already did real persistence + push-invalidation eventing for
+    the REST-only connector-internal API these now also front).
+    """
     GetAllActivePolicies: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllPoliciesRequest, _connector_pb2.ConnectorPolicyResponse]  # type: ignore[assignment]
+    GetPolicyById: _aio.UnaryUnaryMultiCallable[_connector_pb2.GetPolicyByIdRequest, _connector_pb2.ConnectorPolicySingleResponse]  # type: ignore[assignment]
+    CreatePolicy: _aio.UnaryUnaryMultiCallable[_connector_pb2.CreatePolicyRequest, _connector_pb2.ConnectorPolicySingleResponse]  # type: ignore[assignment]
+    UpdatePolicy: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpdatePolicyRequest, _connector_pb2.ConnectorPolicySingleResponse]  # type: ignore[assignment]
+    DeletePolicy: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeletePolicyRequest, _connector_pb2.ConnectorDeletePolicyResponse]  # type: ignore[assignment]
+    GetAllOrganizations: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllOrganizationsRequest, _connector_pb2.ConnectorOrganizationResponse]  # type: ignore[assignment]
+    """Organization Management - connector's own OrganizationService already had full REST CRUD
+    (/api/organization, orphaned/never called from outside connector, same shape as the old
+    OperationalPolicy REST API) -- these RPCs are the real cross-service front door for it, backing
+    the admin-console "Organizations" management screen.
+    """
+    GetOrganizationById: _aio.UnaryUnaryMultiCallable[_connector_pb2.GetOrganizationByIdRequest, _connector_pb2.ConnectorOrganizationSingleResponse]  # type: ignore[assignment]
+    CreateOrganization: _aio.UnaryUnaryMultiCallable[_connector_pb2.CreateOrganizationRequest, _connector_pb2.ConnectorOrganizationSingleResponse]  # type: ignore[assignment]
+    UpdateOrganization: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpdateOrganizationRequest, _connector_pb2.ConnectorOrganizationSingleResponse]  # type: ignore[assignment]
+    DeleteOrganization: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteOrganizationRequest, _connector_pb2.ConnectorDeleteOrganizationResponse]  # type: ignore[assignment]
+    GetAllTheatres: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllTheatresRequest, _connector_pb2.ConnectorTheatreResponse]  # type: ignore[assignment]
+    """Theatre Management - a named operational site within one organization (optional geo zone, the
+    assets stationed there, the users with access to it). Same CRUD shape as Organization above;
+    AssignUserToTheatre/RemoveUserFromTheatre back the many-to-many user<->theatre join table
+    (deliberately not a repeated field on TheatreProtoDTO -- resolved fresh per request, same
+    "don't bake something that can change independently into a cached/long-lived value" reasoning
+    as the refresh-token roles fix).
+    """
+    GetTheatreById: _aio.UnaryUnaryMultiCallable[_connector_pb2.GetTheatreByIdRequest, _connector_pb2.ConnectorTheatreSingleResponse]  # type: ignore[assignment]
+    CreateTheatre: _aio.UnaryUnaryMultiCallable[_connector_pb2.CreateTheatreRequest, _connector_pb2.ConnectorTheatreSingleResponse]  # type: ignore[assignment]
+    UpdateTheatre: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpdateTheatreRequest, _connector_pb2.ConnectorTheatreSingleResponse]  # type: ignore[assignment]
+    DeleteTheatre: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteTheatreRequest, _connector_pb2.ConnectorDeleteTheatreResponse]  # type: ignore[assignment]
+    AssignUserToTheatre: _aio.UnaryUnaryMultiCallable[_connector_pb2.AssignUserToTheatreRequest, _connector_pb2.TheatreAssignmentResponse]  # type: ignore[assignment]
+    RemoveUserFromTheatre: _aio.UnaryUnaryMultiCallable[_connector_pb2.RemoveUserFromTheatreRequest, _connector_pb2.TheatreAssignmentResponse]  # type: ignore[assignment]
+    GetAllEventTriggers: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllEventTriggersRequest, _connector_pb2.ConnectorEventTriggerResponse]  # type: ignore[assignment]
+    """Event Triggers — "start Application X on event Y" (detection / telemetry threshold / asset
+    status / inbound webhook). CRUD mirrors Theatre's shape; ListRecentDetections and
+    GetLatestTelemetryForAsset back mission-autonomy's polling evaluator (EventTriggerEvaluationService),
+    RecordEventTriggerFired stamps last_fired_at for cooldown bookkeeping after a real fire.
+    """
+    GetEventTriggerById: _aio.UnaryUnaryMultiCallable[_connector_pb2.GetEventTriggerByIdRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]  # type: ignore[assignment]
+    CreateEventTrigger: _aio.UnaryUnaryMultiCallable[_connector_pb2.CreateEventTriggerRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]  # type: ignore[assignment]
+    UpdateEventTrigger: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpdateEventTriggerRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]  # type: ignore[assignment]
+    DeleteEventTrigger: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteEventTriggerRequest, _connector_pb2.ConnectorDeleteEventTriggerResponse]  # type: ignore[assignment]
+    RecordEventTriggerFired: _aio.UnaryUnaryMultiCallable[_connector_pb2.RecordEventTriggerFiredRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]  # type: ignore[assignment]
+    RegenerateEventTriggerWebhookToken: _aio.UnaryUnaryMultiCallable[_connector_pb2.RegenerateEventTriggerWebhookTokenRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]  # type: ignore[assignment]
+    GetEventTriggerByWebhookToken: _aio.UnaryUnaryMultiCallable[_connector_pb2.GetEventTriggerByWebhookTokenRequest, _connector_pb2.ConnectorEventTriggerSingleResponse]  # type: ignore[assignment]
+    ListRecentDetections: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListRecentDetectionsRequest, _connector_pb2.ConnectorDetectionListResponse]  # type: ignore[assignment]
+    GetLatestTelemetryForAsset: _aio.UnaryUnaryMultiCallable[_connector_pb2.GetLatestTelemetryForAssetRequest, _connector_pb2.ConnectorTelemetrySingleResponse]  # type: ignore[assignment]
     GetTechnicalConfigs: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetConfigsRequest, _connector_pb2.ConnectorConfigResponse]  # type: ignore[assignment]
-    """Technical Config - fetched by services for runtime configuration"""
+    """Technical Config - fetched by services for runtime configuration. Read-only GetTechnicalConfigs
+    existed first (services reading their own settings); the CRUD RPCs below back the admin-console
+    "Technical Config" management screen, so the config values these read-only fetches see can
+    actually be changed by an admin without a redeploy.
+    """
+    GetTechnicalConfigById: _aio.UnaryUnaryMultiCallable[_connector_pb2.GetTechnicalConfigByIdRequest, _connector_pb2.ConnectorConfigSingleResponse]  # type: ignore[assignment]
+    CreateTechnicalConfig: _aio.UnaryUnaryMultiCallable[_connector_pb2.CreateTechnicalConfigRequest, _connector_pb2.ConnectorConfigSingleResponse]  # type: ignore[assignment]
+    UpdateTechnicalConfig: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpdateTechnicalConfigRequest, _connector_pb2.ConnectorConfigSingleResponse]  # type: ignore[assignment]
+    DeleteTechnicalConfig: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteTechnicalConfigRequest, _connector_pb2.ConnectorDeleteConfigResponse]  # type: ignore[assignment]
     PersistApplication: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.UpsertApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]  # type: ignore[assignment]
     """Application/Skill domain persistence. Mission Autonomy is the orchestration consumer."""
     GetPersistedApplication: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]  # type: ignore[assignment]
@@ -162,6 +352,68 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     SetSkillContractStatus: _aio.UnaryUnaryMultiCallable[_connector_pb2.SetSkillContractStatusRequest, _connector_pb2.SkillContractResponse]  # type: ignore[assignment]
     SetSkillContractPermissions: _aio.UnaryUnaryMultiCallable[_connector_pb2.SetSkillContractPermissionsRequest, _connector_pb2.SkillContractResponse]  # type: ignore[assignment]
     """Declarative-only prep for future auth/RBAC — see SkillContractProtoDTO.required_permissions."""
+    AuthenticateUser: _aio.UnaryUnaryMultiCallable[_connector_pb2.AuthenticateUserRequest, _connector_pb2.AuthenticateUserResponse]  # type: ignore[assignment]
+    """Platform-hosted authentication: verifies email+password against connector's own user store
+    (the system of record) and returns the identity a caller (admin-console) mints a
+    PlatformClaims-shaped auth token from. Connector never issues the token itself — it has no
+    private signing key — it only ever confirms "this is who they say they are, in this org, with
+    these roles."
+    """
+    CreateUser: _aio.UnaryUnaryMultiCallable[_connector_pb2.CreateUserRequest, _connector_pb2.CreateUserResponse]  # type: ignore[assignment]
+    """Admin-driven user creation — the seat check (does this organization's license have room for
+    one more user) happens one layer up, in admin-console's LicenseCoordinator, BEFORE this is
+    ever called; connector itself has no concept of seats, it only persists the user once
+    admin-console has already confirmed one is available.
+    """
+    ResetPassword: _aio.UnaryUnaryMultiCallable[_connector_pb2.ResetPasswordRequest, _connector_pb2.ResetPasswordResponse]  # type: ignore[assignment]
+    """Admin-driven password reset — see ResetPasswordRequest's doc."""
+    RecordAuthAuditEvent: _aio.UnaryUnaryMultiCallable[_connector_pb2.RecordAuthAuditEventRequest, _empty_pb2.Empty]  # type: ignore[assignment]
+    """Durable audit trail for authentication-security-relevant events (login attempts, logout,
+    admin-driven password resets/session revocations) — see the connector-side AuthAuditService's
+    doc. Best-effort from the caller's point of view: a failure to record must never block the
+    actual auth action it's describing, so every call site fires this without letting its outcome
+    affect the real response.
+    """
+    ListUsers: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListUsersRequest, _connector_pb2.ListUsersResponse]  # type: ignore[assignment]
+    """Every user in the caller's own organization (a system_admin caller instead gets every user,
+    platform-wide — same bypass-tenant-filtering rule as everywhere else, see
+    TenantScopedRepository#bypassTenantFilter). What the admin console's user-management screen
+    lists against; there was no read path for the users CreateUser produces until this existed.
+    """
+    GetUserById: _aio.UnaryUnaryMultiCallable[_connector_pb2.GetUserByIdRequest, _connector_pb2.AuthenticateUserResponse]  # type: ignore[assignment]
+    """Single-user lookup by id — what a "whoami" endpoint resolves an access token's subject claim
+    (a user id, nothing else) into a displayable identity. AuthenticateUser can't serve this: it
+    needs a password and is keyed by email, neither of which a bearer token carries.
+    """
+    UpsertIdentityProvider: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpsertIdentityProviderRequest, _connector_pb2.IdentityProviderResponse]  # type: ignore[assignment]
+    """Pluggable SSO — an organization's own OIDC identity provider config (issuer, client
+    credentials, which email domains it owns, how its claims map to platform roles). Local
+    email+password (AuthenticateUser above) stays the default for every org with no config here;
+    this only ever supplements it, never replaces AuthenticateUser for orgs that don't opt in.
+    """
+    GetIdentityProvider: _aio.UnaryUnaryMultiCallable[_connector_pb2.GetIdentityProviderRequest, _connector_pb2.IdentityProviderResponse]  # type: ignore[assignment]
+    FindIdentityProviderByEmailDomain: _aio.UnaryUnaryMultiCallable[_connector_pb2.FindIdentityProviderByEmailDomainRequest, _connector_pb2.IdentityProviderResponse]  # type: ignore[assignment]
+    """Login-screen discovery: given an email address, which org (if any) owns that domain and has
+    SSO configured — admin-console calls this before showing a password field or redirecting to
+    an IdP. Empty response (no error, no provider) means "no SSO for this domain, use local auth."
+    """
+    FindOidcUser: _aio.UnaryUnaryMultiCallable[_connector_pb2.FindOidcUserRequest, _connector_pb2.AuthenticateUserResponse]  # type: ignore[assignment]
+    """Existence check by (organization_id, external_subject), used by admin-console to decide
+    whether an SSO login needs a seat reserved before UpsertOidcUser below — same "reserve the
+    seat, THEN create" ordering CreateUser's caller already follows for local users. Empty
+    response (has_errors false, no user) means "not provisioned yet."
+    """
+    UpsertOidcUser: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpsertOidcUserRequest, _connector_pb2.AuthenticateUserResponse]  # type: ignore[assignment]
+    """The OIDC counterpart to AuthenticateUser: admin-console has already completed the
+    authorization-code exchange and verified the ID token against the org's own IdP by the time
+    this is called — this only resolves the local user record admin-console mints a
+    PlatformClaims-shaped token from, same as AuthenticateUser does for password logins. Finds by
+    (organization_id, external_subject); auto-provisions on first login (a seat is expected to
+    already be reserved via FindOidcUser+LicenseCoordinator, same division of responsibility as
+    CreateUser — connector has no concept of seats), and re-stamps email/roles from the IdP's
+    claims on every subsequent login so a role change in the customer's own directory takes
+    effect without any action on this platform.
+    """
 
 class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
     """ConnectorService owns persisted asset metadata, workflow persistence,
@@ -223,6 +475,20 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
         request: _base_pb2.RequestBase,
         context: _ServicerContext,
     ) -> _typing.Union[_connector_pb2.ConnectorResponse, _abc.Awaitable[_connector_pb2.ConnectorResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def ListAssets(
+        self,
+        request: _connector_pb2.ListAssetsRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AssetListResponse, _abc.Awaitable[_connector_pb2.AssetListResponse]]:
+        """Every asset that exists for the caller's organization (every asset platform-wide for a
+        system_admin caller — same bypass-tenant-filtering rule as everywhere else), regardless of
+        whether it's currently reporting itself online. Distinct from AssetMonitoring's streamed
+        ConnectorAssetList (that's live/cached status snapshots for already-known SNs); this is the
+        actual system-of-record enumeration — there was no way to list assets at all before this RPC,
+        only look one up by a SN you already knew.
+        """
 
     @_abc_1.abstractmethod
     def UpsertAssetPayload(
@@ -355,7 +621,12 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
         request: _connector_pb2.ConnectorGetPoliciesRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_connector_pb2.ConnectorPolicyResponse, _abc.Awaitable[_connector_pb2.ConnectorPolicyResponse]]:
-        """Policy Management - fetched by Mission-Autonomy for decision engine cache"""
+        """Policy Management - fetched by Mission-Autonomy for decision engine cache. Read-only RPCs
+        existed first; the CRUD RPCs below back the admin-console "Operational Policies" management
+        screen (previously a fully mocked/hardcoded frontend with no backend at all -- see
+        OperationalPolicyService, which already did real persistence + push-invalidation eventing for
+        the REST-only connector-internal API these now also front).
+        """
 
     @_abc_1.abstractmethod
     def GetAllActivePolicies(
@@ -365,12 +636,243 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
     ) -> _typing.Union[_connector_pb2.ConnectorPolicyResponse, _abc.Awaitable[_connector_pb2.ConnectorPolicyResponse]]: ...
 
     @_abc_1.abstractmethod
+    def GetPolicyById(
+        self,
+        request: _connector_pb2.GetPolicyByIdRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorPolicySingleResponse, _abc.Awaitable[_connector_pb2.ConnectorPolicySingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def CreatePolicy(
+        self,
+        request: _connector_pb2.CreatePolicyRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorPolicySingleResponse, _abc.Awaitable[_connector_pb2.ConnectorPolicySingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def UpdatePolicy(
+        self,
+        request: _connector_pb2.UpdatePolicyRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorPolicySingleResponse, _abc.Awaitable[_connector_pb2.ConnectorPolicySingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeletePolicy(
+        self,
+        request: _connector_pb2.DeletePolicyRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorDeletePolicyResponse, _abc.Awaitable[_connector_pb2.ConnectorDeletePolicyResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def GetAllOrganizations(
+        self,
+        request: _connector_pb2.ConnectorGetAllOrganizationsRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorOrganizationResponse, _abc.Awaitable[_connector_pb2.ConnectorOrganizationResponse]]:
+        """Organization Management - connector's own OrganizationService already had full REST CRUD
+        (/api/organization, orphaned/never called from outside connector, same shape as the old
+        OperationalPolicy REST API) -- these RPCs are the real cross-service front door for it, backing
+        the admin-console "Organizations" management screen.
+        """
+
+    @_abc_1.abstractmethod
+    def GetOrganizationById(
+        self,
+        request: _connector_pb2.GetOrganizationByIdRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorOrganizationSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorOrganizationSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def CreateOrganization(
+        self,
+        request: _connector_pb2.CreateOrganizationRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorOrganizationSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorOrganizationSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def UpdateOrganization(
+        self,
+        request: _connector_pb2.UpdateOrganizationRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorOrganizationSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorOrganizationSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeleteOrganization(
+        self,
+        request: _connector_pb2.DeleteOrganizationRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorDeleteOrganizationResponse, _abc.Awaitable[_connector_pb2.ConnectorDeleteOrganizationResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def GetAllTheatres(
+        self,
+        request: _connector_pb2.ConnectorGetAllTheatresRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorTheatreResponse, _abc.Awaitable[_connector_pb2.ConnectorTheatreResponse]]:
+        """Theatre Management - a named operational site within one organization (optional geo zone, the
+        assets stationed there, the users with access to it). Same CRUD shape as Organization above;
+        AssignUserToTheatre/RemoveUserFromTheatre back the many-to-many user<->theatre join table
+        (deliberately not a repeated field on TheatreProtoDTO -- resolved fresh per request, same
+        "don't bake something that can change independently into a cached/long-lived value" reasoning
+        as the refresh-token roles fix).
+        """
+
+    @_abc_1.abstractmethod
+    def GetTheatreById(
+        self,
+        request: _connector_pb2.GetTheatreByIdRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorTheatreSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorTheatreSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def CreateTheatre(
+        self,
+        request: _connector_pb2.CreateTheatreRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorTheatreSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorTheatreSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def UpdateTheatre(
+        self,
+        request: _connector_pb2.UpdateTheatreRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorTheatreSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorTheatreSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeleteTheatre(
+        self,
+        request: _connector_pb2.DeleteTheatreRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorDeleteTheatreResponse, _abc.Awaitable[_connector_pb2.ConnectorDeleteTheatreResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def AssignUserToTheatre(
+        self,
+        request: _connector_pb2.AssignUserToTheatreRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.TheatreAssignmentResponse, _abc.Awaitable[_connector_pb2.TheatreAssignmentResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def RemoveUserFromTheatre(
+        self,
+        request: _connector_pb2.RemoveUserFromTheatreRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.TheatreAssignmentResponse, _abc.Awaitable[_connector_pb2.TheatreAssignmentResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def GetAllEventTriggers(
+        self,
+        request: _connector_pb2.ConnectorGetAllEventTriggersRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorEventTriggerResponse, _abc.Awaitable[_connector_pb2.ConnectorEventTriggerResponse]]:
+        """Event Triggers — "start Application X on event Y" (detection / telemetry threshold / asset
+        status / inbound webhook). CRUD mirrors Theatre's shape; ListRecentDetections and
+        GetLatestTelemetryForAsset back mission-autonomy's polling evaluator (EventTriggerEvaluationService),
+        RecordEventTriggerFired stamps last_fired_at for cooldown bookkeeping after a real fire.
+        """
+
+    @_abc_1.abstractmethod
+    def GetEventTriggerById(
+        self,
+        request: _connector_pb2.GetEventTriggerByIdRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorEventTriggerSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorEventTriggerSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def CreateEventTrigger(
+        self,
+        request: _connector_pb2.CreateEventTriggerRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorEventTriggerSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorEventTriggerSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def UpdateEventTrigger(
+        self,
+        request: _connector_pb2.UpdateEventTriggerRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorEventTriggerSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorEventTriggerSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeleteEventTrigger(
+        self,
+        request: _connector_pb2.DeleteEventTriggerRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorDeleteEventTriggerResponse, _abc.Awaitable[_connector_pb2.ConnectorDeleteEventTriggerResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def RecordEventTriggerFired(
+        self,
+        request: _connector_pb2.RecordEventTriggerFiredRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorEventTriggerSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorEventTriggerSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def RegenerateEventTriggerWebhookToken(
+        self,
+        request: _connector_pb2.RegenerateEventTriggerWebhookTokenRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorEventTriggerSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorEventTriggerSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def GetEventTriggerByWebhookToken(
+        self,
+        request: _connector_pb2.GetEventTriggerByWebhookTokenRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorEventTriggerSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorEventTriggerSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def ListRecentDetections(
+        self,
+        request: _connector_pb2.ListRecentDetectionsRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorDetectionListResponse, _abc.Awaitable[_connector_pb2.ConnectorDetectionListResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def GetLatestTelemetryForAsset(
+        self,
+        request: _connector_pb2.GetLatestTelemetryForAssetRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorTelemetrySingleResponse, _abc.Awaitable[_connector_pb2.ConnectorTelemetrySingleResponse]]: ...
+
+    @_abc_1.abstractmethod
     def GetTechnicalConfigs(
         self,
         request: _connector_pb2.ConnectorGetConfigsRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_connector_pb2.ConnectorConfigResponse, _abc.Awaitable[_connector_pb2.ConnectorConfigResponse]]:
-        """Technical Config - fetched by services for runtime configuration"""
+        """Technical Config - fetched by services for runtime configuration. Read-only GetTechnicalConfigs
+        existed first (services reading their own settings); the CRUD RPCs below back the admin-console
+        "Technical Config" management screen, so the config values these read-only fetches see can
+        actually be changed by an admin without a redeploy.
+        """
+
+    @_abc_1.abstractmethod
+    def GetTechnicalConfigById(
+        self,
+        request: _connector_pb2.GetTechnicalConfigByIdRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorConfigSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorConfigSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def CreateTechnicalConfig(
+        self,
+        request: _connector_pb2.CreateTechnicalConfigRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorConfigSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorConfigSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def UpdateTechnicalConfig(
+        self,
+        request: _connector_pb2.UpdateTechnicalConfigRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorConfigSingleResponse, _abc.Awaitable[_connector_pb2.ConnectorConfigSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeleteTechnicalConfig(
+        self,
+        request: _connector_pb2.DeleteTechnicalConfigRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorDeleteConfigResponse, _abc.Awaitable[_connector_pb2.ConnectorDeleteConfigResponse]]: ...
 
     @_abc_1.abstractmethod
     def PersistApplication(
@@ -476,5 +978,133 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
         context: _ServicerContext,
     ) -> _typing.Union[_connector_pb2.SkillContractResponse, _abc.Awaitable[_connector_pb2.SkillContractResponse]]:
         """Declarative-only prep for future auth/RBAC — see SkillContractProtoDTO.required_permissions."""
+
+    @_abc_1.abstractmethod
+    def AuthenticateUser(
+        self,
+        request: _connector_pb2.AuthenticateUserRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AuthenticateUserResponse, _abc.Awaitable[_connector_pb2.AuthenticateUserResponse]]:
+        """Platform-hosted authentication: verifies email+password against connector's own user store
+        (the system of record) and returns the identity a caller (admin-console) mints a
+        PlatformClaims-shaped auth token from. Connector never issues the token itself — it has no
+        private signing key — it only ever confirms "this is who they say they are, in this org, with
+        these roles."
+        """
+
+    @_abc_1.abstractmethod
+    def CreateUser(
+        self,
+        request: _connector_pb2.CreateUserRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.CreateUserResponse, _abc.Awaitable[_connector_pb2.CreateUserResponse]]:
+        """Admin-driven user creation — the seat check (does this organization's license have room for
+        one more user) happens one layer up, in admin-console's LicenseCoordinator, BEFORE this is
+        ever called; connector itself has no concept of seats, it only persists the user once
+        admin-console has already confirmed one is available.
+        """
+
+    @_abc_1.abstractmethod
+    def ResetPassword(
+        self,
+        request: _connector_pb2.ResetPasswordRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ResetPasswordResponse, _abc.Awaitable[_connector_pb2.ResetPasswordResponse]]:
+        """Admin-driven password reset — see ResetPasswordRequest's doc."""
+
+    @_abc_1.abstractmethod
+    def RecordAuthAuditEvent(
+        self,
+        request: _connector_pb2.RecordAuthAuditEventRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_empty_pb2.Empty, _abc.Awaitable[_empty_pb2.Empty]]:
+        """Durable audit trail for authentication-security-relevant events (login attempts, logout,
+        admin-driven password resets/session revocations) — see the connector-side AuthAuditService's
+        doc. Best-effort from the caller's point of view: a failure to record must never block the
+        actual auth action it's describing, so every call site fires this without letting its outcome
+        affect the real response.
+        """
+
+    @_abc_1.abstractmethod
+    def ListUsers(
+        self,
+        request: _connector_pb2.ListUsersRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ListUsersResponse, _abc.Awaitable[_connector_pb2.ListUsersResponse]]:
+        """Every user in the caller's own organization (a system_admin caller instead gets every user,
+        platform-wide — same bypass-tenant-filtering rule as everywhere else, see
+        TenantScopedRepository#bypassTenantFilter). What the admin console's user-management screen
+        lists against; there was no read path for the users CreateUser produces until this existed.
+        """
+
+    @_abc_1.abstractmethod
+    def GetUserById(
+        self,
+        request: _connector_pb2.GetUserByIdRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AuthenticateUserResponse, _abc.Awaitable[_connector_pb2.AuthenticateUserResponse]]:
+        """Single-user lookup by id — what a "whoami" endpoint resolves an access token's subject claim
+        (a user id, nothing else) into a displayable identity. AuthenticateUser can't serve this: it
+        needs a password and is keyed by email, neither of which a bearer token carries.
+        """
+
+    @_abc_1.abstractmethod
+    def UpsertIdentityProvider(
+        self,
+        request: _connector_pb2.UpsertIdentityProviderRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.IdentityProviderResponse, _abc.Awaitable[_connector_pb2.IdentityProviderResponse]]:
+        """Pluggable SSO — an organization's own OIDC identity provider config (issuer, client
+        credentials, which email domains it owns, how its claims map to platform roles). Local
+        email+password (AuthenticateUser above) stays the default for every org with no config here;
+        this only ever supplements it, never replaces AuthenticateUser for orgs that don't opt in.
+        """
+
+    @_abc_1.abstractmethod
+    def GetIdentityProvider(
+        self,
+        request: _connector_pb2.GetIdentityProviderRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.IdentityProviderResponse, _abc.Awaitable[_connector_pb2.IdentityProviderResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def FindIdentityProviderByEmailDomain(
+        self,
+        request: _connector_pb2.FindIdentityProviderByEmailDomainRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.IdentityProviderResponse, _abc.Awaitable[_connector_pb2.IdentityProviderResponse]]:
+        """Login-screen discovery: given an email address, which org (if any) owns that domain and has
+        SSO configured — admin-console calls this before showing a password field or redirecting to
+        an IdP. Empty response (no error, no provider) means "no SSO for this domain, use local auth."
+        """
+
+    @_abc_1.abstractmethod
+    def FindOidcUser(
+        self,
+        request: _connector_pb2.FindOidcUserRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AuthenticateUserResponse, _abc.Awaitable[_connector_pb2.AuthenticateUserResponse]]:
+        """Existence check by (organization_id, external_subject), used by admin-console to decide
+        whether an SSO login needs a seat reserved before UpsertOidcUser below — same "reserve the
+        seat, THEN create" ordering CreateUser's caller already follows for local users. Empty
+        response (has_errors false, no user) means "not provisioned yet."
+        """
+
+    @_abc_1.abstractmethod
+    def UpsertOidcUser(
+        self,
+        request: _connector_pb2.UpsertOidcUserRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AuthenticateUserResponse, _abc.Awaitable[_connector_pb2.AuthenticateUserResponse]]:
+        """The OIDC counterpart to AuthenticateUser: admin-console has already completed the
+        authorization-code exchange and verified the ID token against the org's own IdP by the time
+        this is called — this only resolves the local user record admin-console mints a
+        PlatformClaims-shaped token from, same as AuthenticateUser does for password logins. Finds by
+        (organization_id, external_subject); auto-provisions on first login (a seat is expected to
+        already be reserved via FindOidcUser+LicenseCoordinator, same division of responsibility as
+        CreateUser — connector has no concept of seats), and re-stamps email/roles from the IdP's
+        claims on every subsequent login so a role change in the customer's own directory takes
+        effect without any action on this platform.
+        """
 
 def add_ConnectorServiceServicer_to_server(servicer: ConnectorServiceServicer, server: _typing.Union[_grpc.Server, _aio.Server]) -> None: ...
