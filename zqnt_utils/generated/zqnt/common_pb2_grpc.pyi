@@ -44,7 +44,6 @@ from asset_pb2 import ASSET_VENDOR_RNS as ASSET_VENDOR_RNS
 from asset_pb2 import ASSET_VENDOR_ROS as ASSET_VENDOR_ROS
 from asset_pb2 import ASSET_VENDOR_RTMP_RTSP as ASSET_VENDOR_RTMP_RTSP
 from asset_pb2 import ASSET_VENDOR_SAPIENT as ASSET_VENDOR_SAPIENT
-from asset_pb2 import ASSET_VENDOR_ZQNT as ASSET_VENDOR_ZQNT
 from asset_pb2 import AssetAirConditionerStateEnum as AssetAirConditionerStateEnum
 from asset_pb2 import AssetConnection as AssetConnection
 from asset_pb2 import AssetCoverStateEnum as AssetCoverStateEnum

@@ -226,7 +226,7 @@ LIVE_STREAM_TYPE_RTSP: LiveStreamTypeEnum
 LIVE_STREAM_TYPE_WEBRTC: LiveStreamTypeEnum
 
 class AssetProtoDTO(_message.Message):
-    __slots__ = ("id", "sn", "name", "type", "vendor", "connection", "system_connection_string", "model", "external_device_type", "external_device_sub_type", "organization", "external_id", "payloads", "sub_assets", "created_at", "modified_at", "modified_from", "live_stream_push_url", "live_stream_pull_url", "theatre_id")
+    __slots__ = ("id", "sn", "name", "type", "vendor", "connection", "system_connection_string", "model", "external_device_type", "external_device_sub_type", "organization", "external_id", "payloads", "sub_assets", "created_at", "modified_at", "modified_from", "live_stream_push_url", "live_stream_pull_url")
     ID_FIELD_NUMBER: _ClassVar[int]
     SN_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -246,7 +246,6 @@ class AssetProtoDTO(_message.Message):
     MODIFIED_FROM_FIELD_NUMBER: _ClassVar[int]
     LIVE_STREAM_PUSH_URL_FIELD_NUMBER: _ClassVar[int]
     LIVE_STREAM_PULL_URL_FIELD_NUMBER: _ClassVar[int]
-    THEATRE_ID_FIELD_NUMBER: _ClassVar[int]
     id: str
     sn: str
     name: str
@@ -266,8 +265,7 @@ class AssetProtoDTO(_message.Message):
     modified_from: str
     live_stream_push_url: str
     live_stream_pull_url: str
-    theatre_id: str
-    def __init__(self, id: _Optional[str] = ..., sn: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[AssetTypeEnum, str]] = ..., vendor: _Optional[_Union[AssetVendor, str]] = ..., connection: _Optional[_Union[AssetConnection, str]] = ..., system_connection_string: _Optional[str] = ..., model: _Optional[str] = ..., external_device_type: _Optional[str] = ..., external_device_sub_type: _Optional[str] = ..., organization: _Optional[str] = ..., external_id: _Optional[str] = ..., payloads: _Optional[_Iterable[_Union[AssetPayloadProtoDTO, _Mapping]]] = ..., sub_assets: _Optional[_Iterable[_Union[SubAssetProtoDTO, _Mapping]]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_from: _Optional[str] = ..., live_stream_push_url: _Optional[str] = ..., live_stream_pull_url: _Optional[str] = ..., theatre_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., sn: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[AssetTypeEnum, str]] = ..., vendor: _Optional[_Union[AssetVendor, str]] = ..., connection: _Optional[_Union[AssetConnection, str]] = ..., system_connection_string: _Optional[str] = ..., model: _Optional[str] = ..., external_device_type: _Optional[str] = ..., external_device_sub_type: _Optional[str] = ..., organization: _Optional[str] = ..., external_id: _Optional[str] = ..., payloads: _Optional[_Iterable[_Union[AssetPayloadProtoDTO, _Mapping]]] = ..., sub_assets: _Optional[_Iterable[_Union[SubAssetProtoDTO, _Mapping]]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_from: _Optional[str] = ..., live_stream_push_url: _Optional[str] = ..., live_stream_pull_url: _Optional[str] = ...) -> None: ...
 
 class AssetPropertyProtoDTO(_message.Message):
     __slots__ = ("key", "value", "description", "created_at", "modified_at")
@@ -364,17 +362,13 @@ class AssetPayloadProtoDTO(_message.Message):
     def __init__(self, id: _Optional[str] = ..., external_id: _Optional[str] = ..., external_type: _Optional[str] = ..., slot_index: _Optional[int] = ..., name: _Optional[str] = ..., serial_number: _Optional[str] = ..., kind: _Optional[str] = ..., vendor: _Optional[str] = ..., model: _Optional[str] = ..., firmware_version: _Optional[str] = ..., library_version: _Optional[str] = ..., state_json: _Optional[str] = ..., active: bool = ..., last_seen_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_from: _Optional[str] = ..., payload_ref: _Optional[str] = ...) -> None: ...
 
 class OrganizationProtoDTO(_message.Message):
-    __slots__ = ("id", "name", "description", "assets", "created_at", "modified_at")
+    __slots__ = ("id", "name", "description", "assets")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
     ASSETS_FIELD_NUMBER: _ClassVar[int]
-    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
-    MODIFIED_AT_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     description: str
     assets: _containers.RepeatedScalarFieldContainer[str]
-    created_at: _timestamp_pb2.Timestamp
-    modified_at: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., assets: _Optional[_Iterable[str]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., assets: _Optional[_Iterable[str]] = ...) -> None: ...
