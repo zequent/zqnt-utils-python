@@ -34,7 +34,9 @@ class CacheKeys(Enum):
     # just TELEMETRY keyed by the sub-asset's own SN (see edge_ai/telemetry_watcher.py's docstring).
     TELEMETRY = "zqnt:telemetry:{sn}"
     ASSET_LINK_TELEMETRY = "zqnt:asset-link-telemetry:"
-    ASSET_EXTENDED_TELEMTRY = "zqnt:asset-extended-telemetry:"  # intentional typo – matches Java
+    ASSET_EXTENDED_TELEMTRY = (
+        "zqnt:asset-extended-telemetry:"  # intentional typo – matches Java
+    )
     ASSET_MANUAL_CONTROL_STATE = "zqnt:drc-state:"
     ASSET_LIVE_STREAM_STATE = "zqnt:live-stream-state:"
     ASSET_SERVICES_REPLY_WAIT = "zqnt:asset-task-reply-wait:{tid}:{method}"
