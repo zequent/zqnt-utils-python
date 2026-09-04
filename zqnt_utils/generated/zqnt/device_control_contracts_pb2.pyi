@@ -45,17 +45,6 @@ class CapabilityTargetType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     CAPABILITY_TARGET_TYPE_SUB_ASSET: _ClassVar[CapabilityTargetType]
     CAPABILITY_TARGET_TYPE_PAYLOAD: _ClassVar[CapabilityTargetType]
     CAPABILITY_TARGET_TYPE_COMPONENT: _ClassVar[CapabilityTargetType]
-
-class CapabilitySourceProto(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = ()
-    CAPABILITY_SOURCE_UNSPECIFIED: _ClassVar[CapabilitySourceProto]
-    CAPABILITY_SOURCE_BUILT_IN: _ClassVar[CapabilitySourceProto]
-    CAPABILITY_SOURCE_EDGE_ADAPTER: _ClassVar[CapabilitySourceProto]
-    CAPABILITY_SOURCE_RUNTIME: _ClassVar[CapabilitySourceProto]
-    CAPABILITY_SOURCE_USER: _ClassVar[CapabilitySourceProto]
-    CAPABILITY_SOURCE_APPLICATION: _ClassVar[CapabilitySourceProto]
-    CAPABILITY_SOURCE_INTEGRATION: _ClassVar[CapabilitySourceProto]
-    CAPABILITY_SOURCE_AI_GENERATED: _ClassVar[CapabilitySourceProto]
 LIVE_DATA_COMMAND_START_TELEMETRY_STREAM: LiveDataServiceCommand
 LIVE_DATA_COMMAND_GET_TELEMETRY_DATA: LiveDataServiceCommand
 LIVE_DATA_COMMAND_STOP_TELEMETRY_STREAM: LiveDataServiceCommand
@@ -75,14 +64,6 @@ CAPABILITY_TARGET_TYPE_ASSET: CapabilityTargetType
 CAPABILITY_TARGET_TYPE_SUB_ASSET: CapabilityTargetType
 CAPABILITY_TARGET_TYPE_PAYLOAD: CapabilityTargetType
 CAPABILITY_TARGET_TYPE_COMPONENT: CapabilityTargetType
-CAPABILITY_SOURCE_UNSPECIFIED: CapabilitySourceProto
-CAPABILITY_SOURCE_BUILT_IN: CapabilitySourceProto
-CAPABILITY_SOURCE_EDGE_ADAPTER: CapabilitySourceProto
-CAPABILITY_SOURCE_RUNTIME: CapabilitySourceProto
-CAPABILITY_SOURCE_USER: CapabilitySourceProto
-CAPABILITY_SOURCE_APPLICATION: CapabilitySourceProto
-CAPABILITY_SOURCE_INTEGRATION: CapabilitySourceProto
-CAPABILITY_SOURCE_AI_GENERATED: CapabilitySourceProto
 
 class CommandResponse(_message.Message):
     __slots__ = ("has_errors", "meta", "empty", "error", "progress", "live_stream_start_response")
@@ -138,38 +119,8 @@ class CapabilityTarget(_message.Message):
     target_ref: str
     def __init__(self, type: _Optional[_Union[CapabilityTargetType, str]] = ..., target_ref: _Optional[str] = ...) -> None: ...
 
-class CapabilityErrorProto(_message.Message):
-    __slots__ = ("code", "description")
-    CODE_FIELD_NUMBER: _ClassVar[int]
-    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
-    code: str
-    description: str
-    def __init__(self, code: _Optional[str] = ..., description: _Optional[str] = ...) -> None: ...
-
-class CapabilityEventProto(_message.Message):
-    __slots__ = ("name", "description", "payload_schema")
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
-    PAYLOAD_SCHEMA_FIELD_NUMBER: _ClassVar[int]
-    name: str
-    description: str
-    payload_schema: _struct_pb2.Struct
-    def __init__(self, name: _Optional[str] = ..., description: _Optional[str] = ..., payload_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
-
-class CapabilityRequirementsProto(_message.Message):
-    __slots__ = ("asset_types", "payloads", "runtime_features", "properties")
-    ASSET_TYPES_FIELD_NUMBER: _ClassVar[int]
-    PAYLOADS_FIELD_NUMBER: _ClassVar[int]
-    RUNTIME_FEATURES_FIELD_NUMBER: _ClassVar[int]
-    PROPERTIES_FIELD_NUMBER: _ClassVar[int]
-    asset_types: _containers.RepeatedScalarFieldContainer[str]
-    payloads: _containers.RepeatedScalarFieldContainer[str]
-    runtime_features: _containers.RepeatedScalarFieldContainer[str]
-    properties: _struct_pb2.Struct
-    def __init__(self, asset_types: _Optional[_Iterable[str]] = ..., payloads: _Optional[_Iterable[str]] = ..., runtime_features: _Optional[_Iterable[str]] = ..., properties: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
-
 class Capability(_message.Message):
-    __slots__ = ("command_id", "display_name", "unavailable_reason", "metadata", "state", "constraints", "description", "input_schema", "output_schema", "target", "schema_version", "errors", "events", "requirements", "skill_id", "source", "provider")
+    __slots__ = ("command_id", "display_name", "unavailable_reason", "metadata", "state", "constraints", "description", "input_schema", "output_schema", "target", "schema_version")
     class MetadataEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -188,12 +139,6 @@ class Capability(_message.Message):
     OUTPUT_SCHEMA_FIELD_NUMBER: _ClassVar[int]
     TARGET_FIELD_NUMBER: _ClassVar[int]
     SCHEMA_VERSION_FIELD_NUMBER: _ClassVar[int]
-    ERRORS_FIELD_NUMBER: _ClassVar[int]
-    EVENTS_FIELD_NUMBER: _ClassVar[int]
-    REQUIREMENTS_FIELD_NUMBER: _ClassVar[int]
-    SKILL_ID_FIELD_NUMBER: _ClassVar[int]
-    SOURCE_FIELD_NUMBER: _ClassVar[int]
-    PROVIDER_FIELD_NUMBER: _ClassVar[int]
     command_id: str
     display_name: str
     unavailable_reason: str
@@ -205,13 +150,7 @@ class Capability(_message.Message):
     output_schema: _struct_pb2.Struct
     target: CapabilityTarget
     schema_version: str
-    errors: _containers.RepeatedCompositeFieldContainer[CapabilityErrorProto]
-    events: _containers.RepeatedCompositeFieldContainer[CapabilityEventProto]
-    requirements: CapabilityRequirementsProto
-    skill_id: str
-    source: CapabilitySourceProto
-    provider: str
-    def __init__(self, command_id: _Optional[str] = ..., display_name: _Optional[str] = ..., unavailable_reason: _Optional[str] = ..., metadata: _Optional[_Mapping[str, str]] = ..., state: _Optional[_Union[CapabilityState, str]] = ..., constraints: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., description: _Optional[str] = ..., input_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., output_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., target: _Optional[_Union[CapabilityTarget, _Mapping]] = ..., schema_version: _Optional[str] = ..., errors: _Optional[_Iterable[_Union[CapabilityErrorProto, _Mapping]]] = ..., events: _Optional[_Iterable[_Union[CapabilityEventProto, _Mapping]]] = ..., requirements: _Optional[_Union[CapabilityRequirementsProto, _Mapping]] = ..., skill_id: _Optional[str] = ..., source: _Optional[_Union[CapabilitySourceProto, str]] = ..., provider: _Optional[str] = ...) -> None: ...
+    def __init__(self, command_id: _Optional[str] = ..., display_name: _Optional[str] = ..., unavailable_reason: _Optional[str] = ..., metadata: _Optional[_Mapping[str, str]] = ..., state: _Optional[_Union[CapabilityState, str]] = ..., constraints: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., description: _Optional[str] = ..., input_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., output_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., target: _Optional[_Union[CapabilityTarget, _Mapping]] = ..., schema_version: _Optional[str] = ...) -> None: ...
 
 class AssetCapabilities(_message.Message):
     __slots__ = ("asset_sn", "asset_type", "capabilities", "timestamp", "valid_until", "revision", "snapshot_state")

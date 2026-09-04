@@ -6,7 +6,6 @@ isort:skip_file
 from collections import abc as _abc
 from grpc import aio as _aio
 import abc as _abc_1
-from . import capability_execution_contracts_pb2 as _capability_execution_contracts_pb2
 import grpc as _grpc
 from . import mission_autonomy_contracts_pb2 as _mission_autonomy_contracts_pb2
 from . import mission_autonomy_pb2 as _mission_autonomy_pb2
@@ -29,32 +28,24 @@ GRPC_GENERATED_VERSION: str
 GRPC_VERSION: str
 
 class MissionAutonomyServiceStub:
-    """MissionAutonomyService manages applications (skill packages), skill executions, schedules and decisions."""
+    """MissionAutonomyService provides RPC endpoints for managing missions, tasks,
+    schedulers, and mission autonomy.
+    """
 
     @_typing.overload
     def __new__(cls, channel: _grpc.Channel) -> _Self: ...
     @_typing.overload
     def __new__(cls, channel: _aio.Channel) -> MissionAutonomyServiceAsyncStub: ...
-    UpsertApplication: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.UpsertApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]
-    """Mission-free application administration. An Application is a deployable package of Skills
-    (e.g. "takeoff", "goto", "look-at" — the simplest Application is one Skill wrapping one command).
-    """
-    GetApplication: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]
-    ListApplications: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListApplicationsRequest, _capability_execution_contracts_pb2.ApplicationListResponse]
-    DeleteApplication: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.DeleteApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]
-    GetApplicationEnvironments: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationEnvironmentsRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]
-    PromoteApplicationVersion: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.PromoteApplicationVersionRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]
-    CreateSkillExecution: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.CreateSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
-    """Unified execution API. ExecuteSkill is the low-friction entry point for simple commands."""
-    ExecuteSkill: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ExecuteSkillRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
-    GetSkillExecution: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
-    ListSkillExecutions: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListSkillExecutionsRequest, _capability_execution_contracts_pb2.SkillExecutionListResponse]
-    StartSkillExecution: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SkillExecutionLifecycleRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
-    PauseSkillExecution: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SkillExecutionLifecycleRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
-    ResumeSkillExecution: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SkillExecutionLifecycleRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
-    CancelSkillExecution: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SkillExecutionLifecycleRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
-    SignalSkillExecution: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SignalSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
-    ResolveExecutionConfig: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ResolveExecutionConfigRequest, _capability_execution_contracts_pb2.ResolveExecutionConfigResponse]
+    GetMission: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]
+    CreateMission: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]
+    UpdateMission: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]
+    DeleteMission: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]
+    UploadMissionNfzZones: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UploadMissionNfzZonesRequest, _mission_autonomy_contracts_pb2.MissionResponse]
+    GetTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    GetTaskByFlightId: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetTaskByFlightIdRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    CreateTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    UpdateTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    DeleteTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]
     ListSchedulers: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.ListSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     GetScheduler: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     CreateScheduler: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
@@ -62,34 +53,33 @@ class MissionAutonomyServiceStub:
     DeleteScheduler: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     CreateSchedulers: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     DeleteSchedulers: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
+    DeleteSchedulersByTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersByTaskRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
+    StartTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.TaskLifecycleRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    StopTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.TaskLifecycleRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    PauseTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.TaskLifecycleRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    ResumeTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.TaskLifecycleRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    EvaluateAutonomy: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_pb2.EvaluateAutonomyRequest, _mission_autonomy_pb2.AutonomyEvaluationResponse]
+    """Autonomy Layer - resolve dynamic configs and evaluate mission/task decisions."""
     EvaluateDetection: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_pb2.EvaluateDetectionRequest, _mission_autonomy_pb2.DecisionResponse]
     """Decision Engine - evaluate a detection event and return a tactical decision"""
 
 @_typing.type_check_only
 class MissionAutonomyServiceAsyncStub(MissionAutonomyServiceStub):
-    """MissionAutonomyService manages applications (skill packages), skill executions, schedules and decisions."""
+    """MissionAutonomyService provides RPC endpoints for managing missions, tasks,
+    schedulers, and mission autonomy.
+    """
 
     def __init__(self, channel: _aio.Channel) -> None: ...
-    UpsertApplication: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.UpsertApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]  # type: ignore[assignment]
-    """Mission-free application administration. An Application is a deployable package of Skills
-    (e.g. "takeoff", "goto", "look-at" — the simplest Application is one Skill wrapping one command).
-    """
-    GetApplication: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]  # type: ignore[assignment]
-    ListApplications: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListApplicationsRequest, _capability_execution_contracts_pb2.ApplicationListResponse]  # type: ignore[assignment]
-    DeleteApplication: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.DeleteApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]  # type: ignore[assignment]
-    GetApplicationEnvironments: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationEnvironmentsRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]  # type: ignore[assignment]
-    PromoteApplicationVersion: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.PromoteApplicationVersionRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]  # type: ignore[assignment]
-    CreateSkillExecution: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.CreateSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
-    """Unified execution API. ExecuteSkill is the low-friction entry point for simple commands."""
-    ExecuteSkill: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ExecuteSkillRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
-    GetSkillExecution: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
-    ListSkillExecutions: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListSkillExecutionsRequest, _capability_execution_contracts_pb2.SkillExecutionListResponse]  # type: ignore[assignment]
-    StartSkillExecution: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SkillExecutionLifecycleRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
-    PauseSkillExecution: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SkillExecutionLifecycleRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
-    ResumeSkillExecution: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SkillExecutionLifecycleRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
-    CancelSkillExecution: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SkillExecutionLifecycleRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
-    SignalSkillExecution: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SignalSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
-    ResolveExecutionConfig: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ResolveExecutionConfigRequest, _capability_execution_contracts_pb2.ResolveExecutionConfigResponse]  # type: ignore[assignment]
+    GetMission: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]  # type: ignore[assignment]
+    CreateMission: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]  # type: ignore[assignment]
+    UpdateMission: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]  # type: ignore[assignment]
+    DeleteMission: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]  # type: ignore[assignment]
+    UploadMissionNfzZones: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UploadMissionNfzZonesRequest, _mission_autonomy_contracts_pb2.MissionResponse]  # type: ignore[assignment]
+    GetTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    GetTaskByFlightId: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetTaskByFlightIdRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    CreateTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    UpdateTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    DeleteTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
     ListSchedulers: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.ListSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     GetScheduler: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     CreateScheduler: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
@@ -97,127 +87,90 @@ class MissionAutonomyServiceAsyncStub(MissionAutonomyServiceStub):
     DeleteScheduler: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     CreateSchedulers: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     DeleteSchedulers: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
+    DeleteSchedulersByTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersByTaskRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
+    StartTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.TaskLifecycleRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    StopTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.TaskLifecycleRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    PauseTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.TaskLifecycleRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    ResumeTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.TaskLifecycleRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    EvaluateAutonomy: _aio.UnaryUnaryMultiCallable[_mission_autonomy_pb2.EvaluateAutonomyRequest, _mission_autonomy_pb2.AutonomyEvaluationResponse]  # type: ignore[assignment]
+    """Autonomy Layer - resolve dynamic configs and evaluate mission/task decisions."""
     EvaluateDetection: _aio.UnaryUnaryMultiCallable[_mission_autonomy_pb2.EvaluateDetectionRequest, _mission_autonomy_pb2.DecisionResponse]  # type: ignore[assignment]
     """Decision Engine - evaluate a detection event and return a tactical decision"""
 
 class MissionAutonomyServiceServicer(metaclass=_abc_1.ABCMeta):
-    """MissionAutonomyService manages applications (skill packages), skill executions, schedules and decisions."""
+    """MissionAutonomyService provides RPC endpoints for managing missions, tasks,
+    schedulers, and mission autonomy.
+    """
 
     @_abc_1.abstractmethod
-    def UpsertApplication(
+    def GetMission(
         self,
-        request: _capability_execution_contracts_pb2.UpsertApplicationRequest,
+        request: _mission_autonomy_contracts_pb2.GetMissionRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationResponse]]:
-        """Mission-free application administration. An Application is a deployable package of Skills
-        (e.g. "takeoff", "goto", "look-at" — the simplest Application is one Skill wrapping one command).
-        """
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.MissionResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.MissionResponse]]: ...
 
     @_abc_1.abstractmethod
-    def GetApplication(
+    def CreateMission(
         self,
-        request: _capability_execution_contracts_pb2.GetApplicationRequest,
+        request: _mission_autonomy_contracts_pb2.CreateMissionRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationResponse]]: ...
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.MissionResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.MissionResponse]]: ...
 
     @_abc_1.abstractmethod
-    def ListApplications(
+    def UpdateMission(
         self,
-        request: _capability_execution_contracts_pb2.ListApplicationsRequest,
+        request: _mission_autonomy_contracts_pb2.UpdateMissionRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationListResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationListResponse]]: ...
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.MissionResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.MissionResponse]]: ...
 
     @_abc_1.abstractmethod
-    def DeleteApplication(
+    def DeleteMission(
         self,
-        request: _capability_execution_contracts_pb2.DeleteApplicationRequest,
+        request: _mission_autonomy_contracts_pb2.DeleteMissionRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationResponse]]: ...
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.MissionResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.MissionResponse]]: ...
 
     @_abc_1.abstractmethod
-    def GetApplicationEnvironments(
+    def UploadMissionNfzZones(
         self,
-        request: _capability_execution_contracts_pb2.GetApplicationEnvironmentsRequest,
+        request: _mission_autonomy_contracts_pb2.UploadMissionNfzZonesRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationEnvironmentsResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]]: ...
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.MissionResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.MissionResponse]]: ...
 
     @_abc_1.abstractmethod
-    def PromoteApplicationVersion(
+    def GetTask(
         self,
-        request: _capability_execution_contracts_pb2.PromoteApplicationVersionRequest,
+        request: _mission_autonomy_contracts_pb2.GetTaskRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationEnvironmentsResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]]: ...
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
 
     @_abc_1.abstractmethod
-    def CreateSkillExecution(
+    def GetTaskByFlightId(
         self,
-        request: _capability_execution_contracts_pb2.CreateSkillExecutionRequest,
+        request: _mission_autonomy_contracts_pb2.GetTaskByFlightIdRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionResponse]]:
-        """Unified execution API. ExecuteSkill is the low-friction entry point for simple commands."""
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
 
     @_abc_1.abstractmethod
-    def ExecuteSkill(
+    def CreateTask(
         self,
-        request: _capability_execution_contracts_pb2.ExecuteSkillRequest,
+        request: _mission_autonomy_contracts_pb2.CreateTaskRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionResponse]]: ...
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
 
     @_abc_1.abstractmethod
-    def GetSkillExecution(
+    def UpdateTask(
         self,
-        request: _capability_execution_contracts_pb2.GetSkillExecutionRequest,
+        request: _mission_autonomy_contracts_pb2.UpdateTaskRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionResponse]]: ...
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
 
     @_abc_1.abstractmethod
-    def ListSkillExecutions(
+    def DeleteTask(
         self,
-        request: _capability_execution_contracts_pb2.ListSkillExecutionsRequest,
+        request: _mission_autonomy_contracts_pb2.DeleteTaskRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionListResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionListResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def StartSkillExecution(
-        self,
-        request: _capability_execution_contracts_pb2.SkillExecutionLifecycleRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def PauseSkillExecution(
-        self,
-        request: _capability_execution_contracts_pb2.SkillExecutionLifecycleRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def ResumeSkillExecution(
-        self,
-        request: _capability_execution_contracts_pb2.SkillExecutionLifecycleRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def CancelSkillExecution(
-        self,
-        request: _capability_execution_contracts_pb2.SkillExecutionLifecycleRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def SignalSkillExecution(
-        self,
-        request: _capability_execution_contracts_pb2.SignalSkillExecutionRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def ResolveExecutionConfig(
-        self,
-        request: _capability_execution_contracts_pb2.ResolveExecutionConfigRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ResolveExecutionConfigResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ResolveExecutionConfigResponse]]: ...
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
 
     @_abc_1.abstractmethod
     def ListSchedulers(
@@ -267,6 +220,49 @@ class MissionAutonomyServiceServicer(metaclass=_abc_1.ABCMeta):
         request: _mission_autonomy_contracts_pb2.DeleteSchedulersRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_mission_autonomy_contracts_pb2.SchedulerResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.SchedulerResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeleteSchedulersByTask(
+        self,
+        request: _mission_autonomy_contracts_pb2.DeleteSchedulersByTaskRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.SchedulerResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.SchedulerResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def StartTask(
+        self,
+        request: _mission_autonomy_contracts_pb2.TaskLifecycleRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def StopTask(
+        self,
+        request: _mission_autonomy_contracts_pb2.TaskLifecycleRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def PauseTask(
+        self,
+        request: _mission_autonomy_contracts_pb2.TaskLifecycleRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def ResumeTask(
+        self,
+        request: _mission_autonomy_contracts_pb2.TaskLifecycleRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def EvaluateAutonomy(
+        self,
+        request: _mission_autonomy_pb2.EvaluateAutonomyRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_pb2.AutonomyEvaluationResponse, _abc.Awaitable[_mission_autonomy_pb2.AutonomyEvaluationResponse]]:
+        """Autonomy Layer - resolve dynamic configs and evaluate mission/task decisions."""
 
     @_abc_1.abstractmethod
     def EvaluateDetection(

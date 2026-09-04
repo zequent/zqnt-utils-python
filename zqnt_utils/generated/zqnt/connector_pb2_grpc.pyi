@@ -4,11 +4,9 @@ isort:skip_file
 """
 
 from collections import abc as _abc
-from google.protobuf import empty_pb2 as _empty_pb2
 from grpc import aio as _aio
 import abc as _abc_1
 from . import base_pb2 as _base_pb2
-from . import capability_execution_contracts_pb2 as _capability_execution_contracts_pb2
 from . import connector_pb2 as _connector_pb2
 from . import events_pb2 as _events_pb2
 import grpc as _grpc
@@ -51,20 +49,25 @@ class ConnectorServiceStub:
     UpsertAssetPayload: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpsertAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]
     ListAssetPayloads: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListAssetPayloadsRequest, _connector_pb2.AssetPayloadListResponse]
     DeleteAssetPayload: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]
-    SetAssetProperty: _grpc.UnaryUnaryMultiCallable[_connector_pb2.SetAssetPropertyRequest, _connector_pb2.AssetPropertyResponse]
-    """Dynamic per-asset property bag (system-integrator metadata) — free key/value pairs, no schema
-    change needed to add a new one. SetAssetProperty upserts by (asset, key).
-    """
-    ListAssetProperties: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListAssetPropertiesRequest, _connector_pb2.AssetPropertyListResponse]
-    DeleteAssetProperty: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteAssetPropertyRequest, _connector_pb2.AssetPropertyResponse]
     GetOrganization: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetOrganizationRequest, _connector_pb2.ConnectorResponse]
-    ListSchedulers: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.ListSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
+    GetMission: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]
+    CreateMission: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]
+    UpdateMission: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]
+    DeleteMission: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]
+    UploadMissionNfzZones: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UploadMissionNfzZonesRequest, _mission_autonomy_contracts_pb2.MissionResponse]
+    GetTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    GetTaskByFlightId: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetTaskByFlightIdRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    GetWaypointsByTaskId: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetWaypointsByTaskIdRequest, _mission_autonomy_contracts_pb2.WaypointsResponse]
+    CreateTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    UpdateTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]
+    DeleteTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]
     GetScheduler: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     CreateScheduler: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     CreateSchedulers: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     UpdateScheduler: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     DeleteScheduler: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     DeleteSchedulers: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
+    DeleteSchedulersByTask: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersByTaskRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     StoreTelemetryBatch: _grpc.StreamUnaryMultiCallable[_connector_pb2.ConnectorStoreTelemetryRequest, _connector_pb2.ConnectorResponse]
     """Telemetry Storage - batch processing from live-data service"""
     StoreDetectionBatch: _grpc.StreamUnaryMultiCallable[_connector_pb2.ConnectorStoreDetectionRequest, _connector_pb2.ConnectorResponse]
@@ -76,27 +79,6 @@ class ConnectorServiceStub:
     GetAllActivePolicies: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllPoliciesRequest, _connector_pb2.ConnectorPolicyResponse]
     GetTechnicalConfigs: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetConfigsRequest, _connector_pb2.ConnectorConfigResponse]
     """Technical Config - fetched by services for runtime configuration"""
-    PersistApplication: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.UpsertApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]
-    """Application/Skill domain persistence. Mission Autonomy is the orchestration consumer."""
-    GetPersistedApplication: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]
-    ListPersistedApplications: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListApplicationsRequest, _capability_execution_contracts_pb2.ApplicationListResponse]
-    DeletePersistedApplication: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.DeleteApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]
-    GetApplicationEnvironmentPointers: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationEnvironmentsRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]
-    PromoteApplicationVersion: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.PromoteApplicationVersionRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]
-    PersistSkillExecution: _grpc.UnaryUnaryMultiCallable[_connector_pb2.PersistSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
-    GetPersistedSkillExecution: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
-    ListPersistedSkillExecutions: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListSkillExecutionsRequest, _capability_execution_contracts_pb2.SkillExecutionListResponse]
-    AppendSkillExecutionEvent: _grpc.UnaryUnaryMultiCallable[_connector_pb2.AppendSkillExecutionEventRequest, _empty_pb2.Empty]
-    ObserveSkillContract: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpsertSkillContractRequest, _connector_pb2.SkillContractResponse]
-    """Skill Registry: a persisted, de-duplicated view of every Skill/Capability contract ever
-    observed from a connected asset, independent of which devices are currently online. Admin
-    Console auto-upserts into this by (command_id, schema_version) whenever it aggregates a live
-    capability snapshot; status is the one field a system integrator edits directly.
-    """
-    ListSkillContracts: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListSkillContractsRequest, _connector_pb2.SkillContractListResponse]
-    SetSkillContractStatus: _grpc.UnaryUnaryMultiCallable[_connector_pb2.SetSkillContractStatusRequest, _connector_pb2.SkillContractResponse]
-    SetSkillContractPermissions: _grpc.UnaryUnaryMultiCallable[_connector_pb2.SetSkillContractPermissionsRequest, _connector_pb2.SkillContractResponse]
-    """Declarative-only prep for future auth/RBAC — see SkillContractProtoDTO.required_permissions."""
 
 @_typing.type_check_only
 class ConnectorServiceAsyncStub(ConnectorServiceStub):
@@ -116,20 +98,25 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     UpsertAssetPayload: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpsertAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]  # type: ignore[assignment]
     ListAssetPayloads: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListAssetPayloadsRequest, _connector_pb2.AssetPayloadListResponse]  # type: ignore[assignment]
     DeleteAssetPayload: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]  # type: ignore[assignment]
-    SetAssetProperty: _aio.UnaryUnaryMultiCallable[_connector_pb2.SetAssetPropertyRequest, _connector_pb2.AssetPropertyResponse]  # type: ignore[assignment]
-    """Dynamic per-asset property bag (system-integrator metadata) — free key/value pairs, no schema
-    change needed to add a new one. SetAssetProperty upserts by (asset, key).
-    """
-    ListAssetProperties: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListAssetPropertiesRequest, _connector_pb2.AssetPropertyListResponse]  # type: ignore[assignment]
-    DeleteAssetProperty: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteAssetPropertyRequest, _connector_pb2.AssetPropertyResponse]  # type: ignore[assignment]
     GetOrganization: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetOrganizationRequest, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
-    ListSchedulers: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.ListSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
+    GetMission: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]  # type: ignore[assignment]
+    CreateMission: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]  # type: ignore[assignment]
+    UpdateMission: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]  # type: ignore[assignment]
+    DeleteMission: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteMissionRequest, _mission_autonomy_contracts_pb2.MissionResponse]  # type: ignore[assignment]
+    UploadMissionNfzZones: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UploadMissionNfzZonesRequest, _mission_autonomy_contracts_pb2.MissionResponse]  # type: ignore[assignment]
+    GetTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    GetTaskByFlightId: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetTaskByFlightIdRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    GetWaypointsByTaskId: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetWaypointsByTaskIdRequest, _mission_autonomy_contracts_pb2.WaypointsResponse]  # type: ignore[assignment]
+    CreateTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    UpdateTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
+    DeleteTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteTaskRequest, _mission_autonomy_contracts_pb2.TaskResponse]  # type: ignore[assignment]
     GetScheduler: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.GetSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     CreateScheduler: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     CreateSchedulers: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.CreateSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     UpdateScheduler: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     DeleteScheduler: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     DeleteSchedulers: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
+    DeleteSchedulersByTask: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersByTaskRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     StoreTelemetryBatch: _aio.StreamUnaryMultiCallable[_connector_pb2.ConnectorStoreTelemetryRequest, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
     """Telemetry Storage - batch processing from live-data service"""
     StoreDetectionBatch: _aio.StreamUnaryMultiCallable[_connector_pb2.ConnectorStoreDetectionRequest, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
@@ -141,27 +128,6 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     GetAllActivePolicies: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllPoliciesRequest, _connector_pb2.ConnectorPolicyResponse]  # type: ignore[assignment]
     GetTechnicalConfigs: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetConfigsRequest, _connector_pb2.ConnectorConfigResponse]  # type: ignore[assignment]
     """Technical Config - fetched by services for runtime configuration"""
-    PersistApplication: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.UpsertApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]  # type: ignore[assignment]
-    """Application/Skill domain persistence. Mission Autonomy is the orchestration consumer."""
-    GetPersistedApplication: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]  # type: ignore[assignment]
-    ListPersistedApplications: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListApplicationsRequest, _capability_execution_contracts_pb2.ApplicationListResponse]  # type: ignore[assignment]
-    DeletePersistedApplication: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.DeleteApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]  # type: ignore[assignment]
-    GetApplicationEnvironmentPointers: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationEnvironmentsRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]  # type: ignore[assignment]
-    PromoteApplicationVersion: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.PromoteApplicationVersionRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]  # type: ignore[assignment]
-    PersistSkillExecution: _aio.UnaryUnaryMultiCallable[_connector_pb2.PersistSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
-    GetPersistedSkillExecution: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
-    ListPersistedSkillExecutions: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListSkillExecutionsRequest, _capability_execution_contracts_pb2.SkillExecutionListResponse]  # type: ignore[assignment]
-    AppendSkillExecutionEvent: _aio.UnaryUnaryMultiCallable[_connector_pb2.AppendSkillExecutionEventRequest, _empty_pb2.Empty]  # type: ignore[assignment]
-    ObserveSkillContract: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpsertSkillContractRequest, _connector_pb2.SkillContractResponse]  # type: ignore[assignment]
-    """Skill Registry: a persisted, de-duplicated view of every Skill/Capability contract ever
-    observed from a connected asset, independent of which devices are currently online. Admin
-    Console auto-upserts into this by (command_id, schema_version) whenever it aggregates a live
-    capability snapshot; status is the one field a system integrator edits directly.
-    """
-    ListSkillContracts: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListSkillContractsRequest, _connector_pb2.SkillContractListResponse]  # type: ignore[assignment]
-    SetSkillContractStatus: _aio.UnaryUnaryMultiCallable[_connector_pb2.SetSkillContractStatusRequest, _connector_pb2.SkillContractResponse]  # type: ignore[assignment]
-    SetSkillContractPermissions: _aio.UnaryUnaryMultiCallable[_connector_pb2.SetSkillContractPermissionsRequest, _connector_pb2.SkillContractResponse]  # type: ignore[assignment]
-    """Declarative-only prep for future auth/RBAC — see SkillContractProtoDTO.required_permissions."""
 
 class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
     """ConnectorService owns persisted asset metadata, workflow persistence,
@@ -246,30 +212,6 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
     ) -> _typing.Union[_connector_pb2.AssetPayloadResponse, _abc.Awaitable[_connector_pb2.AssetPayloadResponse]]: ...
 
     @_abc_1.abstractmethod
-    def SetAssetProperty(
-        self,
-        request: _connector_pb2.SetAssetPropertyRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_connector_pb2.AssetPropertyResponse, _abc.Awaitable[_connector_pb2.AssetPropertyResponse]]:
-        """Dynamic per-asset property bag (system-integrator metadata) — free key/value pairs, no schema
-        change needed to add a new one. SetAssetProperty upserts by (asset, key).
-        """
-
-    @_abc_1.abstractmethod
-    def ListAssetProperties(
-        self,
-        request: _connector_pb2.ListAssetPropertiesRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_connector_pb2.AssetPropertyListResponse, _abc.Awaitable[_connector_pb2.AssetPropertyListResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def DeleteAssetProperty(
-        self,
-        request: _connector_pb2.DeleteAssetPropertyRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_connector_pb2.AssetPropertyResponse, _abc.Awaitable[_connector_pb2.AssetPropertyResponse]]: ...
-
-    @_abc_1.abstractmethod
     def GetOrganization(
         self,
         request: _connector_pb2.ConnectorGetOrganizationRequest,
@@ -277,11 +219,81 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
     ) -> _typing.Union[_connector_pb2.ConnectorResponse, _abc.Awaitable[_connector_pb2.ConnectorResponse]]: ...
 
     @_abc_1.abstractmethod
-    def ListSchedulers(
+    def GetMission(
         self,
-        request: _mission_autonomy_contracts_pb2.ListSchedulersRequest,
+        request: _mission_autonomy_contracts_pb2.GetMissionRequest,
         context: _ServicerContext,
-    ) -> _typing.Union[_mission_autonomy_contracts_pb2.SchedulerResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.SchedulerResponse]]: ...
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.MissionResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.MissionResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def CreateMission(
+        self,
+        request: _mission_autonomy_contracts_pb2.CreateMissionRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.MissionResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.MissionResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def UpdateMission(
+        self,
+        request: _mission_autonomy_contracts_pb2.UpdateMissionRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.MissionResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.MissionResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeleteMission(
+        self,
+        request: _mission_autonomy_contracts_pb2.DeleteMissionRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.MissionResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.MissionResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def UploadMissionNfzZones(
+        self,
+        request: _mission_autonomy_contracts_pb2.UploadMissionNfzZonesRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.MissionResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.MissionResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def GetTask(
+        self,
+        request: _mission_autonomy_contracts_pb2.GetTaskRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def GetTaskByFlightId(
+        self,
+        request: _mission_autonomy_contracts_pb2.GetTaskByFlightIdRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def GetWaypointsByTaskId(
+        self,
+        request: _mission_autonomy_contracts_pb2.GetWaypointsByTaskIdRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.WaypointsResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.WaypointsResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def CreateTask(
+        self,
+        request: _mission_autonomy_contracts_pb2.CreateTaskRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def UpdateTask(
+        self,
+        request: _mission_autonomy_contracts_pb2.UpdateTaskRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeleteTask(
+        self,
+        request: _mission_autonomy_contracts_pb2.DeleteTaskRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.TaskResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.TaskResponse]]: ...
 
     @_abc_1.abstractmethod
     def GetScheduler(
@@ -322,6 +334,13 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
     def DeleteSchedulers(
         self,
         request: _mission_autonomy_contracts_pb2.DeleteSchedulersRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.SchedulerResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.SchedulerResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeleteSchedulersByTask(
+        self,
+        request: _mission_autonomy_contracts_pb2.DeleteSchedulersByTaskRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_mission_autonomy_contracts_pb2.SchedulerResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.SchedulerResponse]]: ...
 
@@ -371,110 +390,5 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
         context: _ServicerContext,
     ) -> _typing.Union[_connector_pb2.ConnectorConfigResponse, _abc.Awaitable[_connector_pb2.ConnectorConfigResponse]]:
         """Technical Config - fetched by services for runtime configuration"""
-
-    @_abc_1.abstractmethod
-    def PersistApplication(
-        self,
-        request: _capability_execution_contracts_pb2.UpsertApplicationRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationResponse]]:
-        """Application/Skill domain persistence. Mission Autonomy is the orchestration consumer."""
-
-    @_abc_1.abstractmethod
-    def GetPersistedApplication(
-        self,
-        request: _capability_execution_contracts_pb2.GetApplicationRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def ListPersistedApplications(
-        self,
-        request: _capability_execution_contracts_pb2.ListApplicationsRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationListResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationListResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def DeletePersistedApplication(
-        self,
-        request: _capability_execution_contracts_pb2.DeleteApplicationRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def GetApplicationEnvironmentPointers(
-        self,
-        request: _capability_execution_contracts_pb2.GetApplicationEnvironmentsRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationEnvironmentsResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def PromoteApplicationVersion(
-        self,
-        request: _capability_execution_contracts_pb2.PromoteApplicationVersionRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationEnvironmentsResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def PersistSkillExecution(
-        self,
-        request: _connector_pb2.PersistSkillExecutionRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def GetPersistedSkillExecution(
-        self,
-        request: _capability_execution_contracts_pb2.GetSkillExecutionRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def ListPersistedSkillExecutions(
-        self,
-        request: _capability_execution_contracts_pb2.ListSkillExecutionsRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_capability_execution_contracts_pb2.SkillExecutionListResponse, _abc.Awaitable[_capability_execution_contracts_pb2.SkillExecutionListResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def AppendSkillExecutionEvent(
-        self,
-        request: _connector_pb2.AppendSkillExecutionEventRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_empty_pb2.Empty, _abc.Awaitable[_empty_pb2.Empty]]: ...
-
-    @_abc_1.abstractmethod
-    def ObserveSkillContract(
-        self,
-        request: _connector_pb2.UpsertSkillContractRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_connector_pb2.SkillContractResponse, _abc.Awaitable[_connector_pb2.SkillContractResponse]]:
-        """Skill Registry: a persisted, de-duplicated view of every Skill/Capability contract ever
-        observed from a connected asset, independent of which devices are currently online. Admin
-        Console auto-upserts into this by (command_id, schema_version) whenever it aggregates a live
-        capability snapshot; status is the one field a system integrator edits directly.
-        """
-
-    @_abc_1.abstractmethod
-    def ListSkillContracts(
-        self,
-        request: _connector_pb2.ListSkillContractsRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_connector_pb2.SkillContractListResponse, _abc.Awaitable[_connector_pb2.SkillContractListResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def SetSkillContractStatus(
-        self,
-        request: _connector_pb2.SetSkillContractStatusRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_connector_pb2.SkillContractResponse, _abc.Awaitable[_connector_pb2.SkillContractResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def SetSkillContractPermissions(
-        self,
-        request: _connector_pb2.SetSkillContractPermissionsRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_connector_pb2.SkillContractResponse, _abc.Awaitable[_connector_pb2.SkillContractResponse]]:
-        """Declarative-only prep for future auth/RBAC — see SkillContractProtoDTO.required_permissions."""
 
 def add_ConnectorServiceServicer_to_server(servicer: ConnectorServiceServicer, server: _typing.Union[_grpc.Server, _aio.Server]) -> None: ...
