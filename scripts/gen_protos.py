@@ -8,10 +8,17 @@ Historically this pulled from a separate `zqnt-protos` GitHub repo (vendored as 
 that repo tracks a pre-refactor schema (still the old Mission/Task/Scheduler service, missing the
 capability-execution-*.proto files entirely) and is no longer used.
 
+Pin: PROTO_REF below pins that sibling checkout to an exact ref before generating, and restores it
+to whatever it was afterwards -- same mechanism zqnt-utils-golang's own scripts/gen_protos.sh uses
+(see that script's own comment), and the same reason: don't silently generate from whatever the
+sibling happens to be checked out to. Currently a branch name (LOCAL-DEV-ONLY -- see PROTO_REF's
+own comment); a real release must point this at an immutable tag instead.
+
 Output: zqnt_utils/generated/zqnt/
 Usage:  python scripts/gen_protos.py
 """
 
+import subprocess
 import sys
 from pathlib import Path
 
@@ -25,6 +32,57 @@ PROTO_DIR = ROOT.parent / "zqnt-utils" / "src" / "main" / "proto"
 OUT_DIR = ROOT / "zqnt_utils" / "generated" / "zqnt"
 
 WELL_KNOWN_PROTOS = Path(protoc.__file__).parent / "_proto"
+
+# zqnt-protos' own `1.3.1` tag -- the real, immutable release this repo's own v1.3.1 is the
+# Python counterpart of (adds simulator-control.proto/SimulatorControlService on top of the 1.3.0
+# wire contract; cherry-picked onto the real 1.3.0 tag, not main, which has diverged onto the
+# 2.0.0-track proto -- see zqnt-protos' own tag message). Same resolve-then-assert pattern
+# zqnt-utils-golang's own gen_protos.sh uses: resolve the tag, assert it's still the exact commit
+# expected, fail loudly if it's moved, rather than silently generating from whatever it now
+# points to.
+PROTO_TAG = "1.3.1"
+PROTO_TAG_COMMIT = "8c2d5a42a97b54f915e39c38b0cd12cb188a5be1"
+
+
+def _git(*args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(PROTO_DIR), *args],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+
+def _pin_proto_ref() -> str:
+    """Checks PROTO_DIR out to PROTO_TAG, fetching it first if not already present locally, and
+    asserting it still resolves to PROTO_TAG_COMMIT (fail loudly if the tag has moved). Returns
+    the commit PROTO_DIR was on before, so the caller can restore it afterwards."""
+    original_commit = _git("rev-parse", "HEAD")
+    verify = subprocess.run(
+        ["git", "-C", str(PROTO_DIR), "rev-parse", "--verify", "--quiet", f"refs/tags/{PROTO_TAG}"],
+        capture_output=True,
+    )
+    if verify.returncode != 0:
+        print(f"Fetching zqnt-protos tag {PROTO_TAG}...")
+        _git("fetch", "--quiet", "origin", f"refs/tags/{PROTO_TAG}:refs/tags/{PROTO_TAG}")
+
+    resolved_commit = _git("rev-parse", f"refs/tags/{PROTO_TAG}^{{commit}}")
+    if resolved_commit != PROTO_TAG_COMMIT:
+        sys.exit(
+            f"zqnt-protos tag {PROTO_TAG} resolves to {resolved_commit}, not the expected "
+            f"{PROTO_TAG_COMMIT} -- the tag has moved since this script was last updated. "
+            "Refusing to generate from an unverified commit; update PROTO_TAG_COMMIT above once "
+            "you've confirmed the new target is actually what you want."
+        )
+
+    print(f"Pinning proto submodule to zqnt-protos {PROTO_TAG} ({resolved_commit}, currently {original_commit})...")
+    _git("checkout", "--quiet", PROTO_TAG)
+    return original_commit
+
+
+def _restore_proto_ref(original_commit: str) -> None:
+    print(f"Restoring proto submodule to {original_commit}...")
+    _git("checkout", "--quiet", original_commit)
 
 
 def ensure_init_files(directory: Path) -> None:
@@ -100,4 +158,8 @@ def _fix_imports(directory: Path) -> None:
 
 
 if __name__ == "__main__":
-    run()
+    original_commit = _pin_proto_ref()
+    try:
+        run()
+    finally:
+        _restore_proto_ref(original_commit)
