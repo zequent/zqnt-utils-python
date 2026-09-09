@@ -4,8 +4,10 @@ import grpc
 import warnings
 
 from . import base_pb2 as base__pb2
+from . import capability_execution_contracts_pb2 as capability__execution__contracts__pb2
 from . import connector_pb2 as connector__pb2
 from . import events_pb2 as events__pb2
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from . import mission_autonomy_contracts_pb2 as mission__autonomy__contracts__pb2
 
 GRPC_GENERATED_VERSION = '1.80.0'
@@ -79,6 +81,11 @@ class ConnectorServiceStub(object):
                 request_serializer=base__pb2.RequestBase.SerializeToString,
                 response_deserializer=connector__pb2.ConnectorResponse.FromString,
                 _registered_method=True)
+        self.ListAssets = channel.unary_unary(
+                '/zqnt.ConnectorService/ListAssets',
+                request_serializer=connector__pb2.ListAssetsRequest.SerializeToString,
+                response_deserializer=connector__pb2.AssetListResponse.FromString,
+                _registered_method=True)
         self.UpsertAssetPayload = channel.unary_unary(
                 '/zqnt.ConnectorService/UpsertAssetPayload',
                 request_serializer=connector__pb2.UpsertAssetPayloadRequest.SerializeToString,
@@ -94,65 +101,30 @@ class ConnectorServiceStub(object):
                 request_serializer=connector__pb2.DeleteAssetPayloadRequest.SerializeToString,
                 response_deserializer=connector__pb2.AssetPayloadResponse.FromString,
                 _registered_method=True)
+        self.SetAssetProperty = channel.unary_unary(
+                '/zqnt.ConnectorService/SetAssetProperty',
+                request_serializer=connector__pb2.SetAssetPropertyRequest.SerializeToString,
+                response_deserializer=connector__pb2.AssetPropertyResponse.FromString,
+                _registered_method=True)
+        self.ListAssetProperties = channel.unary_unary(
+                '/zqnt.ConnectorService/ListAssetProperties',
+                request_serializer=connector__pb2.ListAssetPropertiesRequest.SerializeToString,
+                response_deserializer=connector__pb2.AssetPropertyListResponse.FromString,
+                _registered_method=True)
+        self.DeleteAssetProperty = channel.unary_unary(
+                '/zqnt.ConnectorService/DeleteAssetProperty',
+                request_serializer=connector__pb2.DeleteAssetPropertyRequest.SerializeToString,
+                response_deserializer=connector__pb2.AssetPropertyResponse.FromString,
+                _registered_method=True)
         self.GetOrganization = channel.unary_unary(
                 '/zqnt.ConnectorService/GetOrganization',
                 request_serializer=connector__pb2.ConnectorGetOrganizationRequest.SerializeToString,
                 response_deserializer=connector__pb2.ConnectorResponse.FromString,
                 _registered_method=True)
-        self.GetMission = channel.unary_unary(
-                '/zqnt.ConnectorService/GetMission',
-                request_serializer=mission__autonomy__contracts__pb2.GetMissionRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.MissionResponse.FromString,
-                _registered_method=True)
-        self.CreateMission = channel.unary_unary(
-                '/zqnt.ConnectorService/CreateMission',
-                request_serializer=mission__autonomy__contracts__pb2.CreateMissionRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.MissionResponse.FromString,
-                _registered_method=True)
-        self.UpdateMission = channel.unary_unary(
-                '/zqnt.ConnectorService/UpdateMission',
-                request_serializer=mission__autonomy__contracts__pb2.UpdateMissionRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.MissionResponse.FromString,
-                _registered_method=True)
-        self.DeleteMission = channel.unary_unary(
-                '/zqnt.ConnectorService/DeleteMission',
-                request_serializer=mission__autonomy__contracts__pb2.DeleteMissionRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.MissionResponse.FromString,
-                _registered_method=True)
-        self.UploadMissionNfzZones = channel.unary_unary(
-                '/zqnt.ConnectorService/UploadMissionNfzZones',
-                request_serializer=mission__autonomy__contracts__pb2.UploadMissionNfzZonesRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.MissionResponse.FromString,
-                _registered_method=True)
-        self.GetTask = channel.unary_unary(
-                '/zqnt.ConnectorService/GetTask',
-                request_serializer=mission__autonomy__contracts__pb2.GetTaskRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
-                _registered_method=True)
-        self.GetTaskByFlightId = channel.unary_unary(
-                '/zqnt.ConnectorService/GetTaskByFlightId',
-                request_serializer=mission__autonomy__contracts__pb2.GetTaskByFlightIdRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
-                _registered_method=True)
-        self.GetWaypointsByTaskId = channel.unary_unary(
-                '/zqnt.ConnectorService/GetWaypointsByTaskId',
-                request_serializer=mission__autonomy__contracts__pb2.GetWaypointsByTaskIdRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.WaypointsResponse.FromString,
-                _registered_method=True)
-        self.CreateTask = channel.unary_unary(
-                '/zqnt.ConnectorService/CreateTask',
-                request_serializer=mission__autonomy__contracts__pb2.CreateTaskRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
-                _registered_method=True)
-        self.UpdateTask = channel.unary_unary(
-                '/zqnt.ConnectorService/UpdateTask',
-                request_serializer=mission__autonomy__contracts__pb2.UpdateTaskRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
-                _registered_method=True)
-        self.DeleteTask = channel.unary_unary(
-                '/zqnt.ConnectorService/DeleteTask',
-                request_serializer=mission__autonomy__contracts__pb2.DeleteTaskRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
+        self.ListSchedulers = channel.unary_unary(
+                '/zqnt.ConnectorService/ListSchedulers',
+                request_serializer=mission__autonomy__contracts__pb2.ListSchedulersRequest.SerializeToString,
+                response_deserializer=mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
                 _registered_method=True)
         self.GetScheduler = channel.unary_unary(
                 '/zqnt.ConnectorService/GetScheduler',
@@ -184,11 +156,6 @@ class ConnectorServiceStub(object):
                 request_serializer=mission__autonomy__contracts__pb2.DeleteSchedulersRequest.SerializeToString,
                 response_deserializer=mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
                 _registered_method=True)
-        self.DeleteSchedulersByTask = channel.unary_unary(
-                '/zqnt.ConnectorService/DeleteSchedulersByTask',
-                request_serializer=mission__autonomy__contracts__pb2.DeleteSchedulersByTaskRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
-                _registered_method=True)
         self.StoreTelemetryBatch = channel.stream_unary(
                 '/zqnt.ConnectorService/StoreTelemetryBatch',
                 request_serializer=connector__pb2.ConnectorStoreTelemetryRequest.SerializeToString,
@@ -214,10 +181,285 @@ class ConnectorServiceStub(object):
                 request_serializer=connector__pb2.ConnectorGetAllPoliciesRequest.SerializeToString,
                 response_deserializer=connector__pb2.ConnectorPolicyResponse.FromString,
                 _registered_method=True)
+        self.GetPolicyById = channel.unary_unary(
+                '/zqnt.ConnectorService/GetPolicyById',
+                request_serializer=connector__pb2.GetPolicyByIdRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorPolicySingleResponse.FromString,
+                _registered_method=True)
+        self.CreatePolicy = channel.unary_unary(
+                '/zqnt.ConnectorService/CreatePolicy',
+                request_serializer=connector__pb2.CreatePolicyRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorPolicySingleResponse.FromString,
+                _registered_method=True)
+        self.UpdatePolicy = channel.unary_unary(
+                '/zqnt.ConnectorService/UpdatePolicy',
+                request_serializer=connector__pb2.UpdatePolicyRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorPolicySingleResponse.FromString,
+                _registered_method=True)
+        self.DeletePolicy = channel.unary_unary(
+                '/zqnt.ConnectorService/DeletePolicy',
+                request_serializer=connector__pb2.DeletePolicyRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorDeletePolicyResponse.FromString,
+                _registered_method=True)
+        self.GetAllOrganizations = channel.unary_unary(
+                '/zqnt.ConnectorService/GetAllOrganizations',
+                request_serializer=connector__pb2.ConnectorGetAllOrganizationsRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorOrganizationResponse.FromString,
+                _registered_method=True)
+        self.GetOrganizationById = channel.unary_unary(
+                '/zqnt.ConnectorService/GetOrganizationById',
+                request_serializer=connector__pb2.GetOrganizationByIdRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorOrganizationSingleResponse.FromString,
+                _registered_method=True)
+        self.CreateOrganization = channel.unary_unary(
+                '/zqnt.ConnectorService/CreateOrganization',
+                request_serializer=connector__pb2.CreateOrganizationRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorOrganizationSingleResponse.FromString,
+                _registered_method=True)
+        self.UpdateOrganization = channel.unary_unary(
+                '/zqnt.ConnectorService/UpdateOrganization',
+                request_serializer=connector__pb2.UpdateOrganizationRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorOrganizationSingleResponse.FromString,
+                _registered_method=True)
+        self.DeleteOrganization = channel.unary_unary(
+                '/zqnt.ConnectorService/DeleteOrganization',
+                request_serializer=connector__pb2.DeleteOrganizationRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorDeleteOrganizationResponse.FromString,
+                _registered_method=True)
+        self.GetAllTheatres = channel.unary_unary(
+                '/zqnt.ConnectorService/GetAllTheatres',
+                request_serializer=connector__pb2.ConnectorGetAllTheatresRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorTheatreResponse.FromString,
+                _registered_method=True)
+        self.GetTheatreById = channel.unary_unary(
+                '/zqnt.ConnectorService/GetTheatreById',
+                request_serializer=connector__pb2.GetTheatreByIdRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorTheatreSingleResponse.FromString,
+                _registered_method=True)
+        self.CreateTheatre = channel.unary_unary(
+                '/zqnt.ConnectorService/CreateTheatre',
+                request_serializer=connector__pb2.CreateTheatreRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorTheatreSingleResponse.FromString,
+                _registered_method=True)
+        self.UpdateTheatre = channel.unary_unary(
+                '/zqnt.ConnectorService/UpdateTheatre',
+                request_serializer=connector__pb2.UpdateTheatreRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorTheatreSingleResponse.FromString,
+                _registered_method=True)
+        self.DeleteTheatre = channel.unary_unary(
+                '/zqnt.ConnectorService/DeleteTheatre',
+                request_serializer=connector__pb2.DeleteTheatreRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorDeleteTheatreResponse.FromString,
+                _registered_method=True)
+        self.AssignUserToTheatre = channel.unary_unary(
+                '/zqnt.ConnectorService/AssignUserToTheatre',
+                request_serializer=connector__pb2.AssignUserToTheatreRequest.SerializeToString,
+                response_deserializer=connector__pb2.TheatreAssignmentResponse.FromString,
+                _registered_method=True)
+        self.RemoveUserFromTheatre = channel.unary_unary(
+                '/zqnt.ConnectorService/RemoveUserFromTheatre',
+                request_serializer=connector__pb2.RemoveUserFromTheatreRequest.SerializeToString,
+                response_deserializer=connector__pb2.TheatreAssignmentResponse.FromString,
+                _registered_method=True)
+        self.GetAllEventTriggers = channel.unary_unary(
+                '/zqnt.ConnectorService/GetAllEventTriggers',
+                request_serializer=connector__pb2.ConnectorGetAllEventTriggersRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorEventTriggerResponse.FromString,
+                _registered_method=True)
+        self.GetEventTriggerById = channel.unary_unary(
+                '/zqnt.ConnectorService/GetEventTriggerById',
+                request_serializer=connector__pb2.GetEventTriggerByIdRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+                _registered_method=True)
+        self.CreateEventTrigger = channel.unary_unary(
+                '/zqnt.ConnectorService/CreateEventTrigger',
+                request_serializer=connector__pb2.CreateEventTriggerRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+                _registered_method=True)
+        self.UpdateEventTrigger = channel.unary_unary(
+                '/zqnt.ConnectorService/UpdateEventTrigger',
+                request_serializer=connector__pb2.UpdateEventTriggerRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+                _registered_method=True)
+        self.DeleteEventTrigger = channel.unary_unary(
+                '/zqnt.ConnectorService/DeleteEventTrigger',
+                request_serializer=connector__pb2.DeleteEventTriggerRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorDeleteEventTriggerResponse.FromString,
+                _registered_method=True)
+        self.RecordEventTriggerFired = channel.unary_unary(
+                '/zqnt.ConnectorService/RecordEventTriggerFired',
+                request_serializer=connector__pb2.RecordEventTriggerFiredRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+                _registered_method=True)
+        self.RegenerateEventTriggerWebhookToken = channel.unary_unary(
+                '/zqnt.ConnectorService/RegenerateEventTriggerWebhookToken',
+                request_serializer=connector__pb2.RegenerateEventTriggerWebhookTokenRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+                _registered_method=True)
+        self.GetEventTriggerByWebhookToken = channel.unary_unary(
+                '/zqnt.ConnectorService/GetEventTriggerByWebhookToken',
+                request_serializer=connector__pb2.GetEventTriggerByWebhookTokenRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+                _registered_method=True)
+        self.ListRecentDetections = channel.unary_unary(
+                '/zqnt.ConnectorService/ListRecentDetections',
+                request_serializer=connector__pb2.ListRecentDetectionsRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorDetectionListResponse.FromString,
+                _registered_method=True)
+        self.GetLatestTelemetryForAsset = channel.unary_unary(
+                '/zqnt.ConnectorService/GetLatestTelemetryForAsset',
+                request_serializer=connector__pb2.GetLatestTelemetryForAssetRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorTelemetrySingleResponse.FromString,
+                _registered_method=True)
         self.GetTechnicalConfigs = channel.unary_unary(
                 '/zqnt.ConnectorService/GetTechnicalConfigs',
                 request_serializer=connector__pb2.ConnectorGetConfigsRequest.SerializeToString,
                 response_deserializer=connector__pb2.ConnectorConfigResponse.FromString,
+                _registered_method=True)
+        self.GetTechnicalConfigById = channel.unary_unary(
+                '/zqnt.ConnectorService/GetTechnicalConfigById',
+                request_serializer=connector__pb2.GetTechnicalConfigByIdRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorConfigSingleResponse.FromString,
+                _registered_method=True)
+        self.CreateTechnicalConfig = channel.unary_unary(
+                '/zqnt.ConnectorService/CreateTechnicalConfig',
+                request_serializer=connector__pb2.CreateTechnicalConfigRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorConfigSingleResponse.FromString,
+                _registered_method=True)
+        self.UpdateTechnicalConfig = channel.unary_unary(
+                '/zqnt.ConnectorService/UpdateTechnicalConfig',
+                request_serializer=connector__pb2.UpdateTechnicalConfigRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorConfigSingleResponse.FromString,
+                _registered_method=True)
+        self.DeleteTechnicalConfig = channel.unary_unary(
+                '/zqnt.ConnectorService/DeleteTechnicalConfig',
+                request_serializer=connector__pb2.DeleteTechnicalConfigRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorDeleteConfigResponse.FromString,
+                _registered_method=True)
+        self.PersistApplication = channel.unary_unary(
+                '/zqnt.ConnectorService/PersistApplication',
+                request_serializer=capability__execution__contracts__pb2.UpsertApplicationRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationResponse.FromString,
+                _registered_method=True)
+        self.GetPersistedApplication = channel.unary_unary(
+                '/zqnt.ConnectorService/GetPersistedApplication',
+                request_serializer=capability__execution__contracts__pb2.GetApplicationRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationResponse.FromString,
+                _registered_method=True)
+        self.ListPersistedApplications = channel.unary_unary(
+                '/zqnt.ConnectorService/ListPersistedApplications',
+                request_serializer=capability__execution__contracts__pb2.ListApplicationsRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationListResponse.FromString,
+                _registered_method=True)
+        self.DeletePersistedApplication = channel.unary_unary(
+                '/zqnt.ConnectorService/DeletePersistedApplication',
+                request_serializer=capability__execution__contracts__pb2.DeleteApplicationRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationResponse.FromString,
+                _registered_method=True)
+        self.GetApplicationEnvironmentPointers = channel.unary_unary(
+                '/zqnt.ConnectorService/GetApplicationEnvironmentPointers',
+                request_serializer=capability__execution__contracts__pb2.GetApplicationEnvironmentsRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.FromString,
+                _registered_method=True)
+        self.PromoteApplicationVersion = channel.unary_unary(
+                '/zqnt.ConnectorService/PromoteApplicationVersion',
+                request_serializer=capability__execution__contracts__pb2.PromoteApplicationVersionRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.FromString,
+                _registered_method=True)
+        self.PersistSkillExecution = channel.unary_unary(
+                '/zqnt.ConnectorService/PersistSkillExecution',
+                request_serializer=connector__pb2.PersistSkillExecutionRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+                _registered_method=True)
+        self.GetPersistedSkillExecution = channel.unary_unary(
+                '/zqnt.ConnectorService/GetPersistedSkillExecution',
+                request_serializer=capability__execution__contracts__pb2.GetSkillExecutionRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+                _registered_method=True)
+        self.ListPersistedSkillExecutions = channel.unary_unary(
+                '/zqnt.ConnectorService/ListPersistedSkillExecutions',
+                request_serializer=capability__execution__contracts__pb2.ListSkillExecutionsRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionListResponse.FromString,
+                _registered_method=True)
+        self.AppendSkillExecutionEvent = channel.unary_unary(
+                '/zqnt.ConnectorService/AppendSkillExecutionEvent',
+                request_serializer=connector__pb2.AppendSkillExecutionEventRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                _registered_method=True)
+        self.ObserveSkillContract = channel.unary_unary(
+                '/zqnt.ConnectorService/ObserveSkillContract',
+                request_serializer=connector__pb2.UpsertSkillContractRequest.SerializeToString,
+                response_deserializer=connector__pb2.SkillContractResponse.FromString,
+                _registered_method=True)
+        self.ListSkillContracts = channel.unary_unary(
+                '/zqnt.ConnectorService/ListSkillContracts',
+                request_serializer=connector__pb2.ListSkillContractsRequest.SerializeToString,
+                response_deserializer=connector__pb2.SkillContractListResponse.FromString,
+                _registered_method=True)
+        self.SetSkillContractStatus = channel.unary_unary(
+                '/zqnt.ConnectorService/SetSkillContractStatus',
+                request_serializer=connector__pb2.SetSkillContractStatusRequest.SerializeToString,
+                response_deserializer=connector__pb2.SkillContractResponse.FromString,
+                _registered_method=True)
+        self.SetSkillContractPermissions = channel.unary_unary(
+                '/zqnt.ConnectorService/SetSkillContractPermissions',
+                request_serializer=connector__pb2.SetSkillContractPermissionsRequest.SerializeToString,
+                response_deserializer=connector__pb2.SkillContractResponse.FromString,
+                _registered_method=True)
+        self.AuthenticateUser = channel.unary_unary(
+                '/zqnt.ConnectorService/AuthenticateUser',
+                request_serializer=connector__pb2.AuthenticateUserRequest.SerializeToString,
+                response_deserializer=connector__pb2.AuthenticateUserResponse.FromString,
+                _registered_method=True)
+        self.CreateUser = channel.unary_unary(
+                '/zqnt.ConnectorService/CreateUser',
+                request_serializer=connector__pb2.CreateUserRequest.SerializeToString,
+                response_deserializer=connector__pb2.CreateUserResponse.FromString,
+                _registered_method=True)
+        self.ResetPassword = channel.unary_unary(
+                '/zqnt.ConnectorService/ResetPassword',
+                request_serializer=connector__pb2.ResetPasswordRequest.SerializeToString,
+                response_deserializer=connector__pb2.ResetPasswordResponse.FromString,
+                _registered_method=True)
+        self.RecordAuthAuditEvent = channel.unary_unary(
+                '/zqnt.ConnectorService/RecordAuthAuditEvent',
+                request_serializer=connector__pb2.RecordAuthAuditEventRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                _registered_method=True)
+        self.ListUsers = channel.unary_unary(
+                '/zqnt.ConnectorService/ListUsers',
+                request_serializer=connector__pb2.ListUsersRequest.SerializeToString,
+                response_deserializer=connector__pb2.ListUsersResponse.FromString,
+                _registered_method=True)
+        self.GetUserById = channel.unary_unary(
+                '/zqnt.ConnectorService/GetUserById',
+                request_serializer=connector__pb2.GetUserByIdRequest.SerializeToString,
+                response_deserializer=connector__pb2.AuthenticateUserResponse.FromString,
+                _registered_method=True)
+        self.UpsertIdentityProvider = channel.unary_unary(
+                '/zqnt.ConnectorService/UpsertIdentityProvider',
+                request_serializer=connector__pb2.UpsertIdentityProviderRequest.SerializeToString,
+                response_deserializer=connector__pb2.IdentityProviderResponse.FromString,
+                _registered_method=True)
+        self.GetIdentityProvider = channel.unary_unary(
+                '/zqnt.ConnectorService/GetIdentityProvider',
+                request_serializer=connector__pb2.GetIdentityProviderRequest.SerializeToString,
+                response_deserializer=connector__pb2.IdentityProviderResponse.FromString,
+                _registered_method=True)
+        self.FindIdentityProviderByEmailDomain = channel.unary_unary(
+                '/zqnt.ConnectorService/FindIdentityProviderByEmailDomain',
+                request_serializer=connector__pb2.FindIdentityProviderByEmailDomainRequest.SerializeToString,
+                response_deserializer=connector__pb2.IdentityProviderResponse.FromString,
+                _registered_method=True)
+        self.FindOidcUser = channel.unary_unary(
+                '/zqnt.ConnectorService/FindOidcUser',
+                request_serializer=connector__pb2.FindOidcUserRequest.SerializeToString,
+                response_deserializer=connector__pb2.AuthenticateUserResponse.FromString,
+                _registered_method=True)
+        self.UpsertOidcUser = channel.unary_unary(
+                '/zqnt.ConnectorService/UpsertOidcUser',
+                request_serializer=connector__pb2.UpsertOidcUserRequest.SerializeToString,
+                response_deserializer=connector__pb2.AuthenticateUserResponse.FromString,
                 _registered_method=True)
 
 
@@ -274,6 +516,18 @@ class ConnectorServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListAssets(self, request, context):
+        """Every asset that exists for the caller's organization (every asset platform-wide for a
+        system_admin caller — same bypass-tenant-filtering rule as everywhere else), regardless of
+        whether it's currently reporting itself online. Distinct from AssetMonitoring's streamed
+        ConnectorAssetList (that's live/cached status snapshots for already-known SNs); this is the
+        actual system-of-record enumeration — there was no way to list assets at all before this RPC,
+        only look one up by a SN you already knew.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def UpsertAssetPayload(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -292,73 +546,33 @@ class ConnectorServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SetAssetProperty(self, request, context):
+        """Dynamic per-asset property bag (system-integrator metadata) — free key/value pairs, no schema
+        change needed to add a new one. SetAssetProperty upserts by (asset, key).
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListAssetProperties(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteAssetProperty(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetOrganization(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetMission(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def CreateMission(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UpdateMission(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DeleteMission(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UploadMissionNfzZones(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetTaskByFlightId(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetWaypointsByTaskId(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def CreateTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def UpdateTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DeleteTask(self, request, context):
+    def ListSchedulers(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -400,12 +614,6 @@ class ConnectorServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DeleteSchedulersByTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def StoreTelemetryBatch(self, request_iterator, context):
         """Telemetry Storage - batch processing from live-data service
         """
@@ -428,7 +636,11 @@ class ConnectorServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def GetActivePoliciesByType(self, request, context):
-        """Policy Management - fetched by Mission-Autonomy for decision engine cache
+        """Policy Management - fetched by Mission-Autonomy for decision engine cache. Read-only RPCs
+        existed first; the CRUD RPCs below back the admin-console "Operational Policies" management
+        screen (previously a fully mocked/hardcoded frontend with no backend at all -- see
+        OperationalPolicyService, which already did real persistence + push-invalidation eventing for
+        the REST-only connector-internal API these now also front).
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -440,8 +652,403 @@ class ConnectorServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetPolicyById(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreatePolicy(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdatePolicy(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeletePolicy(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetAllOrganizations(self, request, context):
+        """Organization Management - connector's own OrganizationService already had full REST CRUD
+        (/api/organization, orphaned/never called from outside connector, same shape as the old
+        OperationalPolicy REST API) -- these RPCs are the real cross-service front door for it, backing
+        the admin-console "Organizations" management screen.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetOrganizationById(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateOrganization(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateOrganization(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteOrganization(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetAllTheatres(self, request, context):
+        """Theatre Management - a named operational site within one organization (optional geo zone, the
+        assets stationed there, the users with access to it). Same CRUD shape as Organization above;
+        AssignUserToTheatre/RemoveUserFromTheatre back the many-to-many user<->theatre join table
+        (deliberately not a repeated field on TheatreProtoDTO -- resolved fresh per request, same
+        "don't bake something that can change independently into a cached/long-lived value" reasoning
+        as the refresh-token roles fix).
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetTheatreById(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateTheatre(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateTheatre(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteTheatre(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AssignUserToTheatre(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RemoveUserFromTheatre(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetAllEventTriggers(self, request, context):
+        """Event Triggers — "start Application X on event Y" (detection / telemetry threshold / asset
+        status / inbound webhook). CRUD mirrors Theatre's shape; ListRecentDetections and
+        GetLatestTelemetryForAsset back mission-autonomy's polling evaluator (EventTriggerEvaluationService),
+        RecordEventTriggerFired stamps last_fired_at for cooldown bookkeeping after a real fire.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetEventTriggerById(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateEventTrigger(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateEventTrigger(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteEventTrigger(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RecordEventTriggerFired(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RegenerateEventTriggerWebhookToken(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetEventTriggerByWebhookToken(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListRecentDetections(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetLatestTelemetryForAsset(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetTechnicalConfigs(self, request, context):
-        """Technical Config - fetched by services for runtime configuration
+        """Technical Config - fetched by services for runtime configuration. Read-only GetTechnicalConfigs
+        existed first (services reading their own settings); the CRUD RPCs below back the admin-console
+        "Technical Config" management screen, so the config values these read-only fetches see can
+        actually be changed by an admin without a redeploy.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetTechnicalConfigById(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateTechnicalConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateTechnicalConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteTechnicalConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PersistApplication(self, request, context):
+        """Application/Skill domain persistence. Mission Autonomy is the orchestration consumer.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetPersistedApplication(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListPersistedApplications(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeletePersistedApplication(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetApplicationEnvironmentPointers(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PromoteApplicationVersion(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PersistSkillExecution(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetPersistedSkillExecution(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListPersistedSkillExecutions(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AppendSkillExecutionEvent(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ObserveSkillContract(self, request, context):
+        """Skill Registry: a persisted, de-duplicated view of every Skill/Capability contract ever
+        observed from a connected asset, independent of which devices are currently online. Admin
+        Console auto-upserts into this by (command_id, schema_version) whenever it aggregates a live
+        capability snapshot; status is the one field a system integrator edits directly.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListSkillContracts(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetSkillContractStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetSkillContractPermissions(self, request, context):
+        """Declarative-only prep for future auth/RBAC — see SkillContractProtoDTO.required_permissions.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AuthenticateUser(self, request, context):
+        """Platform-hosted authentication: verifies email+password against connector's own user store
+        (the system of record) and returns the identity a caller (admin-console) mints a
+        PlatformClaims-shaped auth token from. Connector never issues the token itself — it has no
+        private signing key — it only ever confirms "this is who they say they are, in this org, with
+        these roles."
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateUser(self, request, context):
+        """Admin-driven user creation — the seat check (does this organization's license have room for
+        one more user) happens one layer up, in admin-console's LicenseCoordinator, BEFORE this is
+        ever called; connector itself has no concept of seats, it only persists the user once
+        admin-console has already confirmed one is available.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ResetPassword(self, request, context):
+        """Admin-driven password reset — see ResetPasswordRequest's doc.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RecordAuthAuditEvent(self, request, context):
+        """Durable audit trail for authentication-security-relevant events (login attempts, logout,
+        admin-driven password resets/session revocations) — see the connector-side AuthAuditService's
+        doc. Best-effort from the caller's point of view: a failure to record must never block the
+        actual auth action it's describing, so every call site fires this without letting its outcome
+        affect the real response.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListUsers(self, request, context):
+        """Every user in the caller's own organization (a system_admin caller instead gets every user,
+        platform-wide — same bypass-tenant-filtering rule as everywhere else, see
+        TenantScopedRepository#bypassTenantFilter). What the admin console's user-management screen
+        lists against; there was no read path for the users CreateUser produces until this existed.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetUserById(self, request, context):
+        """Single-user lookup by id — what a "whoami" endpoint resolves an access token's subject claim
+        (a user id, nothing else) into a displayable identity. AuthenticateUser can't serve this: it
+        needs a password and is keyed by email, neither of which a bearer token carries.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpsertIdentityProvider(self, request, context):
+        """Pluggable SSO — an organization's own OIDC identity provider config (issuer, client
+        credentials, which email domains it owns, how its claims map to platform roles). Local
+        email+password (AuthenticateUser above) stays the default for every org with no config here;
+        this only ever supplements it, never replaces AuthenticateUser for orgs that don't opt in.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetIdentityProvider(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def FindIdentityProviderByEmailDomain(self, request, context):
+        """Login-screen discovery: given an email address, which org (if any) owns that domain and has
+        SSO configured — admin-console calls this before showing a password field or redirecting to
+        an IdP. Empty response (no error, no provider) means "no SSO for this domain, use local auth."
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def FindOidcUser(self, request, context):
+        """Existence check by (organization_id, external_subject), used by admin-console to decide
+        whether an SSO login needs a seat reserved before UpsertOidcUser below — same "reserve the
+        seat, THEN create" ordering CreateUser's caller already follows for local users. Empty
+        response (has_errors false, no user) means "not provisioned yet."
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpsertOidcUser(self, request, context):
+        """The OIDC counterpart to AuthenticateUser: admin-console has already completed the
+        authorization-code exchange and verified the ID token against the org's own IdP by the time
+        this is called — this only resolves the local user record admin-console mints a
+        PlatformClaims-shaped token from, same as AuthenticateUser does for password logins. Finds by
+        (organization_id, external_subject); auto-provisions on first login (a seat is expected to
+        already be reserved via FindOidcUser+LicenseCoordinator, same division of responsibility as
+        CreateUser — connector has no concept of seats), and re-stamps email/roles from the IdP's
+        claims on every subsequent login so a role change in the customer's own directory takes
+        effect without any action on this platform.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -490,6 +1097,11 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     request_deserializer=base__pb2.RequestBase.FromString,
                     response_serializer=connector__pb2.ConnectorResponse.SerializeToString,
             ),
+            'ListAssets': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListAssets,
+                    request_deserializer=connector__pb2.ListAssetsRequest.FromString,
+                    response_serializer=connector__pb2.AssetListResponse.SerializeToString,
+            ),
             'UpsertAssetPayload': grpc.unary_unary_rpc_method_handler(
                     servicer.UpsertAssetPayload,
                     request_deserializer=connector__pb2.UpsertAssetPayloadRequest.FromString,
@@ -505,65 +1117,30 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     request_deserializer=connector__pb2.DeleteAssetPayloadRequest.FromString,
                     response_serializer=connector__pb2.AssetPayloadResponse.SerializeToString,
             ),
+            'SetAssetProperty': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetAssetProperty,
+                    request_deserializer=connector__pb2.SetAssetPropertyRequest.FromString,
+                    response_serializer=connector__pb2.AssetPropertyResponse.SerializeToString,
+            ),
+            'ListAssetProperties': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListAssetProperties,
+                    request_deserializer=connector__pb2.ListAssetPropertiesRequest.FromString,
+                    response_serializer=connector__pb2.AssetPropertyListResponse.SerializeToString,
+            ),
+            'DeleteAssetProperty': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteAssetProperty,
+                    request_deserializer=connector__pb2.DeleteAssetPropertyRequest.FromString,
+                    response_serializer=connector__pb2.AssetPropertyResponse.SerializeToString,
+            ),
             'GetOrganization': grpc.unary_unary_rpc_method_handler(
                     servicer.GetOrganization,
                     request_deserializer=connector__pb2.ConnectorGetOrganizationRequest.FromString,
                     response_serializer=connector__pb2.ConnectorResponse.SerializeToString,
             ),
-            'GetMission': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetMission,
-                    request_deserializer=mission__autonomy__contracts__pb2.GetMissionRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.MissionResponse.SerializeToString,
-            ),
-            'CreateMission': grpc.unary_unary_rpc_method_handler(
-                    servicer.CreateMission,
-                    request_deserializer=mission__autonomy__contracts__pb2.CreateMissionRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.MissionResponse.SerializeToString,
-            ),
-            'UpdateMission': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateMission,
-                    request_deserializer=mission__autonomy__contracts__pb2.UpdateMissionRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.MissionResponse.SerializeToString,
-            ),
-            'DeleteMission': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteMission,
-                    request_deserializer=mission__autonomy__contracts__pb2.DeleteMissionRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.MissionResponse.SerializeToString,
-            ),
-            'UploadMissionNfzZones': grpc.unary_unary_rpc_method_handler(
-                    servicer.UploadMissionNfzZones,
-                    request_deserializer=mission__autonomy__contracts__pb2.UploadMissionNfzZonesRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.MissionResponse.SerializeToString,
-            ),
-            'GetTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.GetTaskRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
-            ),
-            'GetTaskByFlightId': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTaskByFlightId,
-                    request_deserializer=mission__autonomy__contracts__pb2.GetTaskByFlightIdRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
-            ),
-            'GetWaypointsByTaskId': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetWaypointsByTaskId,
-                    request_deserializer=mission__autonomy__contracts__pb2.GetWaypointsByTaskIdRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.WaypointsResponse.SerializeToString,
-            ),
-            'CreateTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.CreateTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.CreateTaskRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
-            ),
-            'UpdateTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.UpdateTaskRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
-            ),
-            'DeleteTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.DeleteTaskRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
+            'ListSchedulers': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListSchedulers,
+                    request_deserializer=mission__autonomy__contracts__pb2.ListSchedulersRequest.FromString,
+                    response_serializer=mission__autonomy__contracts__pb2.SchedulerResponse.SerializeToString,
             ),
             'GetScheduler': grpc.unary_unary_rpc_method_handler(
                     servicer.GetScheduler,
@@ -595,11 +1172,6 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     request_deserializer=mission__autonomy__contracts__pb2.DeleteSchedulersRequest.FromString,
                     response_serializer=mission__autonomy__contracts__pb2.SchedulerResponse.SerializeToString,
             ),
-            'DeleteSchedulersByTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteSchedulersByTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.DeleteSchedulersByTaskRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.SchedulerResponse.SerializeToString,
-            ),
             'StoreTelemetryBatch': grpc.stream_unary_rpc_method_handler(
                     servicer.StoreTelemetryBatch,
                     request_deserializer=connector__pb2.ConnectorStoreTelemetryRequest.FromString,
@@ -625,10 +1197,285 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     request_deserializer=connector__pb2.ConnectorGetAllPoliciesRequest.FromString,
                     response_serializer=connector__pb2.ConnectorPolicyResponse.SerializeToString,
             ),
+            'GetPolicyById': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPolicyById,
+                    request_deserializer=connector__pb2.GetPolicyByIdRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorPolicySingleResponse.SerializeToString,
+            ),
+            'CreatePolicy': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreatePolicy,
+                    request_deserializer=connector__pb2.CreatePolicyRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorPolicySingleResponse.SerializeToString,
+            ),
+            'UpdatePolicy': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdatePolicy,
+                    request_deserializer=connector__pb2.UpdatePolicyRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorPolicySingleResponse.SerializeToString,
+            ),
+            'DeletePolicy': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeletePolicy,
+                    request_deserializer=connector__pb2.DeletePolicyRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorDeletePolicyResponse.SerializeToString,
+            ),
+            'GetAllOrganizations': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAllOrganizations,
+                    request_deserializer=connector__pb2.ConnectorGetAllOrganizationsRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorOrganizationResponse.SerializeToString,
+            ),
+            'GetOrganizationById': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetOrganizationById,
+                    request_deserializer=connector__pb2.GetOrganizationByIdRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorOrganizationSingleResponse.SerializeToString,
+            ),
+            'CreateOrganization': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateOrganization,
+                    request_deserializer=connector__pb2.CreateOrganizationRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorOrganizationSingleResponse.SerializeToString,
+            ),
+            'UpdateOrganization': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateOrganization,
+                    request_deserializer=connector__pb2.UpdateOrganizationRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorOrganizationSingleResponse.SerializeToString,
+            ),
+            'DeleteOrganization': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteOrganization,
+                    request_deserializer=connector__pb2.DeleteOrganizationRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorDeleteOrganizationResponse.SerializeToString,
+            ),
+            'GetAllTheatres': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAllTheatres,
+                    request_deserializer=connector__pb2.ConnectorGetAllTheatresRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorTheatreResponse.SerializeToString,
+            ),
+            'GetTheatreById': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTheatreById,
+                    request_deserializer=connector__pb2.GetTheatreByIdRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorTheatreSingleResponse.SerializeToString,
+            ),
+            'CreateTheatre': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateTheatre,
+                    request_deserializer=connector__pb2.CreateTheatreRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorTheatreSingleResponse.SerializeToString,
+            ),
+            'UpdateTheatre': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateTheatre,
+                    request_deserializer=connector__pb2.UpdateTheatreRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorTheatreSingleResponse.SerializeToString,
+            ),
+            'DeleteTheatre': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTheatre,
+                    request_deserializer=connector__pb2.DeleteTheatreRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorDeleteTheatreResponse.SerializeToString,
+            ),
+            'AssignUserToTheatre': grpc.unary_unary_rpc_method_handler(
+                    servicer.AssignUserToTheatre,
+                    request_deserializer=connector__pb2.AssignUserToTheatreRequest.FromString,
+                    response_serializer=connector__pb2.TheatreAssignmentResponse.SerializeToString,
+            ),
+            'RemoveUserFromTheatre': grpc.unary_unary_rpc_method_handler(
+                    servicer.RemoveUserFromTheatre,
+                    request_deserializer=connector__pb2.RemoveUserFromTheatreRequest.FromString,
+                    response_serializer=connector__pb2.TheatreAssignmentResponse.SerializeToString,
+            ),
+            'GetAllEventTriggers': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetAllEventTriggers,
+                    request_deserializer=connector__pb2.ConnectorGetAllEventTriggersRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorEventTriggerResponse.SerializeToString,
+            ),
+            'GetEventTriggerById': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetEventTriggerById,
+                    request_deserializer=connector__pb2.GetEventTriggerByIdRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorEventTriggerSingleResponse.SerializeToString,
+            ),
+            'CreateEventTrigger': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateEventTrigger,
+                    request_deserializer=connector__pb2.CreateEventTriggerRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorEventTriggerSingleResponse.SerializeToString,
+            ),
+            'UpdateEventTrigger': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateEventTrigger,
+                    request_deserializer=connector__pb2.UpdateEventTriggerRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorEventTriggerSingleResponse.SerializeToString,
+            ),
+            'DeleteEventTrigger': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteEventTrigger,
+                    request_deserializer=connector__pb2.DeleteEventTriggerRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorDeleteEventTriggerResponse.SerializeToString,
+            ),
+            'RecordEventTriggerFired': grpc.unary_unary_rpc_method_handler(
+                    servicer.RecordEventTriggerFired,
+                    request_deserializer=connector__pb2.RecordEventTriggerFiredRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorEventTriggerSingleResponse.SerializeToString,
+            ),
+            'RegenerateEventTriggerWebhookToken': grpc.unary_unary_rpc_method_handler(
+                    servicer.RegenerateEventTriggerWebhookToken,
+                    request_deserializer=connector__pb2.RegenerateEventTriggerWebhookTokenRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorEventTriggerSingleResponse.SerializeToString,
+            ),
+            'GetEventTriggerByWebhookToken': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetEventTriggerByWebhookToken,
+                    request_deserializer=connector__pb2.GetEventTriggerByWebhookTokenRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorEventTriggerSingleResponse.SerializeToString,
+            ),
+            'ListRecentDetections': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListRecentDetections,
+                    request_deserializer=connector__pb2.ListRecentDetectionsRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorDetectionListResponse.SerializeToString,
+            ),
+            'GetLatestTelemetryForAsset': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetLatestTelemetryForAsset,
+                    request_deserializer=connector__pb2.GetLatestTelemetryForAssetRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorTelemetrySingleResponse.SerializeToString,
+            ),
             'GetTechnicalConfigs': grpc.unary_unary_rpc_method_handler(
                     servicer.GetTechnicalConfigs,
                     request_deserializer=connector__pb2.ConnectorGetConfigsRequest.FromString,
                     response_serializer=connector__pb2.ConnectorConfigResponse.SerializeToString,
+            ),
+            'GetTechnicalConfigById': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTechnicalConfigById,
+                    request_deserializer=connector__pb2.GetTechnicalConfigByIdRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorConfigSingleResponse.SerializeToString,
+            ),
+            'CreateTechnicalConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateTechnicalConfig,
+                    request_deserializer=connector__pb2.CreateTechnicalConfigRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorConfigSingleResponse.SerializeToString,
+            ),
+            'UpdateTechnicalConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateTechnicalConfig,
+                    request_deserializer=connector__pb2.UpdateTechnicalConfigRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorConfigSingleResponse.SerializeToString,
+            ),
+            'DeleteTechnicalConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTechnicalConfig,
+                    request_deserializer=connector__pb2.DeleteTechnicalConfigRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorDeleteConfigResponse.SerializeToString,
+            ),
+            'PersistApplication': grpc.unary_unary_rpc_method_handler(
+                    servicer.PersistApplication,
+                    request_deserializer=capability__execution__contracts__pb2.UpsertApplicationRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationResponse.SerializeToString,
+            ),
+            'GetPersistedApplication': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPersistedApplication,
+                    request_deserializer=capability__execution__contracts__pb2.GetApplicationRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationResponse.SerializeToString,
+            ),
+            'ListPersistedApplications': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListPersistedApplications,
+                    request_deserializer=capability__execution__contracts__pb2.ListApplicationsRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationListResponse.SerializeToString,
+            ),
+            'DeletePersistedApplication': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeletePersistedApplication,
+                    request_deserializer=capability__execution__contracts__pb2.DeleteApplicationRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationResponse.SerializeToString,
+            ),
+            'GetApplicationEnvironmentPointers': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetApplicationEnvironmentPointers,
+                    request_deserializer=capability__execution__contracts__pb2.GetApplicationEnvironmentsRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.SerializeToString,
+            ),
+            'PromoteApplicationVersion': grpc.unary_unary_rpc_method_handler(
+                    servicer.PromoteApplicationVersion,
+                    request_deserializer=capability__execution__contracts__pb2.PromoteApplicationVersionRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.SerializeToString,
+            ),
+            'PersistSkillExecution': grpc.unary_unary_rpc_method_handler(
+                    servicer.PersistSkillExecution,
+                    request_deserializer=connector__pb2.PersistSkillExecutionRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionResponse.SerializeToString,
+            ),
+            'GetPersistedSkillExecution': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetPersistedSkillExecution,
+                    request_deserializer=capability__execution__contracts__pb2.GetSkillExecutionRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionResponse.SerializeToString,
+            ),
+            'ListPersistedSkillExecutions': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListPersistedSkillExecutions,
+                    request_deserializer=capability__execution__contracts__pb2.ListSkillExecutionsRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionListResponse.SerializeToString,
+            ),
+            'AppendSkillExecutionEvent': grpc.unary_unary_rpc_method_handler(
+                    servicer.AppendSkillExecutionEvent,
+                    request_deserializer=connector__pb2.AppendSkillExecutionEventRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
+            'ObserveSkillContract': grpc.unary_unary_rpc_method_handler(
+                    servicer.ObserveSkillContract,
+                    request_deserializer=connector__pb2.UpsertSkillContractRequest.FromString,
+                    response_serializer=connector__pb2.SkillContractResponse.SerializeToString,
+            ),
+            'ListSkillContracts': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListSkillContracts,
+                    request_deserializer=connector__pb2.ListSkillContractsRequest.FromString,
+                    response_serializer=connector__pb2.SkillContractListResponse.SerializeToString,
+            ),
+            'SetSkillContractStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetSkillContractStatus,
+                    request_deserializer=connector__pb2.SetSkillContractStatusRequest.FromString,
+                    response_serializer=connector__pb2.SkillContractResponse.SerializeToString,
+            ),
+            'SetSkillContractPermissions': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetSkillContractPermissions,
+                    request_deserializer=connector__pb2.SetSkillContractPermissionsRequest.FromString,
+                    response_serializer=connector__pb2.SkillContractResponse.SerializeToString,
+            ),
+            'AuthenticateUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.AuthenticateUser,
+                    request_deserializer=connector__pb2.AuthenticateUserRequest.FromString,
+                    response_serializer=connector__pb2.AuthenticateUserResponse.SerializeToString,
+            ),
+            'CreateUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateUser,
+                    request_deserializer=connector__pb2.CreateUserRequest.FromString,
+                    response_serializer=connector__pb2.CreateUserResponse.SerializeToString,
+            ),
+            'ResetPassword': grpc.unary_unary_rpc_method_handler(
+                    servicer.ResetPassword,
+                    request_deserializer=connector__pb2.ResetPasswordRequest.FromString,
+                    response_serializer=connector__pb2.ResetPasswordResponse.SerializeToString,
+            ),
+            'RecordAuthAuditEvent': grpc.unary_unary_rpc_method_handler(
+                    servicer.RecordAuthAuditEvent,
+                    request_deserializer=connector__pb2.RecordAuthAuditEventRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
+            'ListUsers': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListUsers,
+                    request_deserializer=connector__pb2.ListUsersRequest.FromString,
+                    response_serializer=connector__pb2.ListUsersResponse.SerializeToString,
+            ),
+            'GetUserById': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetUserById,
+                    request_deserializer=connector__pb2.GetUserByIdRequest.FromString,
+                    response_serializer=connector__pb2.AuthenticateUserResponse.SerializeToString,
+            ),
+            'UpsertIdentityProvider': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpsertIdentityProvider,
+                    request_deserializer=connector__pb2.UpsertIdentityProviderRequest.FromString,
+                    response_serializer=connector__pb2.IdentityProviderResponse.SerializeToString,
+            ),
+            'GetIdentityProvider': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetIdentityProvider,
+                    request_deserializer=connector__pb2.GetIdentityProviderRequest.FromString,
+                    response_serializer=connector__pb2.IdentityProviderResponse.SerializeToString,
+            ),
+            'FindIdentityProviderByEmailDomain': grpc.unary_unary_rpc_method_handler(
+                    servicer.FindIdentityProviderByEmailDomain,
+                    request_deserializer=connector__pb2.FindIdentityProviderByEmailDomainRequest.FromString,
+                    response_serializer=connector__pb2.IdentityProviderResponse.SerializeToString,
+            ),
+            'FindOidcUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.FindOidcUser,
+                    request_deserializer=connector__pb2.FindOidcUserRequest.FromString,
+                    response_serializer=connector__pb2.AuthenticateUserResponse.SerializeToString,
+            ),
+            'UpsertOidcUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpsertOidcUser,
+                    request_deserializer=connector__pb2.UpsertOidcUserRequest.FromString,
+                    response_serializer=connector__pb2.AuthenticateUserResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -860,6 +1707,33 @@ class ConnectorService(object):
             _registered_method=True)
 
     @staticmethod
+    def ListAssets(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListAssets',
+            connector__pb2.ListAssetsRequest.SerializeToString,
+            connector__pb2.AssetListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def UpsertAssetPayload(request,
             target,
             options=(),
@@ -941,6 +1815,87 @@ class ConnectorService(object):
             _registered_method=True)
 
     @staticmethod
+    def SetAssetProperty(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/SetAssetProperty',
+            connector__pb2.SetAssetPropertyRequest.SerializeToString,
+            connector__pb2.AssetPropertyResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListAssetProperties(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListAssetProperties',
+            connector__pb2.ListAssetPropertiesRequest.SerializeToString,
+            connector__pb2.AssetPropertyListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteAssetProperty(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DeleteAssetProperty',
+            connector__pb2.DeleteAssetPropertyRequest.SerializeToString,
+            connector__pb2.AssetPropertyResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def GetOrganization(request,
             target,
             options=(),
@@ -968,7 +1923,7 @@ class ConnectorService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetMission(request,
+    def ListSchedulers(request,
             target,
             options=(),
             channel_credentials=None,
@@ -981,279 +1936,9 @@ class ConnectorService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.ConnectorService/GetMission',
-            mission__autonomy__contracts__pb2.GetMissionRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.MissionResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def CreateMission(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/CreateMission',
-            mission__autonomy__contracts__pb2.CreateMissionRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.MissionResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def UpdateMission(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/UpdateMission',
-            mission__autonomy__contracts__pb2.UpdateMissionRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.MissionResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def DeleteMission(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/DeleteMission',
-            mission__autonomy__contracts__pb2.DeleteMissionRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.MissionResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def UploadMissionNfzZones(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/UploadMissionNfzZones',
-            mission__autonomy__contracts__pb2.UploadMissionNfzZonesRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.MissionResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def GetTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/GetTask',
-            mission__autonomy__contracts__pb2.GetTaskRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def GetTaskByFlightId(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/GetTaskByFlightId',
-            mission__autonomy__contracts__pb2.GetTaskByFlightIdRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def GetWaypointsByTaskId(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/GetWaypointsByTaskId',
-            mission__autonomy__contracts__pb2.GetWaypointsByTaskIdRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.WaypointsResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def CreateTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/CreateTask',
-            mission__autonomy__contracts__pb2.CreateTaskRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def UpdateTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/UpdateTask',
-            mission__autonomy__contracts__pb2.UpdateTaskRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def DeleteTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/DeleteTask',
-            mission__autonomy__contracts__pb2.DeleteTaskRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
+            '/zqnt.ConnectorService/ListSchedulers',
+            mission__autonomy__contracts__pb2.ListSchedulersRequest.SerializeToString,
+            mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -1427,33 +2112,6 @@ class ConnectorService(object):
             _registered_method=True)
 
     @staticmethod
-    def DeleteSchedulersByTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.ConnectorService/DeleteSchedulersByTask',
-            mission__autonomy__contracts__pb2.DeleteSchedulersByTaskRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
     def StoreTelemetryBatch(request_iterator,
             target,
             options=(),
@@ -1589,6 +2247,708 @@ class ConnectorService(object):
             _registered_method=True)
 
     @staticmethod
+    def GetPolicyById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetPolicyById',
+            connector__pb2.GetPolicyByIdRequest.SerializeToString,
+            connector__pb2.ConnectorPolicySingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreatePolicy(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/CreatePolicy',
+            connector__pb2.CreatePolicyRequest.SerializeToString,
+            connector__pb2.ConnectorPolicySingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdatePolicy(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/UpdatePolicy',
+            connector__pb2.UpdatePolicyRequest.SerializeToString,
+            connector__pb2.ConnectorPolicySingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeletePolicy(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DeletePolicy',
+            connector__pb2.DeletePolicyRequest.SerializeToString,
+            connector__pb2.ConnectorDeletePolicyResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetAllOrganizations(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetAllOrganizations',
+            connector__pb2.ConnectorGetAllOrganizationsRequest.SerializeToString,
+            connector__pb2.ConnectorOrganizationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetOrganizationById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetOrganizationById',
+            connector__pb2.GetOrganizationByIdRequest.SerializeToString,
+            connector__pb2.ConnectorOrganizationSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateOrganization(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/CreateOrganization',
+            connector__pb2.CreateOrganizationRequest.SerializeToString,
+            connector__pb2.ConnectorOrganizationSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateOrganization(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/UpdateOrganization',
+            connector__pb2.UpdateOrganizationRequest.SerializeToString,
+            connector__pb2.ConnectorOrganizationSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteOrganization(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DeleteOrganization',
+            connector__pb2.DeleteOrganizationRequest.SerializeToString,
+            connector__pb2.ConnectorDeleteOrganizationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetAllTheatres(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetAllTheatres',
+            connector__pb2.ConnectorGetAllTheatresRequest.SerializeToString,
+            connector__pb2.ConnectorTheatreResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetTheatreById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetTheatreById',
+            connector__pb2.GetTheatreByIdRequest.SerializeToString,
+            connector__pb2.ConnectorTheatreSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateTheatre(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/CreateTheatre',
+            connector__pb2.CreateTheatreRequest.SerializeToString,
+            connector__pb2.ConnectorTheatreSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateTheatre(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/UpdateTheatre',
+            connector__pb2.UpdateTheatreRequest.SerializeToString,
+            connector__pb2.ConnectorTheatreSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteTheatre(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DeleteTheatre',
+            connector__pb2.DeleteTheatreRequest.SerializeToString,
+            connector__pb2.ConnectorDeleteTheatreResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AssignUserToTheatre(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/AssignUserToTheatre',
+            connector__pb2.AssignUserToTheatreRequest.SerializeToString,
+            connector__pb2.TheatreAssignmentResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RemoveUserFromTheatre(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/RemoveUserFromTheatre',
+            connector__pb2.RemoveUserFromTheatreRequest.SerializeToString,
+            connector__pb2.TheatreAssignmentResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetAllEventTriggers(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetAllEventTriggers',
+            connector__pb2.ConnectorGetAllEventTriggersRequest.SerializeToString,
+            connector__pb2.ConnectorEventTriggerResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetEventTriggerById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetEventTriggerById',
+            connector__pb2.GetEventTriggerByIdRequest.SerializeToString,
+            connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateEventTrigger(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/CreateEventTrigger',
+            connector__pb2.CreateEventTriggerRequest.SerializeToString,
+            connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateEventTrigger(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/UpdateEventTrigger',
+            connector__pb2.UpdateEventTriggerRequest.SerializeToString,
+            connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteEventTrigger(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DeleteEventTrigger',
+            connector__pb2.DeleteEventTriggerRequest.SerializeToString,
+            connector__pb2.ConnectorDeleteEventTriggerResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RecordEventTriggerFired(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/RecordEventTriggerFired',
+            connector__pb2.RecordEventTriggerFiredRequest.SerializeToString,
+            connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RegenerateEventTriggerWebhookToken(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/RegenerateEventTriggerWebhookToken',
+            connector__pb2.RegenerateEventTriggerWebhookTokenRequest.SerializeToString,
+            connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetEventTriggerByWebhookToken(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetEventTriggerByWebhookToken',
+            connector__pb2.GetEventTriggerByWebhookTokenRequest.SerializeToString,
+            connector__pb2.ConnectorEventTriggerSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListRecentDetections(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListRecentDetections',
+            connector__pb2.ListRecentDetectionsRequest.SerializeToString,
+            connector__pb2.ConnectorDetectionListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetLatestTelemetryForAsset(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetLatestTelemetryForAsset',
+            connector__pb2.GetLatestTelemetryForAssetRequest.SerializeToString,
+            connector__pb2.ConnectorTelemetrySingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def GetTechnicalConfigs(request,
             target,
             options=(),
@@ -1605,6 +2965,789 @@ class ConnectorService(object):
             '/zqnt.ConnectorService/GetTechnicalConfigs',
             connector__pb2.ConnectorGetConfigsRequest.SerializeToString,
             connector__pb2.ConnectorConfigResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetTechnicalConfigById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetTechnicalConfigById',
+            connector__pb2.GetTechnicalConfigByIdRequest.SerializeToString,
+            connector__pb2.ConnectorConfigSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateTechnicalConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/CreateTechnicalConfig',
+            connector__pb2.CreateTechnicalConfigRequest.SerializeToString,
+            connector__pb2.ConnectorConfigSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateTechnicalConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/UpdateTechnicalConfig',
+            connector__pb2.UpdateTechnicalConfigRequest.SerializeToString,
+            connector__pb2.ConnectorConfigSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteTechnicalConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DeleteTechnicalConfig',
+            connector__pb2.DeleteTechnicalConfigRequest.SerializeToString,
+            connector__pb2.ConnectorDeleteConfigResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PersistApplication(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/PersistApplication',
+            capability__execution__contracts__pb2.UpsertApplicationRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetPersistedApplication(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetPersistedApplication',
+            capability__execution__contracts__pb2.GetApplicationRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListPersistedApplications(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListPersistedApplications',
+            capability__execution__contracts__pb2.ListApplicationsRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeletePersistedApplication(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DeletePersistedApplication',
+            capability__execution__contracts__pb2.DeleteApplicationRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetApplicationEnvironmentPointers(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetApplicationEnvironmentPointers',
+            capability__execution__contracts__pb2.GetApplicationEnvironmentsRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PromoteApplicationVersion(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/PromoteApplicationVersion',
+            capability__execution__contracts__pb2.PromoteApplicationVersionRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PersistSkillExecution(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/PersistSkillExecution',
+            connector__pb2.PersistSkillExecutionRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetPersistedSkillExecution(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetPersistedSkillExecution',
+            capability__execution__contracts__pb2.GetSkillExecutionRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListPersistedSkillExecutions(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListPersistedSkillExecutions',
+            capability__execution__contracts__pb2.ListSkillExecutionsRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AppendSkillExecutionEvent(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/AppendSkillExecutionEvent',
+            connector__pb2.AppendSkillExecutionEventRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ObserveSkillContract(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ObserveSkillContract',
+            connector__pb2.UpsertSkillContractRequest.SerializeToString,
+            connector__pb2.SkillContractResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListSkillContracts(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListSkillContracts',
+            connector__pb2.ListSkillContractsRequest.SerializeToString,
+            connector__pb2.SkillContractListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetSkillContractStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/SetSkillContractStatus',
+            connector__pb2.SetSkillContractStatusRequest.SerializeToString,
+            connector__pb2.SkillContractResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetSkillContractPermissions(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/SetSkillContractPermissions',
+            connector__pb2.SetSkillContractPermissionsRequest.SerializeToString,
+            connector__pb2.SkillContractResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AuthenticateUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/AuthenticateUser',
+            connector__pb2.AuthenticateUserRequest.SerializeToString,
+            connector__pb2.AuthenticateUserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/CreateUser',
+            connector__pb2.CreateUserRequest.SerializeToString,
+            connector__pb2.CreateUserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ResetPassword(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ResetPassword',
+            connector__pb2.ResetPasswordRequest.SerializeToString,
+            connector__pb2.ResetPasswordResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RecordAuthAuditEvent(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/RecordAuthAuditEvent',
+            connector__pb2.RecordAuthAuditEventRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListUsers(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListUsers',
+            connector__pb2.ListUsersRequest.SerializeToString,
+            connector__pb2.ListUsersResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetUserById(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetUserById',
+            connector__pb2.GetUserByIdRequest.SerializeToString,
+            connector__pb2.AuthenticateUserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpsertIdentityProvider(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/UpsertIdentityProvider',
+            connector__pb2.UpsertIdentityProviderRequest.SerializeToString,
+            connector__pb2.IdentityProviderResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetIdentityProvider(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetIdentityProvider',
+            connector__pb2.GetIdentityProviderRequest.SerializeToString,
+            connector__pb2.IdentityProviderResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def FindIdentityProviderByEmailDomain(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/FindIdentityProviderByEmailDomain',
+            connector__pb2.FindIdentityProviderByEmailDomainRequest.SerializeToString,
+            connector__pb2.IdentityProviderResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def FindOidcUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/FindOidcUser',
+            connector__pb2.FindOidcUserRequest.SerializeToString,
+            connector__pb2.AuthenticateUserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpsertOidcUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/UpsertOidcUser',
+            connector__pb2.UpsertOidcUserRequest.SerializeToString,
+            connector__pb2.AuthenticateUserResponse.FromString,
             options,
             channel_credentials,
             insecure,

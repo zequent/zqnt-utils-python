@@ -122,12 +122,10 @@ class GetSchedulerRequest(_message.Message):
     def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., scheduler_id: _Optional[str] = ...) -> None: ...
 
 class ListSchedulersRequest(_message.Message):
-    __slots__ = ("base", "task_id")
+    __slots__ = ("base",)
     BASE_FIELD_NUMBER: _ClassVar[int]
-    TASK_ID_FIELD_NUMBER: _ClassVar[int]
     base: _base_pb2.RequestBase
-    task_id: str
-    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., task_id: _Optional[str] = ...) -> None: ...
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ...) -> None: ...
 
 class CreateSchedulerRequest(_message.Message):
     __slots__ = ("base", "scheduler")
@@ -170,14 +168,6 @@ class DeleteSchedulersRequest(_message.Message):
     base: _base_pb2.RequestBase
     scheduler_ids: _containers.RepeatedScalarFieldContainer[str]
     def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., scheduler_ids: _Optional[_Iterable[str]] = ...) -> None: ...
-
-class DeleteSchedulersByTaskRequest(_message.Message):
-    __slots__ = ("base", "task_id")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    TASK_ID_FIELD_NUMBER: _ClassVar[int]
-    base: _base_pb2.RequestBase
-    task_id: str
-    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., task_id: _Optional[str] = ...) -> None: ...
 
 class GetWaypointsByTaskIdRequest(_message.Message):
     __slots__ = ("base", "task_id")

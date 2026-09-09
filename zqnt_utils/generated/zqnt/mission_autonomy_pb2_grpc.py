@@ -3,6 +3,7 @@
 import grpc
 import warnings
 
+from . import capability_execution_contracts_pb2 as capability__execution__contracts__pb2
 from . import mission_autonomy_contracts_pb2 as mission__autonomy__contracts__pb2
 from . import mission_autonomy_pb2 as mission__autonomy__pb2
 
@@ -27,8 +28,7 @@ if _version_not_supported:
 
 
 class MissionAutonomyServiceStub(object):
-    """MissionAutonomyService provides RPC endpoints for managing missions, tasks,
-    schedulers, and mission autonomy.
+    """MissionAutonomyService manages applications (skill packages), skill executions, schedules and decisions.
     """
 
     def __init__(self, channel):
@@ -37,55 +37,85 @@ class MissionAutonomyServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetMission = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/GetMission',
-                request_serializer=mission__autonomy__contracts__pb2.GetMissionRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.MissionResponse.FromString,
+        self.UpsertApplication = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/UpsertApplication',
+                request_serializer=capability__execution__contracts__pb2.UpsertApplicationRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationResponse.FromString,
                 _registered_method=True)
-        self.CreateMission = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/CreateMission',
-                request_serializer=mission__autonomy__contracts__pb2.CreateMissionRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.MissionResponse.FromString,
+        self.GetApplication = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/GetApplication',
+                request_serializer=capability__execution__contracts__pb2.GetApplicationRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationResponse.FromString,
                 _registered_method=True)
-        self.UpdateMission = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/UpdateMission',
-                request_serializer=mission__autonomy__contracts__pb2.UpdateMissionRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.MissionResponse.FromString,
+        self.ListApplications = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/ListApplications',
+                request_serializer=capability__execution__contracts__pb2.ListApplicationsRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationListResponse.FromString,
                 _registered_method=True)
-        self.DeleteMission = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/DeleteMission',
-                request_serializer=mission__autonomy__contracts__pb2.DeleteMissionRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.MissionResponse.FromString,
+        self.DeleteApplication = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/DeleteApplication',
+                request_serializer=capability__execution__contracts__pb2.DeleteApplicationRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationResponse.FromString,
                 _registered_method=True)
-        self.UploadMissionNfzZones = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/UploadMissionNfzZones',
-                request_serializer=mission__autonomy__contracts__pb2.UploadMissionNfzZonesRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.MissionResponse.FromString,
+        self.GetApplicationEnvironments = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/GetApplicationEnvironments',
+                request_serializer=capability__execution__contracts__pb2.GetApplicationEnvironmentsRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.FromString,
                 _registered_method=True)
-        self.GetTask = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/GetTask',
-                request_serializer=mission__autonomy__contracts__pb2.GetTaskRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
+        self.PromoteApplicationVersion = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/PromoteApplicationVersion',
+                request_serializer=capability__execution__contracts__pb2.PromoteApplicationVersionRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.FromString,
                 _registered_method=True)
-        self.GetTaskByFlightId = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/GetTaskByFlightId',
-                request_serializer=mission__autonomy__contracts__pb2.GetTaskByFlightIdRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
+        self.CreateSkillExecution = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/CreateSkillExecution',
+                request_serializer=capability__execution__contracts__pb2.CreateSkillExecutionRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
                 _registered_method=True)
-        self.CreateTask = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/CreateTask',
-                request_serializer=mission__autonomy__contracts__pb2.CreateTaskRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
+        self.ExecuteSkill = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/ExecuteSkill',
+                request_serializer=capability__execution__contracts__pb2.ExecuteSkillRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
                 _registered_method=True)
-        self.UpdateTask = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/UpdateTask',
-                request_serializer=mission__autonomy__contracts__pb2.UpdateTaskRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
+        self.GetSkillExecution = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/GetSkillExecution',
+                request_serializer=capability__execution__contracts__pb2.GetSkillExecutionRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
                 _registered_method=True)
-        self.DeleteTask = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/DeleteTask',
-                request_serializer=mission__autonomy__contracts__pb2.DeleteTaskRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
+        self.ListSkillExecutions = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/ListSkillExecutions',
+                request_serializer=capability__execution__contracts__pb2.ListSkillExecutionsRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionListResponse.FromString,
+                _registered_method=True)
+        self.StartSkillExecution = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/StartSkillExecution',
+                request_serializer=capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+                _registered_method=True)
+        self.PauseSkillExecution = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/PauseSkillExecution',
+                request_serializer=capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+                _registered_method=True)
+        self.ResumeSkillExecution = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/ResumeSkillExecution',
+                request_serializer=capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+                _registered_method=True)
+        self.CancelSkillExecution = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/CancelSkillExecution',
+                request_serializer=capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+                _registered_method=True)
+        self.SignalSkillExecution = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/SignalSkillExecution',
+                request_serializer=capability__execution__contracts__pb2.SignalSkillExecutionRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+                _registered_method=True)
+        self.ResolveExecutionConfig = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/ResolveExecutionConfig',
+                request_serializer=capability__execution__contracts__pb2.ResolveExecutionConfigRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ResolveExecutionConfigResponse.FromString,
                 _registered_method=True)
         self.ListSchedulers = channel.unary_unary(
                 '/zqnt.MissionAutonomyService/ListSchedulers',
@@ -122,36 +152,6 @@ class MissionAutonomyServiceStub(object):
                 request_serializer=mission__autonomy__contracts__pb2.DeleteSchedulersRequest.SerializeToString,
                 response_deserializer=mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
                 _registered_method=True)
-        self.DeleteSchedulersByTask = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/DeleteSchedulersByTask',
-                request_serializer=mission__autonomy__contracts__pb2.DeleteSchedulersByTaskRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
-                _registered_method=True)
-        self.StartTask = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/StartTask',
-                request_serializer=mission__autonomy__contracts__pb2.TaskLifecycleRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
-                _registered_method=True)
-        self.StopTask = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/StopTask',
-                request_serializer=mission__autonomy__contracts__pb2.TaskLifecycleRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
-                _registered_method=True)
-        self.PauseTask = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/PauseTask',
-                request_serializer=mission__autonomy__contracts__pb2.TaskLifecycleRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
-                _registered_method=True)
-        self.ResumeTask = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/ResumeTask',
-                request_serializer=mission__autonomy__contracts__pb2.TaskLifecycleRequest.SerializeToString,
-                response_deserializer=mission__autonomy__contracts__pb2.TaskResponse.FromString,
-                _registered_method=True)
-        self.EvaluateAutonomy = channel.unary_unary(
-                '/zqnt.MissionAutonomyService/EvaluateAutonomy',
-                request_serializer=mission__autonomy__pb2.EvaluateAutonomyRequest.SerializeToString,
-                response_deserializer=mission__autonomy__pb2.AutonomyEvaluationResponse.FromString,
-                _registered_method=True)
         self.EvaluateDetection = channel.unary_unary(
                 '/zqnt.MissionAutonomyService/EvaluateDetection',
                 request_serializer=mission__autonomy__pb2.EvaluateDetectionRequest.SerializeToString,
@@ -160,65 +160,103 @@ class MissionAutonomyServiceStub(object):
 
 
 class MissionAutonomyServiceServicer(object):
-    """MissionAutonomyService provides RPC endpoints for managing missions, tasks,
-    schedulers, and mission autonomy.
+    """MissionAutonomyService manages applications (skill packages), skill executions, schedules and decisions.
     """
 
-    def GetMission(self, request, context):
+    def UpsertApplication(self, request, context):
+        """Mission-free application administration. An Application is a deployable package of Skills
+        (e.g. "takeoff", "goto", "look-at" — the simplest Application is one Skill wrapping one command).
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetApplication(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateMission(self, request, context):
+    def ListApplications(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UpdateMission(self, request, context):
+    def DeleteApplication(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DeleteMission(self, request, context):
+    def GetApplicationEnvironments(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UploadMissionNfzZones(self, request, context):
+    def PromoteApplicationVersion(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetTask(self, request, context):
+    def CreateSkillExecution(self, request, context):
+        """Unified execution API. ExecuteSkill is the low-friction entry point for simple commands.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ExecuteSkill(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetTaskByFlightId(self, request, context):
+    def GetSkillExecution(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateTask(self, request, context):
+    def ListSkillExecutions(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UpdateTask(self, request, context):
+    def StartSkillExecution(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DeleteTask(self, request, context):
+    def PauseSkillExecution(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ResumeSkillExecution(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CancelSkillExecution(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SignalSkillExecution(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ResolveExecutionConfig(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -266,43 +304,6 @@ class MissionAutonomyServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DeleteSchedulersByTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def StartTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def StopTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def PauseTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ResumeTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def EvaluateAutonomy(self, request, context):
-        """Autonomy Layer - resolve dynamic configs and evaluate mission/task decisions.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def EvaluateDetection(self, request, context):
         """Decision Engine - evaluate a detection event and return a tactical decision
         """
@@ -313,55 +314,85 @@ class MissionAutonomyServiceServicer(object):
 
 def add_MissionAutonomyServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetMission': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetMission,
-                    request_deserializer=mission__autonomy__contracts__pb2.GetMissionRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.MissionResponse.SerializeToString,
+            'UpsertApplication': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpsertApplication,
+                    request_deserializer=capability__execution__contracts__pb2.UpsertApplicationRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationResponse.SerializeToString,
             ),
-            'CreateMission': grpc.unary_unary_rpc_method_handler(
-                    servicer.CreateMission,
-                    request_deserializer=mission__autonomy__contracts__pb2.CreateMissionRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.MissionResponse.SerializeToString,
+            'GetApplication': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetApplication,
+                    request_deserializer=capability__execution__contracts__pb2.GetApplicationRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationResponse.SerializeToString,
             ),
-            'UpdateMission': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateMission,
-                    request_deserializer=mission__autonomy__contracts__pb2.UpdateMissionRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.MissionResponse.SerializeToString,
+            'ListApplications': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListApplications,
+                    request_deserializer=capability__execution__contracts__pb2.ListApplicationsRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationListResponse.SerializeToString,
             ),
-            'DeleteMission': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteMission,
-                    request_deserializer=mission__autonomy__contracts__pb2.DeleteMissionRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.MissionResponse.SerializeToString,
+            'DeleteApplication': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteApplication,
+                    request_deserializer=capability__execution__contracts__pb2.DeleteApplicationRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationResponse.SerializeToString,
             ),
-            'UploadMissionNfzZones': grpc.unary_unary_rpc_method_handler(
-                    servicer.UploadMissionNfzZones,
-                    request_deserializer=mission__autonomy__contracts__pb2.UploadMissionNfzZonesRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.MissionResponse.SerializeToString,
+            'GetApplicationEnvironments': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetApplicationEnvironments,
+                    request_deserializer=capability__execution__contracts__pb2.GetApplicationEnvironmentsRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.SerializeToString,
             ),
-            'GetTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.GetTaskRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
+            'PromoteApplicationVersion': grpc.unary_unary_rpc_method_handler(
+                    servicer.PromoteApplicationVersion,
+                    request_deserializer=capability__execution__contracts__pb2.PromoteApplicationVersionRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.SerializeToString,
             ),
-            'GetTaskByFlightId': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetTaskByFlightId,
-                    request_deserializer=mission__autonomy__contracts__pb2.GetTaskByFlightIdRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
+            'CreateSkillExecution': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateSkillExecution,
+                    request_deserializer=capability__execution__contracts__pb2.CreateSkillExecutionRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionResponse.SerializeToString,
             ),
-            'CreateTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.CreateTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.CreateTaskRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
+            'ExecuteSkill': grpc.unary_unary_rpc_method_handler(
+                    servicer.ExecuteSkill,
+                    request_deserializer=capability__execution__contracts__pb2.ExecuteSkillRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionResponse.SerializeToString,
             ),
-            'UpdateTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.UpdateTaskRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
+            'GetSkillExecution': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSkillExecution,
+                    request_deserializer=capability__execution__contracts__pb2.GetSkillExecutionRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionResponse.SerializeToString,
             ),
-            'DeleteTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.DeleteTaskRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
+            'ListSkillExecutions': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListSkillExecutions,
+                    request_deserializer=capability__execution__contracts__pb2.ListSkillExecutionsRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionListResponse.SerializeToString,
+            ),
+            'StartSkillExecution': grpc.unary_unary_rpc_method_handler(
+                    servicer.StartSkillExecution,
+                    request_deserializer=capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionResponse.SerializeToString,
+            ),
+            'PauseSkillExecution': grpc.unary_unary_rpc_method_handler(
+                    servicer.PauseSkillExecution,
+                    request_deserializer=capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionResponse.SerializeToString,
+            ),
+            'ResumeSkillExecution': grpc.unary_unary_rpc_method_handler(
+                    servicer.ResumeSkillExecution,
+                    request_deserializer=capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionResponse.SerializeToString,
+            ),
+            'CancelSkillExecution': grpc.unary_unary_rpc_method_handler(
+                    servicer.CancelSkillExecution,
+                    request_deserializer=capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionResponse.SerializeToString,
+            ),
+            'SignalSkillExecution': grpc.unary_unary_rpc_method_handler(
+                    servicer.SignalSkillExecution,
+                    request_deserializer=capability__execution__contracts__pb2.SignalSkillExecutionRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.SkillExecutionResponse.SerializeToString,
+            ),
+            'ResolveExecutionConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.ResolveExecutionConfig,
+                    request_deserializer=capability__execution__contracts__pb2.ResolveExecutionConfigRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ResolveExecutionConfigResponse.SerializeToString,
             ),
             'ListSchedulers': grpc.unary_unary_rpc_method_handler(
                     servicer.ListSchedulers,
@@ -398,36 +429,6 @@ def add_MissionAutonomyServiceServicer_to_server(servicer, server):
                     request_deserializer=mission__autonomy__contracts__pb2.DeleteSchedulersRequest.FromString,
                     response_serializer=mission__autonomy__contracts__pb2.SchedulerResponse.SerializeToString,
             ),
-            'DeleteSchedulersByTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteSchedulersByTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.DeleteSchedulersByTaskRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.SchedulerResponse.SerializeToString,
-            ),
-            'StartTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.StartTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.TaskLifecycleRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
-            ),
-            'StopTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.StopTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.TaskLifecycleRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
-            ),
-            'PauseTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.PauseTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.TaskLifecycleRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
-            ),
-            'ResumeTask': grpc.unary_unary_rpc_method_handler(
-                    servicer.ResumeTask,
-                    request_deserializer=mission__autonomy__contracts__pb2.TaskLifecycleRequest.FromString,
-                    response_serializer=mission__autonomy__contracts__pb2.TaskResponse.SerializeToString,
-            ),
-            'EvaluateAutonomy': grpc.unary_unary_rpc_method_handler(
-                    servicer.EvaluateAutonomy,
-                    request_deserializer=mission__autonomy__pb2.EvaluateAutonomyRequest.FromString,
-                    response_serializer=mission__autonomy__pb2.AutonomyEvaluationResponse.SerializeToString,
-            ),
             'EvaluateDetection': grpc.unary_unary_rpc_method_handler(
                     servicer.EvaluateDetection,
                     request_deserializer=mission__autonomy__pb2.EvaluateDetectionRequest.FromString,
@@ -442,12 +443,11 @@ def add_MissionAutonomyServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class MissionAutonomyService(object):
-    """MissionAutonomyService provides RPC endpoints for managing missions, tasks,
-    schedulers, and mission autonomy.
+    """MissionAutonomyService manages applications (skill packages), skill executions, schedules and decisions.
     """
 
     @staticmethod
-    def GetMission(request,
+    def UpsertApplication(request,
             target,
             options=(),
             channel_credentials=None,
@@ -460,9 +460,9 @@ class MissionAutonomyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.MissionAutonomyService/GetMission',
-            mission__autonomy__contracts__pb2.GetMissionRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.MissionResponse.FromString,
+            '/zqnt.MissionAutonomyService/UpsertApplication',
+            capability__execution__contracts__pb2.UpsertApplicationRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -474,7 +474,7 @@ class MissionAutonomyService(object):
             _registered_method=True)
 
     @staticmethod
-    def CreateMission(request,
+    def GetApplication(request,
             target,
             options=(),
             channel_credentials=None,
@@ -487,9 +487,9 @@ class MissionAutonomyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.MissionAutonomyService/CreateMission',
-            mission__autonomy__contracts__pb2.CreateMissionRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.MissionResponse.FromString,
+            '/zqnt.MissionAutonomyService/GetApplication',
+            capability__execution__contracts__pb2.GetApplicationRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -501,7 +501,7 @@ class MissionAutonomyService(object):
             _registered_method=True)
 
     @staticmethod
-    def UpdateMission(request,
+    def ListApplications(request,
             target,
             options=(),
             channel_credentials=None,
@@ -514,9 +514,9 @@ class MissionAutonomyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.MissionAutonomyService/UpdateMission',
-            mission__autonomy__contracts__pb2.UpdateMissionRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.MissionResponse.FromString,
+            '/zqnt.MissionAutonomyService/ListApplications',
+            capability__execution__contracts__pb2.ListApplicationsRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationListResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -528,7 +528,7 @@ class MissionAutonomyService(object):
             _registered_method=True)
 
     @staticmethod
-    def DeleteMission(request,
+    def DeleteApplication(request,
             target,
             options=(),
             channel_credentials=None,
@@ -541,9 +541,9 @@ class MissionAutonomyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.MissionAutonomyService/DeleteMission',
-            mission__autonomy__contracts__pb2.DeleteMissionRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.MissionResponse.FromString,
+            '/zqnt.MissionAutonomyService/DeleteApplication',
+            capability__execution__contracts__pb2.DeleteApplicationRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -555,7 +555,7 @@ class MissionAutonomyService(object):
             _registered_method=True)
 
     @staticmethod
-    def UploadMissionNfzZones(request,
+    def GetApplicationEnvironments(request,
             target,
             options=(),
             channel_credentials=None,
@@ -568,9 +568,9 @@ class MissionAutonomyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.MissionAutonomyService/UploadMissionNfzZones',
-            mission__autonomy__contracts__pb2.UploadMissionNfzZonesRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.MissionResponse.FromString,
+            '/zqnt.MissionAutonomyService/GetApplicationEnvironments',
+            capability__execution__contracts__pb2.GetApplicationEnvironmentsRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -582,7 +582,7 @@ class MissionAutonomyService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetTask(request,
+    def PromoteApplicationVersion(request,
             target,
             options=(),
             channel_credentials=None,
@@ -595,9 +595,9 @@ class MissionAutonomyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.MissionAutonomyService/GetTask',
-            mission__autonomy__contracts__pb2.GetTaskRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
+            '/zqnt.MissionAutonomyService/PromoteApplicationVersion',
+            capability__execution__contracts__pb2.PromoteApplicationVersionRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationEnvironmentsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -609,7 +609,7 @@ class MissionAutonomyService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetTaskByFlightId(request,
+    def CreateSkillExecution(request,
             target,
             options=(),
             channel_credentials=None,
@@ -622,9 +622,9 @@ class MissionAutonomyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.MissionAutonomyService/GetTaskByFlightId',
-            mission__autonomy__contracts__pb2.GetTaskByFlightIdRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
+            '/zqnt.MissionAutonomyService/CreateSkillExecution',
+            capability__execution__contracts__pb2.CreateSkillExecutionRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -636,7 +636,7 @@ class MissionAutonomyService(object):
             _registered_method=True)
 
     @staticmethod
-    def CreateTask(request,
+    def ExecuteSkill(request,
             target,
             options=(),
             channel_credentials=None,
@@ -649,9 +649,9 @@ class MissionAutonomyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.MissionAutonomyService/CreateTask',
-            mission__autonomy__contracts__pb2.CreateTaskRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
+            '/zqnt.MissionAutonomyService/ExecuteSkill',
+            capability__execution__contracts__pb2.ExecuteSkillRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -663,7 +663,7 @@ class MissionAutonomyService(object):
             _registered_method=True)
 
     @staticmethod
-    def UpdateTask(request,
+    def GetSkillExecution(request,
             target,
             options=(),
             channel_credentials=None,
@@ -676,9 +676,9 @@ class MissionAutonomyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.MissionAutonomyService/UpdateTask',
-            mission__autonomy__contracts__pb2.UpdateTaskRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
+            '/zqnt.MissionAutonomyService/GetSkillExecution',
+            capability__execution__contracts__pb2.GetSkillExecutionRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -690,7 +690,7 @@ class MissionAutonomyService(object):
             _registered_method=True)
 
     @staticmethod
-    def DeleteTask(request,
+    def ListSkillExecutions(request,
             target,
             options=(),
             channel_credentials=None,
@@ -703,9 +703,171 @@ class MissionAutonomyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.MissionAutonomyService/DeleteTask',
-            mission__autonomy__contracts__pb2.DeleteTaskRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
+            '/zqnt.MissionAutonomyService/ListSkillExecutions',
+            capability__execution__contracts__pb2.ListSkillExecutionsRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def StartSkillExecution(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.MissionAutonomyService/StartSkillExecution',
+            capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PauseSkillExecution(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.MissionAutonomyService/PauseSkillExecution',
+            capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ResumeSkillExecution(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.MissionAutonomyService/ResumeSkillExecution',
+            capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CancelSkillExecution(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.MissionAutonomyService/CancelSkillExecution',
+            capability__execution__contracts__pb2.SkillExecutionLifecycleRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SignalSkillExecution(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.MissionAutonomyService/SignalSkillExecution',
+            capability__execution__contracts__pb2.SignalSkillExecutionRequest.SerializeToString,
+            capability__execution__contracts__pb2.SkillExecutionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ResolveExecutionConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.MissionAutonomyService/ResolveExecutionConfig',
+            capability__execution__contracts__pb2.ResolveExecutionConfigRequest.SerializeToString,
+            capability__execution__contracts__pb2.ResolveExecutionConfigResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -895,168 +1057,6 @@ class MissionAutonomyService(object):
             '/zqnt.MissionAutonomyService/DeleteSchedulers',
             mission__autonomy__contracts__pb2.DeleteSchedulersRequest.SerializeToString,
             mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def DeleteSchedulersByTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.MissionAutonomyService/DeleteSchedulersByTask',
-            mission__autonomy__contracts__pb2.DeleteSchedulersByTaskRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def StartTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.MissionAutonomyService/StartTask',
-            mission__autonomy__contracts__pb2.TaskLifecycleRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def StopTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.MissionAutonomyService/StopTask',
-            mission__autonomy__contracts__pb2.TaskLifecycleRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def PauseTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.MissionAutonomyService/PauseTask',
-            mission__autonomy__contracts__pb2.TaskLifecycleRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ResumeTask(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.MissionAutonomyService/ResumeTask',
-            mission__autonomy__contracts__pb2.TaskLifecycleRequest.SerializeToString,
-            mission__autonomy__contracts__pb2.TaskResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def EvaluateAutonomy(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.MissionAutonomyService/EvaluateAutonomy',
-            mission__autonomy__pb2.EvaluateAutonomyRequest.SerializeToString,
-            mission__autonomy__pb2.AutonomyEvaluationResponse.FromString,
             options,
             channel_credentials,
             insecure,
