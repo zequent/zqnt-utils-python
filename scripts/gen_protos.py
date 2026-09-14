@@ -69,7 +69,15 @@ def _pin_proto_ref() -> str:
     resolved_commit = ""
     for ref in (PROTO_REF, f"origin/{PROTO_REF}"):
         probe = subprocess.run(
-            ["git", "-C", str(PROTO_DIR), "rev-parse", "--verify", "--quiet", f"{ref}^{{commit}}"],
+            [
+                "git",
+                "-C",
+                str(PROTO_DIR),
+                "rev-parse",
+                "--verify",
+                "--quiet",
+                f"{ref}^{{commit}}",
+            ],
             capture_output=True,
             text=True,
         )
@@ -79,7 +87,9 @@ def _pin_proto_ref() -> str:
 
     if not resolved_commit:
         print(f"Fetching zqnt-protos {PROTO_REF}...")
-        _git("fetch", "--quiet", "origin", f"{PROTO_REF}:refs/remotes/origin/{PROTO_REF}")
+        _git(
+            "fetch", "--quiet", "origin", f"{PROTO_REF}:refs/remotes/origin/{PROTO_REF}"
+        )
         resolved_commit = _git("rev-parse", f"origin/{PROTO_REF}^{{commit}}")
 
     if resolved_commit != PROTO_REF_COMMIT:
@@ -90,7 +100,9 @@ def _pin_proto_ref() -> str:
             "you've confirmed the new target is actually what you want."
         )
 
-    print(f"Pinning proto source to zqnt-protos {PROTO_REF} ({resolved_commit}, currently {original_commit})...")
+    print(
+        f"Pinning proto source to zqnt-protos {PROTO_REF} ({resolved_commit}, currently {original_commit})..."
+    )
     _git("checkout", "--quiet", PROTO_REF_COMMIT)
     return original_commit
 
