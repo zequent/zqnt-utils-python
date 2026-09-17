@@ -46,7 +46,7 @@ WELL_KNOWN_PROTOS = Path(protoc.__file__).parent / "_proto"
 # moved rather than silently generating from whatever it now points at. A real 2.0.0 release MUST
 # replace this with the immutable tag, exactly as the 1.3.1 pin did.
 PROTO_REF = "refactoring/refactoring-ecosystem-v2"
-PROTO_REF_COMMIT = "70bd2e2b3db934da1100016acaa2cd587fd82a6f"
+PROTO_REF_COMMIT = "c8557bab33207011296b3467a1b7c41acae226e1"
 
 
 def _git(*args: str) -> str:
@@ -64,7 +64,13 @@ def _pin_proto_ref() -> str:
     from origin -- the 2.0.0 proto line may not be pushed yet, and a fetch must never silently
     replace a local commit this package was generated from. Returns the commit PROTO_DIR was on
     before, so the caller can restore it afterwards."""
-    original_commit = _git("rev-parse", "HEAD")
+    # The branch name when there is one, the bare commit when the submodule is already detached.
+    # Restoring to a hash unconditionally is what silently detaches a submodule that was on a
+    # branch -- and a proto commit made afterwards then lands on a detached HEAD, invisible to the
+    # branch this script itself pins to. Cost an hour of "why is my commit not there" once.
+    original_commit = _git("rev-parse", "--abbrev-ref", "HEAD")
+    if original_commit == "HEAD":
+        original_commit = _git("rev-parse", "HEAD")
 
     resolved_commit = ""
     for ref in (PROTO_REF, f"origin/{PROTO_REF}"):

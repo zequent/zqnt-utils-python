@@ -644,6 +644,26 @@ class RedeemAssetClaimRequest(_message.Message):
     asset: _asset_pb2.AssetProtoDTO
     def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., code: _Optional[str] = ..., asset: _Optional[_Union[_asset_pb2.AssetProtoDTO, _Mapping]] = ...) -> None: ...
 
+class DescribeAssetClaimRequest(_message.Message):
+    __slots__ = ("base", "code")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    code: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., code: _Optional[str] = ...) -> None: ...
+
+class AssetClaimDescriptionResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "error", "organization_name")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_NAME_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    error: _base_pb2.GlobalErrorMessage
+    organization_name: str
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., organization_name: _Optional[str] = ...) -> None: ...
+
 class ListAssetClaimsRequest(_message.Message):
     __slots__ = ("base", "include_closed")
     BASE_FIELD_NUMBER: _ClassVar[int]

@@ -69,6 +69,14 @@ class ConnectorServiceStub:
     one. Refusals are deliberately indistinguishable from one another — an expired code and an
     unknown code answer alike, or this becomes an oracle for guessing codes.
     """
+    DescribeAssetClaim: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DescribeAssetClaimRequest, _connector_pb2.AssetClaimDescriptionResponse]
+    """Read a code without spending it, so a device can show its operator which organization they are
+    about to bind into before anything is created. DJI's dock asks for exactly this: it resolves a
+    typed code to an organization name for confirmation, and only the following bind carries the
+    device serials. Untokened like RedeemAssetClaim, and refuses identically — but it returns the
+    organization's NAME and nothing else, so a correct guess reveals a label the operator was
+    about to be shown anyway rather than an id anything can be done with.
+    """
     ListAssetClaims: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListAssetClaimsRequest, _connector_pb2.AssetClaimListResponse]
     RevokeAssetClaim: _grpc.UnaryUnaryMultiCallable[_connector_pb2.RevokeAssetClaimRequest, _connector_pb2.AssetClaimResponse]
     UpsertAssetPayload: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpsertAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]
@@ -274,6 +282,14 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     code IS the credential, which is what lets an edge adapter with no platform identity redeem
     one. Refusals are deliberately indistinguishable from one another — an expired code and an
     unknown code answer alike, or this becomes an oracle for guessing codes.
+    """
+    DescribeAssetClaim: _aio.UnaryUnaryMultiCallable[_connector_pb2.DescribeAssetClaimRequest, _connector_pb2.AssetClaimDescriptionResponse]  # type: ignore[assignment]
+    """Read a code without spending it, so a device can show its operator which organization they are
+    about to bind into before anything is created. DJI's dock asks for exactly this: it resolves a
+    typed code to an organization name for confirmation, and only the following bind carries the
+    device serials. Untokened like RedeemAssetClaim, and refuses identically — but it returns the
+    organization's NAME and nothing else, so a correct guess reveals a label the operator was
+    about to be shown anyway rather than an id anything can be done with.
     """
     ListAssetClaims: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListAssetClaimsRequest, _connector_pb2.AssetClaimListResponse]  # type: ignore[assignment]
     RevokeAssetClaim: _aio.UnaryUnaryMultiCallable[_connector_pb2.RevokeAssetClaimRequest, _connector_pb2.AssetClaimResponse]  # type: ignore[assignment]
@@ -543,6 +559,20 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
         code IS the credential, which is what lets an edge adapter with no platform identity redeem
         one. Refusals are deliberately indistinguishable from one another — an expired code and an
         unknown code answer alike, or this becomes an oracle for guessing codes.
+        """
+
+    @_abc_1.abstractmethod
+    def DescribeAssetClaim(
+        self,
+        request: _connector_pb2.DescribeAssetClaimRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AssetClaimDescriptionResponse, _abc.Awaitable[_connector_pb2.AssetClaimDescriptionResponse]]:
+        """Read a code without spending it, so a device can show its operator which organization they are
+        about to bind into before anything is created. DJI's dock asks for exactly this: it resolves a
+        typed code to an organization name for confirmation, and only the following bind carries the
+        device serials. Untokened like RedeemAssetClaim, and refuses identically — but it returns the
+        organization's NAME and nothing else, so a correct guess reveals a label the operator was
+        about to be shown anyway rather than an id anything can be done with.
         """
 
     @_abc_1.abstractmethod

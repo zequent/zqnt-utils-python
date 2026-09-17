@@ -96,6 +96,11 @@ class ConnectorServiceStub(object):
                 request_serializer=connector__pb2.RedeemAssetClaimRequest.SerializeToString,
                 response_deserializer=connector__pb2.ConnectorResponse.FromString,
                 _registered_method=True)
+        self.DescribeAssetClaim = channel.unary_unary(
+                '/zqnt.ConnectorService/DescribeAssetClaim',
+                request_serializer=connector__pb2.DescribeAssetClaimRequest.SerializeToString,
+                response_deserializer=connector__pb2.AssetClaimDescriptionResponse.FromString,
+                _registered_method=True)
         self.ListAssetClaims = channel.unary_unary(
                 '/zqnt.ConnectorService/ListAssetClaims',
                 request_serializer=connector__pb2.ListAssetClaimsRequest.SerializeToString,
@@ -564,6 +569,18 @@ class ConnectorServiceServicer(object):
         code IS the credential, which is what lets an edge adapter with no platform identity redeem
         one. Refusals are deliberately indistinguishable from one another — an expired code and an
         unknown code answer alike, or this becomes an oracle for guessing codes.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DescribeAssetClaim(self, request, context):
+        """Read a code without spending it, so a device can show its operator which organization they are
+        about to bind into before anything is created. DJI's dock asks for exactly this: it resolves a
+        typed code to an organization name for confirmation, and only the following bind carries the
+        device serials. Untokened like RedeemAssetClaim, and refuses identically — but it returns the
+        organization's NAME and nothing else, so a correct guess reveals a label the operator was
+        about to be shown anyway rather than an id anything can be done with.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -1164,6 +1181,11 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     servicer.RedeemAssetClaim,
                     request_deserializer=connector__pb2.RedeemAssetClaimRequest.FromString,
                     response_serializer=connector__pb2.ConnectorResponse.SerializeToString,
+            ),
+            'DescribeAssetClaim': grpc.unary_unary_rpc_method_handler(
+                    servicer.DescribeAssetClaim,
+                    request_deserializer=connector__pb2.DescribeAssetClaimRequest.FromString,
+                    response_serializer=connector__pb2.AssetClaimDescriptionResponse.SerializeToString,
             ),
             'ListAssetClaims': grpc.unary_unary_rpc_method_handler(
                     servicer.ListAssetClaims,
@@ -1850,6 +1872,33 @@ class ConnectorService(object):
             '/zqnt.ConnectorService/RedeemAssetClaim',
             connector__pb2.RedeemAssetClaimRequest.SerializeToString,
             connector__pb2.ConnectorResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DescribeAssetClaim(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DescribeAssetClaim',
+            connector__pb2.DescribeAssetClaimRequest.SerializeToString,
+            connector__pb2.AssetClaimDescriptionResponse.FromString,
             options,
             channel_credentials,
             insecure,
