@@ -562,6 +562,116 @@ class ConnectorRegisterAssetRequest(_message.Message):
     asset: _asset_pb2.AssetProtoDTO
     def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., asset: _Optional[_Union[_asset_pb2.AssetProtoDTO, _Mapping]] = ...) -> None: ...
 
+class AssetClaimProtoDTO(_message.Message):
+    __slots__ = ("id", "organization_id", "label", "created_by", "allowed_vendor", "allowed_type", "max_redemptions", "redemption_count", "expires_at", "revoked_at", "created_at", "redemptions")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    LABEL_FIELD_NUMBER: _ClassVar[int]
+    CREATED_BY_FIELD_NUMBER: _ClassVar[int]
+    ALLOWED_VENDOR_FIELD_NUMBER: _ClassVar[int]
+    ALLOWED_TYPE_FIELD_NUMBER: _ClassVar[int]
+    MAX_REDEMPTIONS_FIELD_NUMBER: _ClassVar[int]
+    REDEMPTION_COUNT_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    REVOKED_AT_FIELD_NUMBER: _ClassVar[int]
+    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    REDEMPTIONS_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    organization_id: str
+    label: str
+    created_by: str
+    allowed_vendor: _asset_pb2.AssetVendor
+    allowed_type: _asset_pb2.AssetTypeEnum
+    max_redemptions: int
+    redemption_count: int
+    expires_at: _timestamp_pb2.Timestamp
+    revoked_at: _timestamp_pb2.Timestamp
+    created_at: _timestamp_pb2.Timestamp
+    redemptions: _containers.RepeatedCompositeFieldContainer[AssetClaimRedemptionProtoDTO]
+    def __init__(self, id: _Optional[str] = ..., organization_id: _Optional[str] = ..., label: _Optional[str] = ..., created_by: _Optional[str] = ..., allowed_vendor: _Optional[_Union[_asset_pb2.AssetVendor, str]] = ..., allowed_type: _Optional[_Union[_asset_pb2.AssetTypeEnum, str]] = ..., max_redemptions: _Optional[int] = ..., redemption_count: _Optional[int] = ..., expires_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., revoked_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., redemptions: _Optional[_Iterable[_Union[AssetClaimRedemptionProtoDTO, _Mapping]]] = ...) -> None: ...
+
+class AssetClaimRedemptionProtoDTO(_message.Message):
+    __slots__ = ("id", "asset_id", "sn", "redeemed_at")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    ASSET_ID_FIELD_NUMBER: _ClassVar[int]
+    SN_FIELD_NUMBER: _ClassVar[int]
+    REDEEMED_AT_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    asset_id: str
+    sn: str
+    redeemed_at: _timestamp_pb2.Timestamp
+    def __init__(self, id: _Optional[str] = ..., asset_id: _Optional[str] = ..., sn: _Optional[str] = ..., redeemed_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class CreateAssetClaimRequest(_message.Message):
+    __slots__ = ("base", "organization_id", "label", "allowed_vendor", "allowed_type", "max_redemptions", "ttl_seconds")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    LABEL_FIELD_NUMBER: _ClassVar[int]
+    ALLOWED_VENDOR_FIELD_NUMBER: _ClassVar[int]
+    ALLOWED_TYPE_FIELD_NUMBER: _ClassVar[int]
+    MAX_REDEMPTIONS_FIELD_NUMBER: _ClassVar[int]
+    TTL_SECONDS_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    organization_id: str
+    label: str
+    allowed_vendor: _asset_pb2.AssetVendor
+    allowed_type: _asset_pb2.AssetTypeEnum
+    max_redemptions: int
+    ttl_seconds: int
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., organization_id: _Optional[str] = ..., label: _Optional[str] = ..., allowed_vendor: _Optional[_Union[_asset_pb2.AssetVendor, str]] = ..., allowed_type: _Optional[_Union[_asset_pb2.AssetTypeEnum, str]] = ..., max_redemptions: _Optional[int] = ..., ttl_seconds: _Optional[int] = ...) -> None: ...
+
+class AssetClaimResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "error", "claim", "code")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    CLAIM_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    error: _base_pb2.GlobalErrorMessage
+    claim: AssetClaimProtoDTO
+    code: str
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., claim: _Optional[_Union[AssetClaimProtoDTO, _Mapping]] = ..., code: _Optional[str] = ...) -> None: ...
+
+class RedeemAssetClaimRequest(_message.Message):
+    __slots__ = ("base", "code", "asset")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    ASSET_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    code: str
+    asset: _asset_pb2.AssetProtoDTO
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., code: _Optional[str] = ..., asset: _Optional[_Union[_asset_pb2.AssetProtoDTO, _Mapping]] = ...) -> None: ...
+
+class ListAssetClaimsRequest(_message.Message):
+    __slots__ = ("base", "include_closed")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    INCLUDE_CLOSED_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    include_closed: bool
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., include_closed: bool = ...) -> None: ...
+
+class AssetClaimListResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "claims", "error")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    CLAIMS_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    claims: _containers.RepeatedCompositeFieldContainer[AssetClaimProtoDTO]
+    error: _base_pb2.GlobalErrorMessage
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., claims: _Optional[_Iterable[_Union[AssetClaimProtoDTO, _Mapping]]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
+
+class RevokeAssetClaimRequest(_message.Message):
+    __slots__ = ("base", "claim_id")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    CLAIM_ID_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    claim_id: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., claim_id: _Optional[str] = ...) -> None: ...
+
 class ConnectorUpdateAssetRequest(_message.Message):
     __slots__ = ("base", "asset", "asset_id", "update_mask")
     BASE_FIELD_NUMBER: _ClassVar[int]

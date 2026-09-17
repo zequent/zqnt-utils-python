@@ -86,6 +86,26 @@ class ConnectorServiceStub(object):
                 request_serializer=connector__pb2.ListAssetsRequest.SerializeToString,
                 response_deserializer=connector__pb2.AssetListResponse.FromString,
                 _registered_method=True)
+        self.CreateAssetClaim = channel.unary_unary(
+                '/zqnt.ConnectorService/CreateAssetClaim',
+                request_serializer=connector__pb2.CreateAssetClaimRequest.SerializeToString,
+                response_deserializer=connector__pb2.AssetClaimResponse.FromString,
+                _registered_method=True)
+        self.RedeemAssetClaim = channel.unary_unary(
+                '/zqnt.ConnectorService/RedeemAssetClaim',
+                request_serializer=connector__pb2.RedeemAssetClaimRequest.SerializeToString,
+                response_deserializer=connector__pb2.ConnectorResponse.FromString,
+                _registered_method=True)
+        self.ListAssetClaims = channel.unary_unary(
+                '/zqnt.ConnectorService/ListAssetClaims',
+                request_serializer=connector__pb2.ListAssetClaimsRequest.SerializeToString,
+                response_deserializer=connector__pb2.AssetClaimListResponse.FromString,
+                _registered_method=True)
+        self.RevokeAssetClaim = channel.unary_unary(
+                '/zqnt.ConnectorService/RevokeAssetClaim',
+                request_serializer=connector__pb2.RevokeAssetClaimRequest.SerializeToString,
+                response_deserializer=connector__pb2.AssetClaimResponse.FromString,
+                _registered_method=True)
         self.UpsertAssetPayload = channel.unary_unary(
                 '/zqnt.ConnectorService/UpsertAssetPayload',
                 request_serializer=connector__pb2.UpsertAssetPayloadRequest.SerializeToString,
@@ -524,6 +544,39 @@ class ConnectorServiceServicer(object):
         actual system-of-record enumeration — there was no way to list assets at all before this RPC,
         only look one up by a SN you already knew.
         """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateAssetClaim(self, request, context):
+        """Asset claims — one-time provisioning codes. An asset's organization is decided once and can
+        never be changed (ListAssets filters on asset.organization.id, and UpdateAsset pins the field),
+        so a device that registers itself must be told which tenant it belongs to before the asset
+        exists. A claim carries that decision from the operator who made it to the device that
+        redeems it.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RedeemAssetClaim(self, request, context):
+        """The one RPC here that does not resolve its organization from the caller's token: the claim
+        code IS the credential, which is what lets an edge adapter with no platform identity redeem
+        one. Refusals are deliberately indistinguishable from one another — an expired code and an
+        unknown code answer alike, or this becomes an oracle for guessing codes.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListAssetClaims(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RevokeAssetClaim(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -1101,6 +1154,26 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     servicer.ListAssets,
                     request_deserializer=connector__pb2.ListAssetsRequest.FromString,
                     response_serializer=connector__pb2.AssetListResponse.SerializeToString,
+            ),
+            'CreateAssetClaim': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateAssetClaim,
+                    request_deserializer=connector__pb2.CreateAssetClaimRequest.FromString,
+                    response_serializer=connector__pb2.AssetClaimResponse.SerializeToString,
+            ),
+            'RedeemAssetClaim': grpc.unary_unary_rpc_method_handler(
+                    servicer.RedeemAssetClaim,
+                    request_deserializer=connector__pb2.RedeemAssetClaimRequest.FromString,
+                    response_serializer=connector__pb2.ConnectorResponse.SerializeToString,
+            ),
+            'ListAssetClaims': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListAssetClaims,
+                    request_deserializer=connector__pb2.ListAssetClaimsRequest.FromString,
+                    response_serializer=connector__pb2.AssetClaimListResponse.SerializeToString,
+            ),
+            'RevokeAssetClaim': grpc.unary_unary_rpc_method_handler(
+                    servicer.RevokeAssetClaim,
+                    request_deserializer=connector__pb2.RevokeAssetClaimRequest.FromString,
+                    response_serializer=connector__pb2.AssetClaimResponse.SerializeToString,
             ),
             'UpsertAssetPayload': grpc.unary_unary_rpc_method_handler(
                     servicer.UpsertAssetPayload,
@@ -1723,6 +1796,114 @@ class ConnectorService(object):
             '/zqnt.ConnectorService/ListAssets',
             connector__pb2.ListAssetsRequest.SerializeToString,
             connector__pb2.AssetListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateAssetClaim(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/CreateAssetClaim',
+            connector__pb2.CreateAssetClaimRequest.SerializeToString,
+            connector__pb2.AssetClaimResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RedeemAssetClaim(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/RedeemAssetClaim',
+            connector__pb2.RedeemAssetClaimRequest.SerializeToString,
+            connector__pb2.ConnectorResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListAssetClaims(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListAssetClaims',
+            connector__pb2.ListAssetClaimsRequest.SerializeToString,
+            connector__pb2.AssetClaimListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RevokeAssetClaim(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/RevokeAssetClaim',
+            connector__pb2.RevokeAssetClaimRequest.SerializeToString,
+            connector__pb2.AssetClaimResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -56,6 +56,21 @@ class ConnectorServiceStub:
     actual system-of-record enumeration — there was no way to list assets at all before this RPC,
     only look one up by a SN you already knew.
     """
+    CreateAssetClaim: _grpc.UnaryUnaryMultiCallable[_connector_pb2.CreateAssetClaimRequest, _connector_pb2.AssetClaimResponse]
+    """Asset claims — one-time provisioning codes. An asset's organization is decided once and can
+    never be changed (ListAssets filters on asset.organization.id, and UpdateAsset pins the field),
+    so a device that registers itself must be told which tenant it belongs to before the asset
+    exists. A claim carries that decision from the operator who made it to the device that
+    redeems it.
+    """
+    RedeemAssetClaim: _grpc.UnaryUnaryMultiCallable[_connector_pb2.RedeemAssetClaimRequest, _connector_pb2.ConnectorResponse]
+    """The one RPC here that does not resolve its organization from the caller's token: the claim
+    code IS the credential, which is what lets an edge adapter with no platform identity redeem
+    one. Refusals are deliberately indistinguishable from one another — an expired code and an
+    unknown code answer alike, or this becomes an oracle for guessing codes.
+    """
+    ListAssetClaims: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListAssetClaimsRequest, _connector_pb2.AssetClaimListResponse]
+    RevokeAssetClaim: _grpc.UnaryUnaryMultiCallable[_connector_pb2.RevokeAssetClaimRequest, _connector_pb2.AssetClaimResponse]
     UpsertAssetPayload: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpsertAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]
     ListAssetPayloads: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListAssetPayloadsRequest, _connector_pb2.AssetPayloadListResponse]
     DeleteAssetPayload: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]
@@ -247,6 +262,21 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     actual system-of-record enumeration — there was no way to list assets at all before this RPC,
     only look one up by a SN you already knew.
     """
+    CreateAssetClaim: _aio.UnaryUnaryMultiCallable[_connector_pb2.CreateAssetClaimRequest, _connector_pb2.AssetClaimResponse]  # type: ignore[assignment]
+    """Asset claims — one-time provisioning codes. An asset's organization is decided once and can
+    never be changed (ListAssets filters on asset.organization.id, and UpdateAsset pins the field),
+    so a device that registers itself must be told which tenant it belongs to before the asset
+    exists. A claim carries that decision from the operator who made it to the device that
+    redeems it.
+    """
+    RedeemAssetClaim: _aio.UnaryUnaryMultiCallable[_connector_pb2.RedeemAssetClaimRequest, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
+    """The one RPC here that does not resolve its organization from the caller's token: the claim
+    code IS the credential, which is what lets an edge adapter with no platform identity redeem
+    one. Refusals are deliberately indistinguishable from one another — an expired code and an
+    unknown code answer alike, or this becomes an oracle for guessing codes.
+    """
+    ListAssetClaims: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListAssetClaimsRequest, _connector_pb2.AssetClaimListResponse]  # type: ignore[assignment]
+    RevokeAssetClaim: _aio.UnaryUnaryMultiCallable[_connector_pb2.RevokeAssetClaimRequest, _connector_pb2.AssetClaimResponse]  # type: ignore[assignment]
     UpsertAssetPayload: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpsertAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]  # type: ignore[assignment]
     ListAssetPayloads: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListAssetPayloadsRequest, _connector_pb2.AssetPayloadListResponse]  # type: ignore[assignment]
     DeleteAssetPayload: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteAssetPayloadRequest, _connector_pb2.AssetPayloadResponse]  # type: ignore[assignment]
@@ -489,6 +519,45 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
         actual system-of-record enumeration — there was no way to list assets at all before this RPC,
         only look one up by a SN you already knew.
         """
+
+    @_abc_1.abstractmethod
+    def CreateAssetClaim(
+        self,
+        request: _connector_pb2.CreateAssetClaimRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AssetClaimResponse, _abc.Awaitable[_connector_pb2.AssetClaimResponse]]:
+        """Asset claims — one-time provisioning codes. An asset's organization is decided once and can
+        never be changed (ListAssets filters on asset.organization.id, and UpdateAsset pins the field),
+        so a device that registers itself must be told which tenant it belongs to before the asset
+        exists. A claim carries that decision from the operator who made it to the device that
+        redeems it.
+        """
+
+    @_abc_1.abstractmethod
+    def RedeemAssetClaim(
+        self,
+        request: _connector_pb2.RedeemAssetClaimRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ConnectorResponse, _abc.Awaitable[_connector_pb2.ConnectorResponse]]:
+        """The one RPC here that does not resolve its organization from the caller's token: the claim
+        code IS the credential, which is what lets an edge adapter with no platform identity redeem
+        one. Refusals are deliberately indistinguishable from one another — an expired code and an
+        unknown code answer alike, or this becomes an oracle for guessing codes.
+        """
+
+    @_abc_1.abstractmethod
+    def ListAssetClaims(
+        self,
+        request: _connector_pb2.ListAssetClaimsRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AssetClaimListResponse, _abc.Awaitable[_connector_pb2.AssetClaimListResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def RevokeAssetClaim(
+        self,
+        request: _connector_pb2.RevokeAssetClaimRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AssetClaimResponse, _abc.Awaitable[_connector_pb2.AssetClaimResponse]]: ...
 
     @_abc_1.abstractmethod
     def UpsertAssetPayload(
