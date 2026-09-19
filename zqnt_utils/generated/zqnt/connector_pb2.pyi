@@ -1259,7 +1259,7 @@ class TheatreAssignmentResponse(_message.Message):
     def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
 
 class EventTriggerProtoDTO(_message.Message):
-    __slots__ = ("id", "name", "active", "event_type", "asset_sn", "object_type", "min_confidence", "telemetry_field", "comparison_operator", "comparison_value", "webhook_token", "application_id", "skill_id", "execution_parameters_json", "auto_start", "cooldown_seconds", "last_fired_at", "created_at", "modified_at")
+    __slots__ = ("id", "name", "active", "event_type", "asset_sn", "object_type", "min_confidence", "telemetry_field", "comparison_operator", "comparison_value", "webhook_token", "application_id", "skill_id", "execution_parameters_json", "auto_start", "cooldown_seconds", "last_fired_at", "created_at", "modified_at", "bridge_id")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
@@ -1279,6 +1279,7 @@ class EventTriggerProtoDTO(_message.Message):
     LAST_FIRED_AT_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     MODIFIED_AT_FIELD_NUMBER: _ClassVar[int]
+    BRIDGE_ID_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     active: bool
@@ -1298,7 +1299,8 @@ class EventTriggerProtoDTO(_message.Message):
     last_fired_at: _timestamp_pb2.Timestamp
     created_at: _timestamp_pb2.Timestamp
     modified_at: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., active: bool = ..., event_type: _Optional[str] = ..., asset_sn: _Optional[str] = ..., object_type: _Optional[str] = ..., min_confidence: _Optional[float] = ..., telemetry_field: _Optional[str] = ..., comparison_operator: _Optional[str] = ..., comparison_value: _Optional[str] = ..., webhook_token: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., execution_parameters_json: _Optional[str] = ..., auto_start: bool = ..., cooldown_seconds: _Optional[int] = ..., last_fired_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    bridge_id: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., active: bool = ..., event_type: _Optional[str] = ..., asset_sn: _Optional[str] = ..., object_type: _Optional[str] = ..., min_confidence: _Optional[float] = ..., telemetry_field: _Optional[str] = ..., comparison_operator: _Optional[str] = ..., comparison_value: _Optional[str] = ..., webhook_token: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., execution_parameters_json: _Optional[str] = ..., auto_start: bool = ..., cooldown_seconds: _Optional[int] = ..., last_fired_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., bridge_id: _Optional[str] = ...) -> None: ...
 
 class EventTriggerProtoDTOList(_message.Message):
     __slots__ = ("event_triggers",)
