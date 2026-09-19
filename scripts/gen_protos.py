@@ -33,15 +33,20 @@ OUT_DIR = ROOT / "zqnt_utils" / "generated" / "zqnt"
 
 WELL_KNOWN_PROTOS = Path(protoc.__file__).parent / "_proto"
 
-# zqnt-protos' own `1.3.1` tag -- the real, immutable release this repo's own v1.3.1 is the
-# Python counterpart of (adds simulator-control.proto/SimulatorControlService on top of the 1.3.0
-# wire contract; cherry-picked onto the real 1.3.0 tag, not main, which has diverged onto the
-# 2.0.0-track proto -- see zqnt-protos' own tag message). Same resolve-then-assert pattern
-# zqnt-utils-golang's own gen_protos.sh uses: resolve the tag, assert it's still the exact commit
-# expected, fail loudly if it's moved, rather than silently generating from whatever it now
-# points to.
-PROTO_TAG = "1.3.1"
-PROTO_TAG_COMMIT = "8c2d5a42a97b54f915e39c38b0cd12cb188a5be1"
+# The v2.0.0 proto line: zqnt-protos' `refactoring/refactoring-ecosystem-v2`, which is the only
+# line carrying the refactored layout this package's 2.0.0 consumers need -- capability-execution-*,
+# SkillContractProtoDTO on connector.proto, CommandExecutionEvent on events.proto, and the
+# mission-free SchedulerProtoDTO (asset_sn/command_id/execution_parameters) rather than the
+# Mission/Task-based 1.3.x one. The 1.3.1 tag this script used to pin (8c2d5a4) is the 1.3.0 line
+# and has none of that; generating from it is what left client-python-sdk's v2 branch failing 11
+# tests against its own SDK surface.
+#
+# LOCAL-DEV-ONLY, deliberately a branch + commit assert rather than a tag: the 2.0.0 proto line has
+# no immutable tag yet. Same resolve-then-assert pattern as before -- fail loudly if the branch has
+# moved rather than silently generating from whatever it now points at. A real 2.0.0 release MUST
+# replace this with the immutable tag, exactly as the 1.3.1 pin did.
+PROTO_REF = "refactoring/refactoring-ecosystem-v2"
+PROTO_REF_COMMIT = "1cbc9464842d01999a2d3ba713457e2e92e826d2"
 
 
 def _git(*args: str) -> str:
@@ -54,29 +59,57 @@ def _git(*args: str) -> str:
 
 
 def _pin_proto_ref() -> str:
-    """Checks PROTO_DIR out to PROTO_TAG, fetching it first if not already present locally, and
-    asserting it still resolves to PROTO_TAG_COMMIT (fail loudly if the tag has moved). Returns
-    the commit PROTO_DIR was on before, so the caller can restore it afterwards."""
-    original_commit = _git("rev-parse", "HEAD")
-    verify = subprocess.run(
-        ["git", "-C", str(PROTO_DIR), "rev-parse", "--verify", "--quiet", f"refs/tags/{PROTO_TAG}"],
-        capture_output=True,
-    )
-    if verify.returncode != 0:
-        print(f"Fetching zqnt-protos tag {PROTO_TAG}...")
-        _git("fetch", "--quiet", "origin", f"refs/tags/{PROTO_TAG}:refs/tags/{PROTO_TAG}")
+    """Checks PROTO_DIR out to PROTO_REF, asserting it still resolves to PROTO_REF_COMMIT (fail
+    loudly if the branch has moved). Resolves the LOCAL ref first and only falls back to fetching
+    from origin -- the 2.0.0 proto line may not be pushed yet, and a fetch must never silently
+    replace a local commit this package was generated from. Returns the commit PROTO_DIR was on
+    before, so the caller can restore it afterwards."""
+    # The branch name when there is one, the bare commit when the submodule is already detached.
+    # Restoring to a hash unconditionally is what silently detaches a submodule that was on a
+    # branch -- and a proto commit made afterwards then lands on a detached HEAD, invisible to the
+    # branch this script itself pins to. Cost an hour of "why is my commit not there" once.
+    original_commit = _git("rev-parse", "--abbrev-ref", "HEAD")
+    if original_commit == "HEAD":
+        original_commit = _git("rev-parse", "HEAD")
 
-    resolved_commit = _git("rev-parse", f"refs/tags/{PROTO_TAG}^{{commit}}")
-    if resolved_commit != PROTO_TAG_COMMIT:
+    resolved_commit = ""
+    for ref in (PROTO_REF, f"origin/{PROTO_REF}"):
+        probe = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(PROTO_DIR),
+                "rev-parse",
+                "--verify",
+                "--quiet",
+                f"{ref}^{{commit}}",
+            ],
+            capture_output=True,
+            text=True,
+        )
+        if probe.returncode == 0:
+            resolved_commit = probe.stdout.strip()
+            break
+
+    if not resolved_commit:
+        print(f"Fetching zqnt-protos {PROTO_REF}...")
+        _git(
+            "fetch", "--quiet", "origin", f"{PROTO_REF}:refs/remotes/origin/{PROTO_REF}"
+        )
+        resolved_commit = _git("rev-parse", f"origin/{PROTO_REF}^{{commit}}")
+
+    if resolved_commit != PROTO_REF_COMMIT:
         sys.exit(
-            f"zqnt-protos tag {PROTO_TAG} resolves to {resolved_commit}, not the expected "
-            f"{PROTO_TAG_COMMIT} -- the tag has moved since this script was last updated. "
-            "Refusing to generate from an unverified commit; update PROTO_TAG_COMMIT above once "
+            f"zqnt-protos {PROTO_REF} resolves to {resolved_commit}, not the expected "
+            f"{PROTO_REF_COMMIT} -- the branch has moved since this script was last updated. "
+            "Refusing to generate from an unverified commit; update PROTO_REF_COMMIT above once "
             "you've confirmed the new target is actually what you want."
         )
 
-    print(f"Pinning proto submodule to zqnt-protos {PROTO_TAG} ({resolved_commit}, currently {original_commit})...")
-    _git("checkout", "--quiet", PROTO_TAG)
+    print(
+        f"Pinning proto source to zqnt-protos {PROTO_REF} ({resolved_commit}, currently {original_commit})..."
+    )
+    _git("checkout", "--quiet", PROTO_REF_COMMIT)
     return original_commit
 
 
