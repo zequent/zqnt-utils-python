@@ -12,6 +12,7 @@ from . import capability_execution_contracts_pb2 as _capability_execution_contra
 from . import connector_pb2 as _connector_pb2
 from . import events_pb2 as _events_pb2
 import grpc as _grpc
+from . import media_pb2 as _media_pb2
 from . import mission_autonomy_contracts_pb2 as _mission_autonomy_contracts_pb2
 import sys
 import typing as _typing
@@ -102,6 +103,12 @@ class ConnectorServiceStub:
     """Detection Storage - batch processing from live-data service (high-frequency, TimescaleDB)"""
     StoreNotificationBatch: _grpc.StreamUnaryMultiCallable[_events_pb2.ProduceNotificationRequest, _connector_pb2.ConnectorResponse]
     """Notification Storage - batch processing from live-data service"""
+    RegisterMediaFile: _grpc.UnaryUnaryMultiCallable[_media_pb2.RegisterMediaFileRequest, _media_pb2.MediaFileProtoDTO]
+    """Media a device uploaded to the inbox bucket (see media.proto): attributed, moved under its
+    organization/application folder and recorded. Idempotent per source object key.
+    """
+    ListMediaFiles: _grpc.UnaryUnaryMultiCallable[_media_pb2.ListMediaFilesRequest, _media_pb2.ListMediaFilesResponse]
+    GetMediaFile: _grpc.UnaryUnaryMultiCallable[_media_pb2.GetMediaFileRequest, _media_pb2.MediaFileProtoDTO]
     GetActivePoliciesByType: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetPoliciesRequest, _connector_pb2.ConnectorPolicyResponse]
     """Policy Management - fetched by Mission-Autonomy for decision engine cache. Read-only RPCs
     existed first; the CRUD RPCs below back the admin-console "Operational Policies" management
@@ -316,6 +323,12 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     """Detection Storage - batch processing from live-data service (high-frequency, TimescaleDB)"""
     StoreNotificationBatch: _aio.StreamUnaryMultiCallable[_events_pb2.ProduceNotificationRequest, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
     """Notification Storage - batch processing from live-data service"""
+    RegisterMediaFile: _aio.UnaryUnaryMultiCallable[_media_pb2.RegisterMediaFileRequest, _media_pb2.MediaFileProtoDTO]  # type: ignore[assignment]
+    """Media a device uploaded to the inbox bucket (see media.proto): attributed, moved under its
+    organization/application folder and recorded. Idempotent per source object key.
+    """
+    ListMediaFiles: _aio.UnaryUnaryMultiCallable[_media_pb2.ListMediaFilesRequest, _media_pb2.ListMediaFilesResponse]  # type: ignore[assignment]
+    GetMediaFile: _aio.UnaryUnaryMultiCallable[_media_pb2.GetMediaFileRequest, _media_pb2.MediaFileProtoDTO]  # type: ignore[assignment]
     GetActivePoliciesByType: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetPoliciesRequest, _connector_pb2.ConnectorPolicyResponse]  # type: ignore[assignment]
     """Policy Management - fetched by Mission-Autonomy for decision engine cache. Read-only RPCs
     existed first; the CRUD RPCs below back the admin-console "Operational Policies" management
@@ -713,6 +726,30 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
         context: _ServicerContext,
     ) -> _typing.Union[_connector_pb2.ConnectorResponse, _abc.Awaitable[_connector_pb2.ConnectorResponse]]:
         """Notification Storage - batch processing from live-data service"""
+
+    @_abc_1.abstractmethod
+    def RegisterMediaFile(
+        self,
+        request: _media_pb2.RegisterMediaFileRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_media_pb2.MediaFileProtoDTO, _abc.Awaitable[_media_pb2.MediaFileProtoDTO]]:
+        """Media a device uploaded to the inbox bucket (see media.proto): attributed, moved under its
+        organization/application folder and recorded. Idempotent per source object key.
+        """
+
+    @_abc_1.abstractmethod
+    def ListMediaFiles(
+        self,
+        request: _media_pb2.ListMediaFilesRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_media_pb2.ListMediaFilesResponse, _abc.Awaitable[_media_pb2.ListMediaFilesResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def GetMediaFile(
+        self,
+        request: _media_pb2.GetMediaFileRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_media_pb2.MediaFileProtoDTO, _abc.Awaitable[_media_pb2.MediaFileProtoDTO]]: ...
 
     @_abc_1.abstractmethod
     def GetActivePoliciesByType(

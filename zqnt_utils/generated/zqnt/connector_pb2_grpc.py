@@ -8,6 +8,7 @@ from . import capability_execution_contracts_pb2 as capability__execution__contr
 from . import connector_pb2 as connector__pb2
 from . import events_pb2 as events__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+from . import media_pb2 as media__pb2
 from . import mission_autonomy_contracts_pb2 as mission__autonomy__contracts__pb2
 
 GRPC_GENERATED_VERSION = '1.80.0'
@@ -195,6 +196,21 @@ class ConnectorServiceStub(object):
                 '/zqnt.ConnectorService/StoreNotificationBatch',
                 request_serializer=events__pb2.ProduceNotificationRequest.SerializeToString,
                 response_deserializer=connector__pb2.ConnectorResponse.FromString,
+                _registered_method=True)
+        self.RegisterMediaFile = channel.unary_unary(
+                '/zqnt.ConnectorService/RegisterMediaFile',
+                request_serializer=media__pb2.RegisterMediaFileRequest.SerializeToString,
+                response_deserializer=media__pb2.MediaFileProtoDTO.FromString,
+                _registered_method=True)
+        self.ListMediaFiles = channel.unary_unary(
+                '/zqnt.ConnectorService/ListMediaFiles',
+                request_serializer=media__pb2.ListMediaFilesRequest.SerializeToString,
+                response_deserializer=media__pb2.ListMediaFilesResponse.FromString,
+                _registered_method=True)
+        self.GetMediaFile = channel.unary_unary(
+                '/zqnt.ConnectorService/GetMediaFile',
+                request_serializer=media__pb2.GetMediaFileRequest.SerializeToString,
+                response_deserializer=media__pb2.MediaFileProtoDTO.FromString,
                 _registered_method=True)
         self.GetActivePoliciesByType = channel.unary_unary(
                 '/zqnt.ConnectorService/GetActivePoliciesByType',
@@ -701,6 +717,26 @@ class ConnectorServiceServicer(object):
     def StoreNotificationBatch(self, request_iterator, context):
         """Notification Storage - batch processing from live-data service
         """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RegisterMediaFile(self, request, context):
+        """Media a device uploaded to the inbox bucket (see media.proto): attributed, moved under its
+        organization/application folder and recorded. Idempotent per source object key.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListMediaFiles(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetMediaFile(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -1281,6 +1317,21 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     servicer.StoreNotificationBatch,
                     request_deserializer=events__pb2.ProduceNotificationRequest.FromString,
                     response_serializer=connector__pb2.ConnectorResponse.SerializeToString,
+            ),
+            'RegisterMediaFile': grpc.unary_unary_rpc_method_handler(
+                    servicer.RegisterMediaFile,
+                    request_deserializer=media__pb2.RegisterMediaFileRequest.FromString,
+                    response_serializer=media__pb2.MediaFileProtoDTO.SerializeToString,
+            ),
+            'ListMediaFiles': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListMediaFiles,
+                    request_deserializer=media__pb2.ListMediaFilesRequest.FromString,
+                    response_serializer=media__pb2.ListMediaFilesResponse.SerializeToString,
+            ),
+            'GetMediaFile': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetMediaFile,
+                    request_deserializer=media__pb2.GetMediaFileRequest.FromString,
+                    response_serializer=media__pb2.MediaFileProtoDTO.SerializeToString,
             ),
             'GetActivePoliciesByType': grpc.unary_unary_rpc_method_handler(
                     servicer.GetActivePoliciesByType,
@@ -2412,6 +2463,87 @@ class ConnectorService(object):
             '/zqnt.ConnectorService/StoreNotificationBatch',
             events__pb2.ProduceNotificationRequest.SerializeToString,
             connector__pb2.ConnectorResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RegisterMediaFile(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/RegisterMediaFile',
+            media__pb2.RegisterMediaFileRequest.SerializeToString,
+            media__pb2.MediaFileProtoDTO.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListMediaFiles(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListMediaFiles',
+            media__pb2.ListMediaFilesRequest.SerializeToString,
+            media__pb2.ListMediaFilesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetMediaFile(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetMediaFile',
+            media__pb2.GetMediaFileRequest.SerializeToString,
+            media__pb2.MediaFileProtoDTO.FromString,
             options,
             channel_credentials,
             insecure,

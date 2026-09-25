@@ -17,6 +17,7 @@ from . import mission_autonomy_dto_pb2 as _mission_autonomy_dto_pb2_1
 from . import capability_execution_contracts_pb2 as _capability_execution_contracts_pb2
 from . import capability_execution_dto_pb2 as _capability_execution_dto_pb2
 from . import device_control_contracts_pb2 as _device_control_contracts_pb2_1
+from . import media_pb2 as _media_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
