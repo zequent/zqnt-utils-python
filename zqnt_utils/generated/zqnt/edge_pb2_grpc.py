@@ -89,11 +89,6 @@ class EdgeAdapterServiceStub(object):
                 request_serializer=detection__pb2.DetectionStreamRequest.SerializeToString,
                 response_deserializer=detection__pb2.DetectionBatch.FromString,
                 _registered_method=True)
-        self.PlayTTSAudio = channel.unary_unary(
-                '/zqnt.EdgeAdapterService/PlayTTSAudio',
-                request_serializer=device__control__contracts__pb2.TextToSpeechCommandRequest.SerializeToString,
-                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
-                _registered_method=True)
         self.OpenCover = channel.unary_unary(
                 '/zqnt.EdgeAdapterService/OpenCover',
                 request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
@@ -282,12 +277,6 @@ class EdgeAdapterServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def GetDetections(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def PlayTTSAudio(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -495,11 +484,6 @@ def add_EdgeAdapterServiceServicer_to_server(servicer, server):
                     servicer.GetDetections,
                     request_deserializer=detection__pb2.DetectionStreamRequest.FromString,
                     response_serializer=detection__pb2.DetectionBatch.SerializeToString,
-            ),
-            'PlayTTSAudio': grpc.unary_unary_rpc_method_handler(
-                    servicer.PlayTTSAudio,
-                    request_deserializer=device__control__contracts__pb2.TextToSpeechCommandRequest.FromString,
-                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'OpenCover': grpc.unary_unary_rpc_method_handler(
                     servicer.OpenCover,
@@ -896,33 +880,6 @@ class EdgeAdapterService(object):
             '/zqnt.EdgeAdapterService/GetDetections',
             detection__pb2.DetectionStreamRequest.SerializeToString,
             detection__pb2.DetectionBatch.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def PlayTTSAudio(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.EdgeAdapterService/PlayTTSAudio',
-            device__control__contracts__pb2.TextToSpeechCommandRequest.SerializeToString,
-            device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,
             insecure,

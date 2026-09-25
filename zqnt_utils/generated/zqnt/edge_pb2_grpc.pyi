@@ -52,7 +52,6 @@ class EdgeAdapterServiceStub:
     """Gimbal, Camera & Detection"""
     EnableGimbalTracking: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]
     GetDetections: _grpc.UnaryStreamMultiCallable[_detection_pb2.DetectionStreamRequest, _detection_pb2.DetectionBatch]
-    PlayTTSAudio: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TextToSpeechCommandRequest, _device_control_contracts_pb2.CommandResponse]
     OpenCover: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
     """Dock commands"""
     CloseCover: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CloseCoverCommandRequest, _device_control_contracts_pb2.CommandResponse]
@@ -107,7 +106,6 @@ class EdgeAdapterServiceAsyncStub(EdgeAdapterServiceStub):
     """Gimbal, Camera & Detection"""
     EnableGimbalTracking: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     GetDetections: _aio.UnaryStreamMultiCallable[_detection_pb2.DetectionStreamRequest, _detection_pb2.DetectionBatch]  # type: ignore[assignment]
-    PlayTTSAudio: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TextToSpeechCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     OpenCover: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     """Dock commands"""
     CloseCover: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.CloseCoverCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
@@ -219,13 +217,6 @@ class EdgeAdapterServiceServicer(metaclass=_abc_1.ABCMeta):
         request: _detection_pb2.DetectionStreamRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_abc.Iterator[_detection_pb2.DetectionBatch], _abc.AsyncIterator[_detection_pb2.DetectionBatch]]: ...
-
-    @_abc_1.abstractmethod
-    def PlayTTSAudio(
-        self,
-        request: _device_control_contracts_pb2.TextToSpeechCommandRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
     @_abc_1.abstractmethod
     def OpenCover(

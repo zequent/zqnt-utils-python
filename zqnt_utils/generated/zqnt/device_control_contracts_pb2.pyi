@@ -499,14 +499,6 @@ class ToggleCommandRequest(_message.Message):
     enabled: bool
     def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., enabled: bool = ...) -> None: ...
 
-class TextToSpeechCommandRequest(_message.Message):
-    __slots__ = ("base", "text")
-    BASE_FIELD_NUMBER: _ClassVar[int]
-    TEXT_FIELD_NUMBER: _ClassVar[int]
-    base: _base_pb2.RequestBase
-    text: str
-    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., text: _Optional[str] = ...) -> None: ...
-
 class SpotlightControlRequest(_message.Message):
     __slots__ = ("base", "light_switch")
     BASE_FIELD_NUMBER: _ClassVar[int]

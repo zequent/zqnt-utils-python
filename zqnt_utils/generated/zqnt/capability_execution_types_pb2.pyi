@@ -18,7 +18,6 @@ class SkillExecutionStatusProto(int, metaclass=_enum_type_wrapper.EnumTypeWrappe
     SKILL_EXECUTION_STATUS_READY: _ClassVar[SkillExecutionStatusProto]
     SKILL_EXECUTION_STATUS_RUNNING: _ClassVar[SkillExecutionStatusProto]
     SKILL_EXECUTION_STATUS_PAUSED: _ClassVar[SkillExecutionStatusProto]
-    SKILL_EXECUTION_STATUS_BLOCKED: _ClassVar[SkillExecutionStatusProto]
     SKILL_EXECUTION_STATUS_SUCCEEDED: _ClassVar[SkillExecutionStatusProto]
     SKILL_EXECUTION_STATUS_FAILED: _ClassVar[SkillExecutionStatusProto]
     SKILL_EXECUTION_STATUS_CANCELLING: _ClassVar[SkillExecutionStatusProto]
@@ -142,7 +141,6 @@ SKILL_EXECUTION_STATUS_PLANNING: SkillExecutionStatusProto
 SKILL_EXECUTION_STATUS_READY: SkillExecutionStatusProto
 SKILL_EXECUTION_STATUS_RUNNING: SkillExecutionStatusProto
 SKILL_EXECUTION_STATUS_PAUSED: SkillExecutionStatusProto
-SKILL_EXECUTION_STATUS_BLOCKED: SkillExecutionStatusProto
 SKILL_EXECUTION_STATUS_SUCCEEDED: SkillExecutionStatusProto
 SKILL_EXECUTION_STATUS_FAILED: SkillExecutionStatusProto
 SKILL_EXECUTION_STATUS_CANCELLING: SkillExecutionStatusProto

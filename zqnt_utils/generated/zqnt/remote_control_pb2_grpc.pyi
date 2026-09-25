@@ -54,7 +54,6 @@ class RemoteControlServiceStub:
     ManualControlInput: _grpc.StreamUnaryMultiCallable[_device_control_contracts_pb2.ManualControlInputCommandRequest, _device_control_contracts_pb2.CommandResponse]
     LookAt: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LookAtCommandRequest, _device_control_contracts_pb2.CommandResponse]
     CapturePhoto: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]
-    PlayTTSAudio: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TextToSpeechCommandRequest, _device_control_contracts_pb2.CommandResponse]
     LiveStreamSplitScreen: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]
     ControlDetection: _grpc.UnaryUnaryMultiCallable[_device_control_contracts_pb2.DetectionControlCommandRequest, _device_control_contracts_pb2.CommandResponse]
     """Detection"""
@@ -101,7 +100,6 @@ class RemoteControlServiceAsyncStub(RemoteControlServiceStub):
     ManualControlInput: _aio.StreamUnaryMultiCallable[_device_control_contracts_pb2.ManualControlInputCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     LookAt: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.LookAtCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     CapturePhoto: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.EmptyCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
-    PlayTTSAudio: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.TextToSpeechCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     LiveStreamSplitScreen: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.ToggleCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     ControlDetection: _aio.UnaryUnaryMultiCallable[_device_control_contracts_pb2.DetectionControlCommandRequest, _device_control_contracts_pb2.CommandResponse]  # type: ignore[assignment]
     """Detection"""
@@ -209,13 +207,6 @@ class RemoteControlServiceServicer(metaclass=_abc_1.ABCMeta):
     def CapturePhoto(
         self,
         request: _device_control_contracts_pb2.EmptyCommandRequest,
-        context: _ServicerContext,
-    ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
-
-    @_abc_1.abstractmethod
-    def PlayTTSAudio(
-        self,
-        request: _device_control_contracts_pb2.TextToSpeechCommandRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_device_control_contracts_pb2.CommandResponse, _abc.Awaitable[_device_control_contracts_pb2.CommandResponse]]: ...
 
