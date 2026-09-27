@@ -780,7 +780,7 @@ class ConnectorStoreTelemetryRequest(_message.Message):
     def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., type: _Optional[_Union[TelemetryType, str]] = ..., asset_telemetry: _Optional[_Union[AssetTelemetryProto, _Mapping]] = ..., sub_asset_telemetry: _Optional[_Union[SubAssetTelemetryProto, _Mapping]] = ...) -> None: ...
 
 class ConnectorStoreDetectionRequest(_message.Message):
-    __slots__ = ("base", "asset_sn", "sub_asset_sn", "task_id", "object_id", "object_type", "confidence", "bounding_box_x", "bounding_box_y", "bounding_box_width", "bounding_box_height", "stream_url", "detected_at")
+    __slots__ = ("base", "asset_sn", "sub_asset_sn", "task_id", "object_id", "object_type", "confidence", "bounding_box_x", "bounding_box_y", "bounding_box_width", "bounding_box_height", "stream_url", "detected_at", "position")
     BASE_FIELD_NUMBER: _ClassVar[int]
     ASSET_SN_FIELD_NUMBER: _ClassVar[int]
     SUB_ASSET_SN_FIELD_NUMBER: _ClassVar[int]
@@ -794,6 +794,7 @@ class ConnectorStoreDetectionRequest(_message.Message):
     BOUNDING_BOX_HEIGHT_FIELD_NUMBER: _ClassVar[int]
     STREAM_URL_FIELD_NUMBER: _ClassVar[int]
     DETECTED_AT_FIELD_NUMBER: _ClassVar[int]
+    POSITION_FIELD_NUMBER: _ClassVar[int]
     base: _base_pb2.RequestBase
     asset_sn: str
     sub_asset_sn: str
@@ -807,7 +808,8 @@ class ConnectorStoreDetectionRequest(_message.Message):
     bounding_box_height: float
     stream_url: str
     detected_at: _timestamp_pb2.Timestamp
-    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., asset_sn: _Optional[str] = ..., sub_asset_sn: _Optional[str] = ..., task_id: _Optional[str] = ..., object_id: _Optional[str] = ..., object_type: _Optional[str] = ..., confidence: _Optional[float] = ..., bounding_box_x: _Optional[float] = ..., bounding_box_y: _Optional[float] = ..., bounding_box_width: _Optional[float] = ..., bounding_box_height: _Optional[float] = ..., stream_url: _Optional[str] = ..., detected_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    position: _detection_pb2.DetectionPosition
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., asset_sn: _Optional[str] = ..., sub_asset_sn: _Optional[str] = ..., task_id: _Optional[str] = ..., object_id: _Optional[str] = ..., object_type: _Optional[str] = ..., confidence: _Optional[float] = ..., bounding_box_x: _Optional[float] = ..., bounding_box_y: _Optional[float] = ..., bounding_box_width: _Optional[float] = ..., bounding_box_height: _Optional[float] = ..., stream_url: _Optional[str] = ..., detected_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., position: _Optional[_Union[_detection_pb2.DetectionPosition, _Mapping]] = ...) -> None: ...
 
 class AssetTelemetryProto(_message.Message):
     __slots__ = ("asset_id", "timestamp", "latitude", "longitude", "altitude", "relative_altitude", "heading", "temperature", "humidity", "wind_speed", "battery_percentage", "network_type", "network_quality", "operational_mode", "is_online", "source_system", "telemetry_data")
@@ -1260,7 +1262,7 @@ class TheatreAssignmentResponse(_message.Message):
     def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
 
 class EventTriggerProtoDTO(_message.Message):
-    __slots__ = ("id", "name", "active", "event_type", "asset_sn", "object_type", "min_confidence", "telemetry_field", "comparison_operator", "comparison_value", "webhook_token", "application_id", "skill_id", "execution_parameters_json", "auto_start", "cooldown_seconds", "last_fired_at", "created_at", "modified_at", "bridge_id")
+    __slots__ = ("id", "name", "active", "event_type", "asset_sn", "object_type", "min_confidence", "telemetry_field", "comparison_operator", "comparison_value", "webhook_token", "application_id", "skill_id", "execution_parameters_json", "auto_start", "cooldown_seconds", "last_fired_at", "created_at", "modified_at", "bridge_id", "dispatch_target")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
@@ -1281,6 +1283,7 @@ class EventTriggerProtoDTO(_message.Message):
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     MODIFIED_AT_FIELD_NUMBER: _ClassVar[int]
     BRIDGE_ID_FIELD_NUMBER: _ClassVar[int]
+    DISPATCH_TARGET_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     active: bool
@@ -1301,7 +1304,8 @@ class EventTriggerProtoDTO(_message.Message):
     created_at: _timestamp_pb2.Timestamp
     modified_at: _timestamp_pb2.Timestamp
     bridge_id: str
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., active: bool = ..., event_type: _Optional[str] = ..., asset_sn: _Optional[str] = ..., object_type: _Optional[str] = ..., min_confidence: _Optional[float] = ..., telemetry_field: _Optional[str] = ..., comparison_operator: _Optional[str] = ..., comparison_value: _Optional[str] = ..., webhook_token: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., execution_parameters_json: _Optional[str] = ..., auto_start: bool = ..., cooldown_seconds: _Optional[int] = ..., last_fired_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., bridge_id: _Optional[str] = ...) -> None: ...
+    dispatch_target: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., active: bool = ..., event_type: _Optional[str] = ..., asset_sn: _Optional[str] = ..., object_type: _Optional[str] = ..., min_confidence: _Optional[float] = ..., telemetry_field: _Optional[str] = ..., comparison_operator: _Optional[str] = ..., comparison_value: _Optional[str] = ..., webhook_token: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., execution_parameters_json: _Optional[str] = ..., auto_start: bool = ..., cooldown_seconds: _Optional[int] = ..., last_fired_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., bridge_id: _Optional[str] = ..., dispatch_target: _Optional[str] = ...) -> None: ...
 
 class EventTriggerProtoDTOList(_message.Message):
     __slots__ = ("event_triggers",)
@@ -1418,18 +1422,22 @@ class ConnectorDeleteEventTriggerResponse(_message.Message):
     def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., deleted: bool = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
 
 class DetectionSummaryProtoDTO(_message.Message):
-    __slots__ = ("id", "asset_sn", "object_type", "confidence", "detected_at")
+    __slots__ = ("id", "asset_sn", "object_type", "confidence", "detected_at", "object_id", "position")
     ID_FIELD_NUMBER: _ClassVar[int]
     ASSET_SN_FIELD_NUMBER: _ClassVar[int]
     OBJECT_TYPE_FIELD_NUMBER: _ClassVar[int]
     CONFIDENCE_FIELD_NUMBER: _ClassVar[int]
     DETECTED_AT_FIELD_NUMBER: _ClassVar[int]
+    OBJECT_ID_FIELD_NUMBER: _ClassVar[int]
+    POSITION_FIELD_NUMBER: _ClassVar[int]
     id: str
     asset_sn: str
     object_type: str
     confidence: float
     detected_at: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., asset_sn: _Optional[str] = ..., object_type: _Optional[str] = ..., confidence: _Optional[float] = ..., detected_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    object_id: str
+    position: _detection_pb2.DetectionPosition
+    def __init__(self, id: _Optional[str] = ..., asset_sn: _Optional[str] = ..., object_type: _Optional[str] = ..., confidence: _Optional[float] = ..., detected_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., object_id: _Optional[str] = ..., position: _Optional[_Union[_detection_pb2.DetectionPosition, _Mapping]] = ...) -> None: ...
 
 class ListRecentDetectionsRequest(_message.Message):
     __slots__ = ("base", "since", "asset_sn", "object_type", "min_confidence")

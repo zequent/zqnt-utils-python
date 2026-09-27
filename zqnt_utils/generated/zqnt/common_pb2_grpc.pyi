@@ -124,6 +124,7 @@ from collections import abc as _abc
 from detection_pb2 import BoundingBox as BoundingBox
 from detection_pb2 import DetectionBatch as DetectionBatch
 from detection_pb2 import DetectionControlRequest as DetectionControlRequest
+from detection_pb2 import DetectionPosition as DetectionPosition
 from detection_pb2 import DetectionResult as DetectionResult
 from detection_pb2 import DetectionStreamRequest as DetectionStreamRequest
 from device_control_contracts_pb2 import AssetCapabilities as AssetCapabilities

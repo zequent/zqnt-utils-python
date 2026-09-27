@@ -80,6 +80,7 @@ from device_control_contracts_pb2 import CapabilitySnapshotState as CapabilitySn
 from device_control_contracts_pb2 import CapabilityTargetType as CapabilityTargetType
 from device_control_contracts_pb2 import CapabilitySourceProto as CapabilitySourceProto
 from detection_pb2 import BoundingBox as BoundingBox
+from detection_pb2 import DetectionPosition as DetectionPosition
 from detection_pb2 import DetectionResult as DetectionResult
 from detection_pb2 import DetectionBatch as DetectionBatch
 from detection_pb2 import DetectionControlRequest as DetectionControlRequest
