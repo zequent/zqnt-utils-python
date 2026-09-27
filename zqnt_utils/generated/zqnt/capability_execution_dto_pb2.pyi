@@ -376,7 +376,7 @@ class SkillExecutionOptionsProto(_message.Message):
     def __init__(self, dry_run: bool = ..., validate_only: bool = ..., auto_start: bool = ..., priority: _Optional[int] = ..., timeout_seconds: _Optional[int] = ..., failure_strategy: _Optional[_Union[_capability_execution_types_pb2.ExecutionFailureStrategyProto, str]] = ..., retry_policy: _Optional[_Union[_mission_autonomy_dto_pb2.RetryPolicyProtoDTO, _Mapping]] = ..., preflight_profile: _Optional[str] = ..., nfz_policy_profile: _Optional[str] = ..., config_overrides: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
 
 class ExecutionNodeStateProtoDTO(_message.Message):
-    __slots__ = ("id", "node_id", "command_id", "target", "parameters", "status", "attempt", "progress", "external_execution_id", "started_at", "completed_at", "error", "output")
+    __slots__ = ("id", "node_id", "command_id", "target", "parameters", "status", "attempt", "progress", "external_execution_id", "started_at", "completed_at", "error", "output", "dispatched_asset_sn", "dispatch_reason")
     ID_FIELD_NUMBER: _ClassVar[int]
     NODE_ID_FIELD_NUMBER: _ClassVar[int]
     COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
@@ -390,6 +390,8 @@ class ExecutionNodeStateProtoDTO(_message.Message):
     COMPLETED_AT_FIELD_NUMBER: _ClassVar[int]
     ERROR_FIELD_NUMBER: _ClassVar[int]
     OUTPUT_FIELD_NUMBER: _ClassVar[int]
+    DISPATCHED_ASSET_SN_FIELD_NUMBER: _ClassVar[int]
+    DISPATCH_REASON_FIELD_NUMBER: _ClassVar[int]
     id: str
     node_id: str
     command_id: str
@@ -403,7 +405,9 @@ class ExecutionNodeStateProtoDTO(_message.Message):
     completed_at: _timestamp_pb2.Timestamp
     error: _base_pb2.GlobalErrorMessage
     output: _struct_pb2.Struct
-    def __init__(self, id: _Optional[str] = ..., node_id: _Optional[str] = ..., command_id: _Optional[str] = ..., target: _Optional[_Union[_device_control_contracts_pb2.CapabilityTarget, _Mapping]] = ..., parameters: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., status: _Optional[_Union[_capability_execution_types_pb2.ExecutionNodeStatusProto, str]] = ..., attempt: _Optional[int] = ..., progress: _Optional[float] = ..., external_execution_id: _Optional[str] = ..., started_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completed_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., output: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
+    dispatched_asset_sn: str
+    dispatch_reason: str
+    def __init__(self, id: _Optional[str] = ..., node_id: _Optional[str] = ..., command_id: _Optional[str] = ..., target: _Optional[_Union[_device_control_contracts_pb2.CapabilityTarget, _Mapping]] = ..., parameters: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., status: _Optional[_Union[_capability_execution_types_pb2.ExecutionNodeStatusProto, str]] = ..., attempt: _Optional[int] = ..., progress: _Optional[float] = ..., external_execution_id: _Optional[str] = ..., started_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completed_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., output: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., dispatched_asset_sn: _Optional[str] = ..., dispatch_reason: _Optional[str] = ...) -> None: ...
 
 class SkillExecutionProtoDTO(_message.Message):
     __slots__ = ("id", "asset_sn", "asset_id", "organization_id", "location_id", "theatre_id", "spec", "options", "status", "node_states", "active_node_ids", "progress", "idempotency_key", "requested_by", "created_at", "started_at", "completed_at", "modified_at", "error", "output", "resolved_config", "graph_snapshot", "application_revision")
