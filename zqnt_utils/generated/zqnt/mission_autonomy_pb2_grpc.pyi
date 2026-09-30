@@ -64,6 +64,16 @@ class MissionAutonomyServiceStub:
     DeleteSchedulers: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     EvaluateDetection: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_pb2.EvaluateDetectionRequest, _mission_autonomy_pb2.DecisionResponse]
     """Decision Engine - evaluate a detection event and return a tactical decision"""
+    SimulateAssetSelection: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_pb2.SimulateAssetSelectionRequest, _mission_autonomy_pb2.SimulateAssetSelectionResponse]
+    """Which asset the operational policies would choose right now, and why -- a dry run of the same
+    selection a run that names no asset goes through (site first, busy assets, policies in order),
+    with no side effects: nothing is dispatched, held or recorded.
+    """
+    CheckFlightPath: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_pb2.CheckFlightPathRequest, _mission_autonomy_pb2.CheckFlightPathResponse]
+    """Whether a single flight command may fly as given, checked against the organization's no-fly
+    zones by the same planner every Skill's movement nodes go through -- so Remote Control refuses
+    a fly-to for the same reason a Skill would reroute or fail. No side effects.
+    """
 
 @_typing.type_check_only
 class MissionAutonomyServiceAsyncStub(MissionAutonomyServiceStub):
@@ -99,6 +109,16 @@ class MissionAutonomyServiceAsyncStub(MissionAutonomyServiceStub):
     DeleteSchedulers: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     EvaluateDetection: _aio.UnaryUnaryMultiCallable[_mission_autonomy_pb2.EvaluateDetectionRequest, _mission_autonomy_pb2.DecisionResponse]  # type: ignore[assignment]
     """Decision Engine - evaluate a detection event and return a tactical decision"""
+    SimulateAssetSelection: _aio.UnaryUnaryMultiCallable[_mission_autonomy_pb2.SimulateAssetSelectionRequest, _mission_autonomy_pb2.SimulateAssetSelectionResponse]  # type: ignore[assignment]
+    """Which asset the operational policies would choose right now, and why -- a dry run of the same
+    selection a run that names no asset goes through (site first, busy assets, policies in order),
+    with no side effects: nothing is dispatched, held or recorded.
+    """
+    CheckFlightPath: _aio.UnaryUnaryMultiCallable[_mission_autonomy_pb2.CheckFlightPathRequest, _mission_autonomy_pb2.CheckFlightPathResponse]  # type: ignore[assignment]
+    """Whether a single flight command may fly as given, checked against the organization's no-fly
+    zones by the same planner every Skill's movement nodes go through -- so Remote Control refuses
+    a fly-to for the same reason a Skill would reroute or fail. No side effects.
+    """
 
 class MissionAutonomyServiceServicer(metaclass=_abc_1.ABCMeta):
     """MissionAutonomyService manages applications (skill packages), skill executions, schedules and decisions."""
@@ -275,5 +295,27 @@ class MissionAutonomyServiceServicer(metaclass=_abc_1.ABCMeta):
         context: _ServicerContext,
     ) -> _typing.Union[_mission_autonomy_pb2.DecisionResponse, _abc.Awaitable[_mission_autonomy_pb2.DecisionResponse]]:
         """Decision Engine - evaluate a detection event and return a tactical decision"""
+
+    @_abc_1.abstractmethod
+    def SimulateAssetSelection(
+        self,
+        request: _mission_autonomy_pb2.SimulateAssetSelectionRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_pb2.SimulateAssetSelectionResponse, _abc.Awaitable[_mission_autonomy_pb2.SimulateAssetSelectionResponse]]:
+        """Which asset the operational policies would choose right now, and why -- a dry run of the same
+        selection a run that names no asset goes through (site first, busy assets, policies in order),
+        with no side effects: nothing is dispatched, held or recorded.
+        """
+
+    @_abc_1.abstractmethod
+    def CheckFlightPath(
+        self,
+        request: _mission_autonomy_pb2.CheckFlightPathRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_pb2.CheckFlightPathResponse, _abc.Awaitable[_mission_autonomy_pb2.CheckFlightPathResponse]]:
+        """Whether a single flight command may fly as given, checked against the organization's no-fly
+        zones by the same planner every Skill's movement nodes go through -- so Remote Control refuses
+        a fly-to for the same reason a Skill would reroute or fail. No side effects.
+        """
 
 def add_MissionAutonomyServiceServicer_to_server(servicer: MissionAutonomyServiceServicer, server: _typing.Union[_grpc.Server, _aio.Server]) -> None: ...

@@ -153,6 +153,22 @@ class UpdateSchedulerRequest(_message.Message):
     scheduler: _mission_autonomy_dto_pb2.SchedulerProtoDTO
     def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., scheduler_id: _Optional[str] = ..., scheduler: _Optional[_Union[_mission_autonomy_dto_pb2.SchedulerProtoDTO, _Mapping]] = ...) -> None: ...
 
+class RecordSchedulerFiringRequest(_message.Message):
+    __slots__ = ("base", "scheduler_id", "fired_at", "outcome", "reason", "execution_id")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    SCHEDULER_ID_FIELD_NUMBER: _ClassVar[int]
+    FIRED_AT_FIELD_NUMBER: _ClassVar[int]
+    OUTCOME_FIELD_NUMBER: _ClassVar[int]
+    REASON_FIELD_NUMBER: _ClassVar[int]
+    EXECUTION_ID_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    scheduler_id: str
+    fired_at: _timestamp_pb2.Timestamp
+    outcome: _mission_autonomy_types_pb2.SchedulerFiringOutcome
+    reason: str
+    execution_id: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., scheduler_id: _Optional[str] = ..., fired_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., outcome: _Optional[_Union[_mission_autonomy_types_pb2.SchedulerFiringOutcome, str]] = ..., reason: _Optional[str] = ..., execution_id: _Optional[str] = ...) -> None: ...
+
 class DeleteSchedulerRequest(_message.Message):
     __slots__ = ("base", "scheduler_id")
     BASE_FIELD_NUMBER: _ClassVar[int]

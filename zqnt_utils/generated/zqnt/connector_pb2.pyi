@@ -1118,7 +1118,7 @@ class ConnectorDeleteOrganizationResponse(_message.Message):
     def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., deleted: bool = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
 
 class TheatreProtoDTO(_message.Message):
-    __slots__ = ("id", "organization_id", "name", "description", "geo_zone", "assets", "assigned_user_ids", "created_at", "modified_at")
+    __slots__ = ("id", "organization_id", "name", "description", "geo_zone", "assets", "assigned_user_ids", "created_at", "modified_at", "parent_theatre_id")
     ID_FIELD_NUMBER: _ClassVar[int]
     ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -1128,6 +1128,7 @@ class TheatreProtoDTO(_message.Message):
     ASSIGNED_USER_IDS_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     MODIFIED_AT_FIELD_NUMBER: _ClassVar[int]
+    PARENT_THEATRE_ID_FIELD_NUMBER: _ClassVar[int]
     id: str
     organization_id: str
     name: str
@@ -1137,7 +1138,8 @@ class TheatreProtoDTO(_message.Message):
     assigned_user_ids: _containers.RepeatedScalarFieldContainer[str]
     created_at: _timestamp_pb2.Timestamp
     modified_at: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., organization_id: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., geo_zone: _Optional[_Union[_mission_autonomy_dto_pb2_1.GeoAreaProtoDTO, _Mapping]] = ..., assets: _Optional[_Iterable[str]] = ..., assigned_user_ids: _Optional[_Iterable[str]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    parent_theatre_id: str
+    def __init__(self, id: _Optional[str] = ..., organization_id: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., geo_zone: _Optional[_Union[_mission_autonomy_dto_pb2_1.GeoAreaProtoDTO, _Mapping]] = ..., assets: _Optional[_Iterable[str]] = ..., assigned_user_ids: _Optional[_Iterable[str]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., parent_theatre_id: _Optional[str] = ...) -> None: ...
 
 class TheatreProtoDTOList(_message.Message):
     __slots__ = ("theatres",)
@@ -1261,8 +1263,196 @@ class TheatreAssignmentResponse(_message.Message):
     error: _base_pb2.GlobalErrorMessage
     def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
 
+class ListNoFlyZonesRequest(_message.Message):
+    __slots__ = ("base", "organization_id", "active_only")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    ACTIVE_ONLY_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    organization_id: str
+    active_only: bool
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., organization_id: _Optional[str] = ..., active_only: bool = ...) -> None: ...
+
+class UpsertNoFlyZoneRequest(_message.Message):
+    __slots__ = ("base", "zone")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    ZONE_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    zone: _mission_autonomy_dto_pb2_1.MissionZoneProtoDTO
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., zone: _Optional[_Union[_mission_autonomy_dto_pb2_1.MissionZoneProtoDTO, _Mapping]] = ...) -> None: ...
+
+class DeleteNoFlyZoneRequest(_message.Message):
+    __slots__ = ("base", "id", "organization_id")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    id: str
+    organization_id: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., id: _Optional[str] = ..., organization_id: _Optional[str] = ...) -> None: ...
+
+class NoFlyZoneListResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "timestamp", "error", "zones")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    ZONES_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    timestamp: _timestamp_pb2.Timestamp
+    error: _base_pb2.GlobalErrorMessage
+    zones: _containers.RepeatedCompositeFieldContainer[_mission_autonomy_dto_pb2_1.MissionZoneProtoDTO]
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., zones: _Optional[_Iterable[_Union[_mission_autonomy_dto_pb2_1.MissionZoneProtoDTO, _Mapping]]] = ...) -> None: ...
+
+class NoFlyZoneSingleResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "timestamp", "error", "zone")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    ZONE_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    timestamp: _timestamp_pb2.Timestamp
+    error: _base_pb2.GlobalErrorMessage
+    zone: _mission_autonomy_dto_pb2_1.MissionZoneProtoDTO
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., zone: _Optional[_Union[_mission_autonomy_dto_pb2_1.MissionZoneProtoDTO, _Mapping]] = ...) -> None: ...
+
+class DeleteNoFlyZoneResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "timestamp", "error", "deleted")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    DELETED_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    timestamp: _timestamp_pb2.Timestamp
+    error: _base_pb2.GlobalErrorMessage
+    deleted: bool
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., deleted: bool = ...) -> None: ...
+
+class ProvisionLicensedOrganizationRequest(_message.Message):
+    __slots__ = ("base", "organization_id", "name", "description", "credentials")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    CREDENTIALS_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    organization_id: str
+    name: str
+    description: str
+    credentials: LicenseActivationCredentialsProtoDTO
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., organization_id: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., credentials: _Optional[_Union[LicenseActivationCredentialsProtoDTO, _Mapping]] = ...) -> None: ...
+
+class ProvisionLicensedOrganizationResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "timestamp", "error", "organization", "already_exists")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_FIELD_NUMBER: _ClassVar[int]
+    ALREADY_EXISTS_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    timestamp: _timestamp_pb2.Timestamp
+    error: _base_pb2.GlobalErrorMessage
+    organization: _asset_pb2.OrganizationProtoDTO
+    already_exists: bool
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., organization: _Optional[_Union[_asset_pb2.OrganizationProtoDTO, _Mapping]] = ..., already_exists: bool = ...) -> None: ...
+
+class LicenseActivationCredentialsProtoDTO(_message.Message):
+    __slots__ = ("organization_id", "activation_id", "sealed_token", "sealing_scheme", "created_at", "modified_at")
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    ACTIVATION_ID_FIELD_NUMBER: _ClassVar[int]
+    SEALED_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    SEALING_SCHEME_FIELD_NUMBER: _ClassVar[int]
+    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    MODIFIED_AT_FIELD_NUMBER: _ClassVar[int]
+    organization_id: str
+    activation_id: str
+    sealed_token: bytes
+    sealing_scheme: str
+    created_at: _timestamp_pb2.Timestamp
+    modified_at: _timestamp_pb2.Timestamp
+    def __init__(self, organization_id: _Optional[str] = ..., activation_id: _Optional[str] = ..., sealed_token: _Optional[bytes] = ..., sealing_scheme: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class ListLicenseActivationCredentialsRequest(_message.Message):
+    __slots__ = ("base",)
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ...) -> None: ...
+
+class GetLicenseActivationCredentialsRequest(_message.Message):
+    __slots__ = ("base", "organization_id")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    organization_id: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., organization_id: _Optional[str] = ...) -> None: ...
+
+class PutLicenseActivationCredentialsRequest(_message.Message):
+    __slots__ = ("base", "credentials")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    CREDENTIALS_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    credentials: LicenseActivationCredentialsProtoDTO
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., credentials: _Optional[_Union[LicenseActivationCredentialsProtoDTO, _Mapping]] = ...) -> None: ...
+
+class DeleteLicenseActivationCredentialsRequest(_message.Message):
+    __slots__ = ("base", "organization_id")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    organization_id: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., organization_id: _Optional[str] = ...) -> None: ...
+
+class LicenseActivationCredentialsListResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "timestamp", "error", "credentials")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    CREDENTIALS_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    timestamp: _timestamp_pb2.Timestamp
+    error: _base_pb2.GlobalErrorMessage
+    credentials: _containers.RepeatedCompositeFieldContainer[LicenseActivationCredentialsProtoDTO]
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., credentials: _Optional[_Iterable[_Union[LicenseActivationCredentialsProtoDTO, _Mapping]]] = ...) -> None: ...
+
+class LicenseActivationCredentialsSingleResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "timestamp", "error", "credentials")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    CREDENTIALS_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    timestamp: _timestamp_pb2.Timestamp
+    error: _base_pb2.GlobalErrorMessage
+    credentials: LicenseActivationCredentialsProtoDTO
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., credentials: _Optional[_Union[LicenseActivationCredentialsProtoDTO, _Mapping]] = ...) -> None: ...
+
+class DeleteLicenseActivationCredentialsResponse(_message.Message):
+    __slots__ = ("tid", "has_errors", "timestamp", "error", "deleted")
+    TID_FIELD_NUMBER: _ClassVar[int]
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    TIMESTAMP_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    DELETED_FIELD_NUMBER: _ClassVar[int]
+    tid: str
+    has_errors: bool
+    timestamp: _timestamp_pb2.Timestamp
+    error: _base_pb2.GlobalErrorMessage
+    deleted: bool
+    def __init__(self, tid: _Optional[str] = ..., has_errors: bool = ..., timestamp: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., deleted: bool = ...) -> None: ...
+
 class EventTriggerProtoDTO(_message.Message):
-    __slots__ = ("id", "name", "active", "event_type", "asset_sn", "object_type", "min_confidence", "telemetry_field", "comparison_operator", "comparison_value", "webhook_token", "application_id", "skill_id", "execution_parameters_json", "auto_start", "cooldown_seconds", "last_fired_at", "created_at", "modified_at", "bridge_id", "dispatch_target")
+    __slots__ = ("id", "name", "active", "event_type", "asset_sn", "object_type", "min_confidence", "telemetry_field", "comparison_operator", "comparison_value", "webhook_token", "application_id", "skill_id", "execution_parameters_json", "auto_start", "cooldown_seconds", "last_fired_at", "created_at", "modified_at", "bridge_id", "dispatch_target", "priority", "organization_id", "theatre_id")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
@@ -1284,6 +1474,9 @@ class EventTriggerProtoDTO(_message.Message):
     MODIFIED_AT_FIELD_NUMBER: _ClassVar[int]
     BRIDGE_ID_FIELD_NUMBER: _ClassVar[int]
     DISPATCH_TARGET_FIELD_NUMBER: _ClassVar[int]
+    PRIORITY_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    THEATRE_ID_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     active: bool
@@ -1305,7 +1498,10 @@ class EventTriggerProtoDTO(_message.Message):
     modified_at: _timestamp_pb2.Timestamp
     bridge_id: str
     dispatch_target: str
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., active: bool = ..., event_type: _Optional[str] = ..., asset_sn: _Optional[str] = ..., object_type: _Optional[str] = ..., min_confidence: _Optional[float] = ..., telemetry_field: _Optional[str] = ..., comparison_operator: _Optional[str] = ..., comparison_value: _Optional[str] = ..., webhook_token: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., execution_parameters_json: _Optional[str] = ..., auto_start: bool = ..., cooldown_seconds: _Optional[int] = ..., last_fired_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., bridge_id: _Optional[str] = ..., dispatch_target: _Optional[str] = ...) -> None: ...
+    priority: int
+    organization_id: str
+    theatre_id: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., active: bool = ..., event_type: _Optional[str] = ..., asset_sn: _Optional[str] = ..., object_type: _Optional[str] = ..., min_confidence: _Optional[float] = ..., telemetry_field: _Optional[str] = ..., comparison_operator: _Optional[str] = ..., comparison_value: _Optional[str] = ..., webhook_token: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., execution_parameters_json: _Optional[str] = ..., auto_start: bool = ..., cooldown_seconds: _Optional[int] = ..., last_fired_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., bridge_id: _Optional[str] = ..., dispatch_target: _Optional[str] = ..., priority: _Optional[int] = ..., organization_id: _Optional[str] = ..., theatre_id: _Optional[str] = ...) -> None: ...
 
 class EventTriggerProtoDTOList(_message.Message):
     __slots__ = ("event_triggers",)

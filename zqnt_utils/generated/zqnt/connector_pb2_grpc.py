@@ -182,6 +182,11 @@ class ConnectorServiceStub(object):
                 request_serializer=mission__autonomy__contracts__pb2.DeleteSchedulersRequest.SerializeToString,
                 response_deserializer=mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
                 _registered_method=True)
+        self.RecordSchedulerFiring = channel.unary_unary(
+                '/zqnt.ConnectorService/RecordSchedulerFiring',
+                request_serializer=mission__autonomy__contracts__pb2.RecordSchedulerFiringRequest.SerializeToString,
+                response_deserializer=mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
+                _registered_method=True)
         self.StoreTelemetryBatch = channel.stream_unary(
                 '/zqnt.ConnectorService/StoreTelemetryBatch',
                 request_serializer=connector__pb2.ConnectorStoreTelemetryRequest.SerializeToString,
@@ -267,6 +272,11 @@ class ConnectorServiceStub(object):
                 request_serializer=connector__pb2.DeleteOrganizationRequest.SerializeToString,
                 response_deserializer=connector__pb2.ConnectorDeleteOrganizationResponse.FromString,
                 _registered_method=True)
+        self.ProvisionLicensedOrganization = channel.unary_unary(
+                '/zqnt.ConnectorService/ProvisionLicensedOrganization',
+                request_serializer=connector__pb2.ProvisionLicensedOrganizationRequest.SerializeToString,
+                response_deserializer=connector__pb2.ProvisionLicensedOrganizationResponse.FromString,
+                _registered_method=True)
         self.GetAllTheatres = channel.unary_unary(
                 '/zqnt.ConnectorService/GetAllTheatres',
                 request_serializer=connector__pb2.ConnectorGetAllTheatresRequest.SerializeToString,
@@ -301,6 +311,41 @@ class ConnectorServiceStub(object):
                 '/zqnt.ConnectorService/RemoveUserFromTheatre',
                 request_serializer=connector__pb2.RemoveUserFromTheatreRequest.SerializeToString,
                 response_deserializer=connector__pb2.TheatreAssignmentResponse.FromString,
+                _registered_method=True)
+        self.ListNoFlyZones = channel.unary_unary(
+                '/zqnt.ConnectorService/ListNoFlyZones',
+                request_serializer=connector__pb2.ListNoFlyZonesRequest.SerializeToString,
+                response_deserializer=connector__pb2.NoFlyZoneListResponse.FromString,
+                _registered_method=True)
+        self.UpsertNoFlyZone = channel.unary_unary(
+                '/zqnt.ConnectorService/UpsertNoFlyZone',
+                request_serializer=connector__pb2.UpsertNoFlyZoneRequest.SerializeToString,
+                response_deserializer=connector__pb2.NoFlyZoneSingleResponse.FromString,
+                _registered_method=True)
+        self.DeleteNoFlyZone = channel.unary_unary(
+                '/zqnt.ConnectorService/DeleteNoFlyZone',
+                request_serializer=connector__pb2.DeleteNoFlyZoneRequest.SerializeToString,
+                response_deserializer=connector__pb2.DeleteNoFlyZoneResponse.FromString,
+                _registered_method=True)
+        self.ListLicenseActivationCredentials = channel.unary_unary(
+                '/zqnt.ConnectorService/ListLicenseActivationCredentials',
+                request_serializer=connector__pb2.ListLicenseActivationCredentialsRequest.SerializeToString,
+                response_deserializer=connector__pb2.LicenseActivationCredentialsListResponse.FromString,
+                _registered_method=True)
+        self.GetLicenseActivationCredentials = channel.unary_unary(
+                '/zqnt.ConnectorService/GetLicenseActivationCredentials',
+                request_serializer=connector__pb2.GetLicenseActivationCredentialsRequest.SerializeToString,
+                response_deserializer=connector__pb2.LicenseActivationCredentialsSingleResponse.FromString,
+                _registered_method=True)
+        self.PutLicenseActivationCredentials = channel.unary_unary(
+                '/zqnt.ConnectorService/PutLicenseActivationCredentials',
+                request_serializer=connector__pb2.PutLicenseActivationCredentialsRequest.SerializeToString,
+                response_deserializer=connector__pb2.LicenseActivationCredentialsSingleResponse.FromString,
+                _registered_method=True)
+        self.DeleteLicenseActivationCredentials = channel.unary_unary(
+                '/zqnt.ConnectorService/DeleteLicenseActivationCredentials',
+                request_serializer=connector__pb2.DeleteLicenseActivationCredentialsRequest.SerializeToString,
+                response_deserializer=connector__pb2.DeleteLicenseActivationCredentialsResponse.FromString,
                 _registered_method=True)
         self.GetAllEventTriggers = channel.unary_unary(
                 '/zqnt.ConnectorService/GetAllEventTriggers',
@@ -396,6 +441,16 @@ class ConnectorServiceStub(object):
                 '/zqnt.ConnectorService/DeletePersistedApplication',
                 request_serializer=capability__execution__contracts__pb2.DeleteApplicationRequest.SerializeToString,
                 response_deserializer=capability__execution__contracts__pb2.ApplicationResponse.FromString,
+                _registered_method=True)
+        self.SetApplicationPause = channel.unary_unary(
+                '/zqnt.ConnectorService/SetApplicationPause',
+                request_serializer=capability__execution__contracts__pb2.SetApplicationPauseRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationPauseListResponse.FromString,
+                _registered_method=True)
+        self.ListApplicationPauses = channel.unary_unary(
+                '/zqnt.ConnectorService/ListApplicationPauses',
+                request_serializer=capability__execution__contracts__pb2.ListApplicationPausesRequest.SerializeToString,
+                response_deserializer=capability__execution__contracts__pb2.ApplicationPauseListResponse.FromString,
                 _registered_method=True)
         self.GetApplicationEnvironmentPointers = channel.unary_unary(
                 '/zqnt.ConnectorService/GetApplicationEnvironmentPointers',
@@ -700,6 +755,13 @@ class ConnectorServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def RecordSchedulerFiring(self, request, context):
+        """What the last firing of a schedule did; see RecordSchedulerFiringRequest.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def StoreTelemetryBatch(self, request_iterator, context):
         """Telemetry Storage - batch processing from live-data service
         """
@@ -816,6 +878,17 @@ class ConnectorServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ProvisionLicensedOrganization(self, request, context):
+        """Creates the organization a license names, with the id the license carries (the only way an
+        organization gets a caller-chosen id), and stores that license's sealed activation credentials
+        in the same transaction -- both or neither. An id that already exists is not changed and nothing
+        is written: already_exists = true and organization holds the existing one, so the caller can
+        treat it as activating a license for an existing organization.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetAllTheatres(self, request, context):
         """Theatre Management - a named operational site within one organization (optional geo zone, the
         assets stationed there, the users with access to it). Same CRUD shape as Organization above;
@@ -859,6 +932,58 @@ class ConnectorServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def RemoveUserFromTheatre(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListNoFlyZones(self, request, context):
+        """No-fly zones -- the one store of an organization's no-fly zones. Mission-autonomy reads them to
+        plan and refuse flights (RouteExecutionGraphExpander), admin-console to draw and edit them.
+        Ids are chosen by the caller (the console's own ids survive the move from Redis). An id that
+        belongs to another organization is answered as not found.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpsertNoFlyZone(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteNoFlyZone(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListLicenseActivationCredentials(self, request, context):
+        """License activation credentials -- the activation id and token admin-console received from the
+        license hub when it activated an organization's license. Without them admin-console can neither
+        refresh that organization's lease nor consume its seats, so they must survive a restart and be
+        shared between replicas. admin-console seals the token before it gets here (AES-256-GCM under a
+        per-organization key derived from the installation's platform key); connector stores the
+        envelope and never sees the token itself. At most one record per organization; Put replaces it.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetLicenseActivationCredentials(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def PutLicenseActivationCredentials(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteLicenseActivationCredentials(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -982,6 +1107,20 @@ class ConnectorServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def DeletePersistedApplication(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetApplicationPause(self, request, context):
+        """Pausing is operational state, not part of the versioned Application -- see ApplicationPauseProtoDTO.
+        SetApplicationPause answers with every pause of that Application after the change.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListApplicationPauses(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -1303,6 +1442,11 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     request_deserializer=mission__autonomy__contracts__pb2.DeleteSchedulersRequest.FromString,
                     response_serializer=mission__autonomy__contracts__pb2.SchedulerResponse.SerializeToString,
             ),
+            'RecordSchedulerFiring': grpc.unary_unary_rpc_method_handler(
+                    servicer.RecordSchedulerFiring,
+                    request_deserializer=mission__autonomy__contracts__pb2.RecordSchedulerFiringRequest.FromString,
+                    response_serializer=mission__autonomy__contracts__pb2.SchedulerResponse.SerializeToString,
+            ),
             'StoreTelemetryBatch': grpc.stream_unary_rpc_method_handler(
                     servicer.StoreTelemetryBatch,
                     request_deserializer=connector__pb2.ConnectorStoreTelemetryRequest.FromString,
@@ -1388,6 +1532,11 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     request_deserializer=connector__pb2.DeleteOrganizationRequest.FromString,
                     response_serializer=connector__pb2.ConnectorDeleteOrganizationResponse.SerializeToString,
             ),
+            'ProvisionLicensedOrganization': grpc.unary_unary_rpc_method_handler(
+                    servicer.ProvisionLicensedOrganization,
+                    request_deserializer=connector__pb2.ProvisionLicensedOrganizationRequest.FromString,
+                    response_serializer=connector__pb2.ProvisionLicensedOrganizationResponse.SerializeToString,
+            ),
             'GetAllTheatres': grpc.unary_unary_rpc_method_handler(
                     servicer.GetAllTheatres,
                     request_deserializer=connector__pb2.ConnectorGetAllTheatresRequest.FromString,
@@ -1422,6 +1571,41 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     servicer.RemoveUserFromTheatre,
                     request_deserializer=connector__pb2.RemoveUserFromTheatreRequest.FromString,
                     response_serializer=connector__pb2.TheatreAssignmentResponse.SerializeToString,
+            ),
+            'ListNoFlyZones': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListNoFlyZones,
+                    request_deserializer=connector__pb2.ListNoFlyZonesRequest.FromString,
+                    response_serializer=connector__pb2.NoFlyZoneListResponse.SerializeToString,
+            ),
+            'UpsertNoFlyZone': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpsertNoFlyZone,
+                    request_deserializer=connector__pb2.UpsertNoFlyZoneRequest.FromString,
+                    response_serializer=connector__pb2.NoFlyZoneSingleResponse.SerializeToString,
+            ),
+            'DeleteNoFlyZone': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteNoFlyZone,
+                    request_deserializer=connector__pb2.DeleteNoFlyZoneRequest.FromString,
+                    response_serializer=connector__pb2.DeleteNoFlyZoneResponse.SerializeToString,
+            ),
+            'ListLicenseActivationCredentials': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListLicenseActivationCredentials,
+                    request_deserializer=connector__pb2.ListLicenseActivationCredentialsRequest.FromString,
+                    response_serializer=connector__pb2.LicenseActivationCredentialsListResponse.SerializeToString,
+            ),
+            'GetLicenseActivationCredentials': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetLicenseActivationCredentials,
+                    request_deserializer=connector__pb2.GetLicenseActivationCredentialsRequest.FromString,
+                    response_serializer=connector__pb2.LicenseActivationCredentialsSingleResponse.SerializeToString,
+            ),
+            'PutLicenseActivationCredentials': grpc.unary_unary_rpc_method_handler(
+                    servicer.PutLicenseActivationCredentials,
+                    request_deserializer=connector__pb2.PutLicenseActivationCredentialsRequest.FromString,
+                    response_serializer=connector__pb2.LicenseActivationCredentialsSingleResponse.SerializeToString,
+            ),
+            'DeleteLicenseActivationCredentials': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteLicenseActivationCredentials,
+                    request_deserializer=connector__pb2.DeleteLicenseActivationCredentialsRequest.FromString,
+                    response_serializer=connector__pb2.DeleteLicenseActivationCredentialsResponse.SerializeToString,
             ),
             'GetAllEventTriggers': grpc.unary_unary_rpc_method_handler(
                     servicer.GetAllEventTriggers,
@@ -1517,6 +1701,16 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
                     servicer.DeletePersistedApplication,
                     request_deserializer=capability__execution__contracts__pb2.DeleteApplicationRequest.FromString,
                     response_serializer=capability__execution__contracts__pb2.ApplicationResponse.SerializeToString,
+            ),
+            'SetApplicationPause': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetApplicationPause,
+                    request_deserializer=capability__execution__contracts__pb2.SetApplicationPauseRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationPauseListResponse.SerializeToString,
+            ),
+            'ListApplicationPauses': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListApplicationPauses,
+                    request_deserializer=capability__execution__contracts__pb2.ListApplicationPausesRequest.FromString,
+                    response_serializer=capability__execution__contracts__pb2.ApplicationPauseListResponse.SerializeToString,
             ),
             'GetApplicationEnvironmentPointers': grpc.unary_unary_rpc_method_handler(
                     servicer.GetApplicationEnvironmentPointers,
@@ -2393,6 +2587,33 @@ class ConnectorService(object):
             _registered_method=True)
 
     @staticmethod
+    def RecordSchedulerFiring(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/RecordSchedulerFiring',
+            mission__autonomy__contracts__pb2.RecordSchedulerFiringRequest.SerializeToString,
+            mission__autonomy__contracts__pb2.SchedulerResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def StoreTelemetryBatch(request_iterator,
             target,
             options=(),
@@ -2852,6 +3073,33 @@ class ConnectorService(object):
             _registered_method=True)
 
     @staticmethod
+    def ProvisionLicensedOrganization(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ProvisionLicensedOrganization',
+            connector__pb2.ProvisionLicensedOrganizationRequest.SerializeToString,
+            connector__pb2.ProvisionLicensedOrganizationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def GetAllTheatres(request,
             target,
             options=(),
@@ -3030,6 +3278,195 @@ class ConnectorService(object):
             '/zqnt.ConnectorService/RemoveUserFromTheatre',
             connector__pb2.RemoveUserFromTheatreRequest.SerializeToString,
             connector__pb2.TheatreAssignmentResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListNoFlyZones(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListNoFlyZones',
+            connector__pb2.ListNoFlyZonesRequest.SerializeToString,
+            connector__pb2.NoFlyZoneListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpsertNoFlyZone(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/UpsertNoFlyZone',
+            connector__pb2.UpsertNoFlyZoneRequest.SerializeToString,
+            connector__pb2.NoFlyZoneSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteNoFlyZone(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DeleteNoFlyZone',
+            connector__pb2.DeleteNoFlyZoneRequest.SerializeToString,
+            connector__pb2.DeleteNoFlyZoneResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListLicenseActivationCredentials(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListLicenseActivationCredentials',
+            connector__pb2.ListLicenseActivationCredentialsRequest.SerializeToString,
+            connector__pb2.LicenseActivationCredentialsListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetLicenseActivationCredentials(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/GetLicenseActivationCredentials',
+            connector__pb2.GetLicenseActivationCredentialsRequest.SerializeToString,
+            connector__pb2.LicenseActivationCredentialsSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PutLicenseActivationCredentials(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/PutLicenseActivationCredentials',
+            connector__pb2.PutLicenseActivationCredentialsRequest.SerializeToString,
+            connector__pb2.LicenseActivationCredentialsSingleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteLicenseActivationCredentials(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DeleteLicenseActivationCredentials',
+            connector__pb2.DeleteLicenseActivationCredentialsRequest.SerializeToString,
+            connector__pb2.DeleteLicenseActivationCredentialsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -3543,6 +3980,60 @@ class ConnectorService(object):
             '/zqnt.ConnectorService/DeletePersistedApplication',
             capability__execution__contracts__pb2.DeleteApplicationRequest.SerializeToString,
             capability__execution__contracts__pb2.ApplicationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetApplicationPause(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/SetApplicationPause',
+            capability__execution__contracts__pb2.SetApplicationPauseRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationPauseListResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListApplicationPauses(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/ListApplicationPauses',
+            capability__execution__contracts__pb2.ListApplicationPausesRequest.SerializeToString,
+            capability__execution__contracts__pb2.ApplicationPauseListResponse.FromString,
             options,
             channel_credentials,
             insecure,

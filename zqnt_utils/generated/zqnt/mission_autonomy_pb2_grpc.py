@@ -157,6 +157,16 @@ class MissionAutonomyServiceStub(object):
                 request_serializer=mission__autonomy__pb2.EvaluateDetectionRequest.SerializeToString,
                 response_deserializer=mission__autonomy__pb2.DecisionResponse.FromString,
                 _registered_method=True)
+        self.SimulateAssetSelection = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/SimulateAssetSelection',
+                request_serializer=mission__autonomy__pb2.SimulateAssetSelectionRequest.SerializeToString,
+                response_deserializer=mission__autonomy__pb2.SimulateAssetSelectionResponse.FromString,
+                _registered_method=True)
+        self.CheckFlightPath = channel.unary_unary(
+                '/zqnt.MissionAutonomyService/CheckFlightPath',
+                request_serializer=mission__autonomy__pb2.CheckFlightPathRequest.SerializeToString,
+                response_deserializer=mission__autonomy__pb2.CheckFlightPathResponse.FromString,
+                _registered_method=True)
 
 
 class MissionAutonomyServiceServicer(object):
@@ -311,6 +321,24 @@ class MissionAutonomyServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SimulateAssetSelection(self, request, context):
+        """Which asset the operational policies would choose right now, and why -- a dry run of the same
+        selection a run that names no asset goes through (site first, busy assets, policies in order),
+        with no side effects: nothing is dispatched, held or recorded.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CheckFlightPath(self, request, context):
+        """Whether a single flight command may fly as given, checked against the organization's no-fly
+        zones by the same planner every Skill's movement nodes go through -- so Remote Control refuses
+        a fly-to for the same reason a Skill would reroute or fail. No side effects.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_MissionAutonomyServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -433,6 +461,16 @@ def add_MissionAutonomyServiceServicer_to_server(servicer, server):
                     servicer.EvaluateDetection,
                     request_deserializer=mission__autonomy__pb2.EvaluateDetectionRequest.FromString,
                     response_serializer=mission__autonomy__pb2.DecisionResponse.SerializeToString,
+            ),
+            'SimulateAssetSelection': grpc.unary_unary_rpc_method_handler(
+                    servicer.SimulateAssetSelection,
+                    request_deserializer=mission__autonomy__pb2.SimulateAssetSelectionRequest.FromString,
+                    response_serializer=mission__autonomy__pb2.SimulateAssetSelectionResponse.SerializeToString,
+            ),
+            'CheckFlightPath': grpc.unary_unary_rpc_method_handler(
+                    servicer.CheckFlightPath,
+                    request_deserializer=mission__autonomy__pb2.CheckFlightPathRequest.FromString,
+                    response_serializer=mission__autonomy__pb2.CheckFlightPathResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1084,6 +1122,60 @@ class MissionAutonomyService(object):
             '/zqnt.MissionAutonomyService/EvaluateDetection',
             mission__autonomy__pb2.EvaluateDetectionRequest.SerializeToString,
             mission__autonomy__pb2.DecisionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SimulateAssetSelection(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.MissionAutonomyService/SimulateAssetSelection',
+            mission__autonomy__pb2.SimulateAssetSelectionRequest.SerializeToString,
+            mission__autonomy__pb2.SimulateAssetSelectionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CheckFlightPath(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.MissionAutonomyService/CheckFlightPath',
+            mission__autonomy__pb2.CheckFlightPathRequest.SerializeToString,
+            mission__autonomy__pb2.CheckFlightPathResponse.FromString,
             options,
             channel_credentials,
             insecure,

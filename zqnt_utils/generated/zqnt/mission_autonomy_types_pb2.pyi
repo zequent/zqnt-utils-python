@@ -9,6 +9,13 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class SchedulerFiringOutcome(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    SCHEDULER_FIRING_OUTCOME_UNSPECIFIED: _ClassVar[SchedulerFiringOutcome]
+    SCHEDULER_FIRING_OUTCOME_STARTED: _ClassVar[SchedulerFiringOutcome]
+    SCHEDULER_FIRING_OUTCOME_SKIPPED: _ClassVar[SchedulerFiringOutcome]
+    SCHEDULER_FIRING_OUTCOME_FAILED: _ClassVar[SchedulerFiringOutcome]
+
 class SchedulerType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     SCHEDULER_TYPE_MISSION: _ClassVar[SchedulerType]
@@ -378,6 +385,10 @@ class MissionStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     MISSION_STATUS_ACTIVE: _ClassVar[MissionStatus]
     MISSION_STATUS_INACTIVE: _ClassVar[MissionStatus]
     MISSION_STATUS_ERROR: _ClassVar[MissionStatus]
+SCHEDULER_FIRING_OUTCOME_UNSPECIFIED: SchedulerFiringOutcome
+SCHEDULER_FIRING_OUTCOME_STARTED: SchedulerFiringOutcome
+SCHEDULER_FIRING_OUTCOME_SKIPPED: SchedulerFiringOutcome
+SCHEDULER_FIRING_OUTCOME_FAILED: SchedulerFiringOutcome
 SCHEDULER_TYPE_MISSION: SchedulerType
 SCHEDULER_TYPE_TASK: SchedulerType
 SCHEDULER_TYPE_SYSTEM_JOBS: SchedulerType

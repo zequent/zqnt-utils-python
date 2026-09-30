@@ -36,7 +36,7 @@ class GeoAreaProtoDTO(_message.Message):
     def __init__(self, type: _Optional[_Union[_mission_autonomy_types_pb2.GeoAreaType, str]] = ..., vertices: _Optional[_Iterable[_Union[GeoPointProtoDTO, _Mapping]]] = ..., center: _Optional[_Union[GeoPointProtoDTO, _Mapping]] = ..., radius_meters: _Optional[float] = ..., geo_json: _Optional[str] = ...) -> None: ...
 
 class MissionZoneProtoDTO(_message.Message):
-    __slots__ = ("id", "name", "type", "enforcement_type", "area", "active", "priority", "config")
+    __slots__ = ("id", "name", "type", "enforcement_type", "area", "active", "priority", "config", "organization_id", "theatre_id", "min_altitude_meters", "max_altitude_meters", "created_at", "modified_at", "modified_from")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -45,6 +45,13 @@ class MissionZoneProtoDTO(_message.Message):
     ACTIVE_FIELD_NUMBER: _ClassVar[int]
     PRIORITY_FIELD_NUMBER: _ClassVar[int]
     CONFIG_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    THEATRE_ID_FIELD_NUMBER: _ClassVar[int]
+    MIN_ALTITUDE_METERS_FIELD_NUMBER: _ClassVar[int]
+    MAX_ALTITUDE_METERS_FIELD_NUMBER: _ClassVar[int]
+    CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    MODIFIED_AT_FIELD_NUMBER: _ClassVar[int]
+    MODIFIED_FROM_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     type: _mission_autonomy_types_pb2.MissionZoneType
@@ -53,7 +60,14 @@ class MissionZoneProtoDTO(_message.Message):
     active: bool
     priority: int
     config: _mission_autonomy_types_pb2.DynamicConfigProto
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[_mission_autonomy_types_pb2.MissionZoneType, str]] = ..., enforcement_type: _Optional[_Union[_mission_autonomy_types_pb2.ZoneEnforcementType, str]] = ..., area: _Optional[_Union[GeoAreaProtoDTO, _Mapping]] = ..., active: bool = ..., priority: _Optional[int] = ..., config: _Optional[_Union[_mission_autonomy_types_pb2.DynamicConfigProto, _Mapping]] = ...) -> None: ...
+    organization_id: str
+    theatre_id: str
+    min_altitude_meters: float
+    max_altitude_meters: float
+    created_at: _timestamp_pb2.Timestamp
+    modified_at: _timestamp_pb2.Timestamp
+    modified_from: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[_mission_autonomy_types_pb2.MissionZoneType, str]] = ..., enforcement_type: _Optional[_Union[_mission_autonomy_types_pb2.ZoneEnforcementType, str]] = ..., area: _Optional[_Union[GeoAreaProtoDTO, _Mapping]] = ..., active: bool = ..., priority: _Optional[int] = ..., config: _Optional[_Union[_mission_autonomy_types_pb2.DynamicConfigProto, _Mapping]] = ..., organization_id: _Optional[str] = ..., theatre_id: _Optional[str] = ..., min_altitude_meters: _Optional[float] = ..., max_altitude_meters: _Optional[float] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_from: _Optional[str] = ...) -> None: ...
 
 class WorkflowStepProtoDTO(_message.Message):
     __slots__ = ("id", "name", "type", "status", "task_id", "depends_on_step_ids", "execution_order", "priority", "config")
@@ -218,7 +232,7 @@ class TaskProtoDTO(_message.Message):
     def __init__(self, id: _Optional[str] = ..., mission_id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_from: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., task_type: _Optional[_Union[_mission_autonomy_types_pb2.TaskTypeProto, str]] = ..., config: _Optional[str] = ..., status: _Optional[_Union[_mission_autonomy_types_pb2.TaskStatus, str]] = ..., asset_id: _Optional[str] = ..., sn_number: _Optional[str] = ..., current_progress: _Optional[int] = ..., current_step: _Optional[str] = ..., break_reason: _Optional[_Union[_mission_autonomy_types_pb2.FlighttaskBreakReasonEnumProto, str]] = ..., external_command_type: _Optional[str] = ..., external_task_id: _Optional[str] = ..., task_config_template: _Optional[_Union[_mission_autonomy_types_pb2.DynamicConfigProto, _Mapping]] = ..., execution_order: _Optional[int] = ..., decision_engine_enabled: bool = ..., autonomy_config: _Optional[_Union[_mission_autonomy_types_pb2.AutonomyConfigProto, _Mapping]] = ..., priority: _Optional[int] = ..., timeout_seconds: _Optional[int] = ..., retry_policy: _Optional[_Union[RetryPolicyProtoDTO, _Mapping]] = ..., waypoint_config: _Optional[_Union[_mission_autonomy_types_pb2.WaypointTaskConfigProto, _Mapping]] = ..., detect_config: _Optional[_Union[_mission_autonomy_types_pb2.DetectTaskConfigProto, _Mapping]] = ..., area_mapping_config: _Optional[_Union[_mission_autonomy_types_pb2.AreaMappingTaskConfigProto, _Mapping]] = ..., poi_config: _Optional[_Union[_mission_autonomy_types_pb2.PoiTaskConfigProto, _Mapping]] = ..., follow_config: _Optional[_Union[_mission_autonomy_types_pb2.FollowTaskConfigProto, _Mapping]] = ..., track_config: _Optional[_Union[_mission_autonomy_types_pb2.TrackTaskConfigProto, _Mapping]] = ..., dynamic_command_config: _Optional[_Union[_mission_autonomy_types_pb2.DynamicCommandTaskConfigProto, _Mapping]] = ...) -> None: ...
 
 class SchedulerProtoDTO(_message.Message):
-    __slots__ = ("id", "name", "cron_expression", "active", "type", "client_time_zone", "created_at", "modified_at", "asset_sn", "command_id", "application_id", "skill_id", "execution_parameters", "auto_start")
+    __slots__ = ("id", "name", "cron_expression", "active", "type", "client_time_zone", "created_at", "modified_at", "asset_sn", "command_id", "application_id", "skill_id", "execution_parameters", "auto_start", "organization_id", "last_firing_at", "last_firing_outcome", "last_firing_reason", "last_execution_id")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     CRON_EXPRESSION_FIELD_NUMBER: _ClassVar[int]
@@ -233,6 +247,11 @@ class SchedulerProtoDTO(_message.Message):
     SKILL_ID_FIELD_NUMBER: _ClassVar[int]
     EXECUTION_PARAMETERS_FIELD_NUMBER: _ClassVar[int]
     AUTO_START_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    LAST_FIRING_AT_FIELD_NUMBER: _ClassVar[int]
+    LAST_FIRING_OUTCOME_FIELD_NUMBER: _ClassVar[int]
+    LAST_FIRING_REASON_FIELD_NUMBER: _ClassVar[int]
+    LAST_EXECUTION_ID_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     cron_expression: str
@@ -247,7 +266,12 @@ class SchedulerProtoDTO(_message.Message):
     skill_id: str
     execution_parameters: _struct_pb2.Struct
     auto_start: bool
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., cron_expression: _Optional[str] = ..., active: bool = ..., type: _Optional[_Union[_mission_autonomy_types_pb2.SchedulerType, str]] = ..., client_time_zone: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., asset_sn: _Optional[str] = ..., command_id: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., execution_parameters: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., auto_start: bool = ...) -> None: ...
+    organization_id: str
+    last_firing_at: _timestamp_pb2.Timestamp
+    last_firing_outcome: _mission_autonomy_types_pb2.SchedulerFiringOutcome
+    last_firing_reason: str
+    last_execution_id: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., cron_expression: _Optional[str] = ..., active: bool = ..., type: _Optional[_Union[_mission_autonomy_types_pb2.SchedulerType, str]] = ..., client_time_zone: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., asset_sn: _Optional[str] = ..., command_id: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., execution_parameters: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., auto_start: bool = ..., organization_id: _Optional[str] = ..., last_firing_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_firing_outcome: _Optional[_Union[_mission_autonomy_types_pb2.SchedulerFiringOutcome, str]] = ..., last_firing_reason: _Optional[str] = ..., last_execution_id: _Optional[str] = ...) -> None: ...
 
 class SchedulerProtoDTOList(_message.Message):
     __slots__ = ("scheduler_dto_list",)

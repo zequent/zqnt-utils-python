@@ -97,6 +97,8 @@ class ConnectorServiceStub:
     UpdateScheduler: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     DeleteScheduler: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
     DeleteSchedulers: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
+    RecordSchedulerFiring: _grpc.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.RecordSchedulerFiringRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]
+    """What the last firing of a schedule did; see RecordSchedulerFiringRequest."""
     StoreTelemetryBatch: _grpc.StreamUnaryMultiCallable[_connector_pb2.ConnectorStoreTelemetryRequest, _connector_pb2.ConnectorResponse]
     """Telemetry Storage - batch processing from live-data service"""
     StoreDetectionBatch: _grpc.StreamUnaryMultiCallable[_connector_pb2.ConnectorStoreDetectionRequest, _connector_pb2.ConnectorResponse]
@@ -131,6 +133,13 @@ class ConnectorServiceStub:
     CreateOrganization: _grpc.UnaryUnaryMultiCallable[_connector_pb2.CreateOrganizationRequest, _connector_pb2.ConnectorOrganizationSingleResponse]
     UpdateOrganization: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpdateOrganizationRequest, _connector_pb2.ConnectorOrganizationSingleResponse]
     DeleteOrganization: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteOrganizationRequest, _connector_pb2.ConnectorDeleteOrganizationResponse]
+    ProvisionLicensedOrganization: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ProvisionLicensedOrganizationRequest, _connector_pb2.ProvisionLicensedOrganizationResponse]
+    """Creates the organization a license names, with the id the license carries (the only way an
+    organization gets a caller-chosen id), and stores that license's sealed activation credentials
+    in the same transaction -- both or neither. An id that already exists is not changed and nothing
+    is written: already_exists = true and organization holds the existing one, so the caller can
+    treat it as activating a license for an existing organization.
+    """
     GetAllTheatres: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllTheatresRequest, _connector_pb2.ConnectorTheatreResponse]
     """Theatre Management - a named operational site within one organization (optional geo zone, the
     assets stationed there, the users with access to it). Same CRUD shape as Organization above;
@@ -145,6 +154,25 @@ class ConnectorServiceStub:
     DeleteTheatre: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteTheatreRequest, _connector_pb2.ConnectorDeleteTheatreResponse]
     AssignUserToTheatre: _grpc.UnaryUnaryMultiCallable[_connector_pb2.AssignUserToTheatreRequest, _connector_pb2.TheatreAssignmentResponse]
     RemoveUserFromTheatre: _grpc.UnaryUnaryMultiCallable[_connector_pb2.RemoveUserFromTheatreRequest, _connector_pb2.TheatreAssignmentResponse]
+    ListNoFlyZones: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListNoFlyZonesRequest, _connector_pb2.NoFlyZoneListResponse]
+    """No-fly zones -- the one store of an organization's no-fly zones. Mission-autonomy reads them to
+    plan and refuse flights (RouteExecutionGraphExpander), admin-console to draw and edit them.
+    Ids are chosen by the caller (the console's own ids survive the move from Redis). An id that
+    belongs to another organization is answered as not found.
+    """
+    UpsertNoFlyZone: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpsertNoFlyZoneRequest, _connector_pb2.NoFlyZoneSingleResponse]
+    DeleteNoFlyZone: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteNoFlyZoneRequest, _connector_pb2.DeleteNoFlyZoneResponse]
+    ListLicenseActivationCredentials: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ListLicenseActivationCredentialsRequest, _connector_pb2.LicenseActivationCredentialsListResponse]
+    """License activation credentials -- the activation id and token admin-console received from the
+    license hub when it activated an organization's license. Without them admin-console can neither
+    refresh that organization's lease nor consume its seats, so they must survive a restart and be
+    shared between replicas. admin-console seals the token before it gets here (AES-256-GCM under a
+    per-organization key derived from the installation's platform key); connector stores the
+    envelope and never sees the token itself. At most one record per organization; Put replaces it.
+    """
+    GetLicenseActivationCredentials: _grpc.UnaryUnaryMultiCallable[_connector_pb2.GetLicenseActivationCredentialsRequest, _connector_pb2.LicenseActivationCredentialsSingleResponse]
+    PutLicenseActivationCredentials: _grpc.UnaryUnaryMultiCallable[_connector_pb2.PutLicenseActivationCredentialsRequest, _connector_pb2.LicenseActivationCredentialsSingleResponse]
+    DeleteLicenseActivationCredentials: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteLicenseActivationCredentialsRequest, _connector_pb2.DeleteLicenseActivationCredentialsResponse]
     GetAllEventTriggers: _grpc.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllEventTriggersRequest, _connector_pb2.ConnectorEventTriggerResponse]
     """Event Triggers — "start Application X on event Y" (detection / telemetry threshold / asset
     status / inbound webhook). CRUD mirrors Theatre's shape; ListRecentDetections and
@@ -175,6 +203,11 @@ class ConnectorServiceStub:
     GetPersistedApplication: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]
     ListPersistedApplications: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListApplicationsRequest, _capability_execution_contracts_pb2.ApplicationListResponse]
     DeletePersistedApplication: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.DeleteApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]
+    SetApplicationPause: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SetApplicationPauseRequest, _capability_execution_contracts_pb2.ApplicationPauseListResponse]
+    """Pausing is operational state, not part of the versioned Application -- see ApplicationPauseProtoDTO.
+    SetApplicationPause answers with every pause of that Application after the change.
+    """
+    ListApplicationPauses: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListApplicationPausesRequest, _capability_execution_contracts_pb2.ApplicationPauseListResponse]
     GetApplicationEnvironmentPointers: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationEnvironmentsRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]
     PromoteApplicationVersion: _grpc.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.PromoteApplicationVersionRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]
     PersistSkillExecution: _grpc.UnaryUnaryMultiCallable[_connector_pb2.PersistSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]
@@ -317,6 +350,8 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     UpdateScheduler: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.UpdateSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     DeleteScheduler: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulerRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
     DeleteSchedulers: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.DeleteSchedulersRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
+    RecordSchedulerFiring: _aio.UnaryUnaryMultiCallable[_mission_autonomy_contracts_pb2.RecordSchedulerFiringRequest, _mission_autonomy_contracts_pb2.SchedulerResponse]  # type: ignore[assignment]
+    """What the last firing of a schedule did; see RecordSchedulerFiringRequest."""
     StoreTelemetryBatch: _aio.StreamUnaryMultiCallable[_connector_pb2.ConnectorStoreTelemetryRequest, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
     """Telemetry Storage - batch processing from live-data service"""
     StoreDetectionBatch: _aio.StreamUnaryMultiCallable[_connector_pb2.ConnectorStoreDetectionRequest, _connector_pb2.ConnectorResponse]  # type: ignore[assignment]
@@ -351,6 +386,13 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     CreateOrganization: _aio.UnaryUnaryMultiCallable[_connector_pb2.CreateOrganizationRequest, _connector_pb2.ConnectorOrganizationSingleResponse]  # type: ignore[assignment]
     UpdateOrganization: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpdateOrganizationRequest, _connector_pb2.ConnectorOrganizationSingleResponse]  # type: ignore[assignment]
     DeleteOrganization: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteOrganizationRequest, _connector_pb2.ConnectorDeleteOrganizationResponse]  # type: ignore[assignment]
+    ProvisionLicensedOrganization: _aio.UnaryUnaryMultiCallable[_connector_pb2.ProvisionLicensedOrganizationRequest, _connector_pb2.ProvisionLicensedOrganizationResponse]  # type: ignore[assignment]
+    """Creates the organization a license names, with the id the license carries (the only way an
+    organization gets a caller-chosen id), and stores that license's sealed activation credentials
+    in the same transaction -- both or neither. An id that already exists is not changed and nothing
+    is written: already_exists = true and organization holds the existing one, so the caller can
+    treat it as activating a license for an existing organization.
+    """
     GetAllTheatres: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllTheatresRequest, _connector_pb2.ConnectorTheatreResponse]  # type: ignore[assignment]
     """Theatre Management - a named operational site within one organization (optional geo zone, the
     assets stationed there, the users with access to it). Same CRUD shape as Organization above;
@@ -365,6 +407,25 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     DeleteTheatre: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteTheatreRequest, _connector_pb2.ConnectorDeleteTheatreResponse]  # type: ignore[assignment]
     AssignUserToTheatre: _aio.UnaryUnaryMultiCallable[_connector_pb2.AssignUserToTheatreRequest, _connector_pb2.TheatreAssignmentResponse]  # type: ignore[assignment]
     RemoveUserFromTheatre: _aio.UnaryUnaryMultiCallable[_connector_pb2.RemoveUserFromTheatreRequest, _connector_pb2.TheatreAssignmentResponse]  # type: ignore[assignment]
+    ListNoFlyZones: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListNoFlyZonesRequest, _connector_pb2.NoFlyZoneListResponse]  # type: ignore[assignment]
+    """No-fly zones -- the one store of an organization's no-fly zones. Mission-autonomy reads them to
+    plan and refuse flights (RouteExecutionGraphExpander), admin-console to draw and edit them.
+    Ids are chosen by the caller (the console's own ids survive the move from Redis). An id that
+    belongs to another organization is answered as not found.
+    """
+    UpsertNoFlyZone: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpsertNoFlyZoneRequest, _connector_pb2.NoFlyZoneSingleResponse]  # type: ignore[assignment]
+    DeleteNoFlyZone: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteNoFlyZoneRequest, _connector_pb2.DeleteNoFlyZoneResponse]  # type: ignore[assignment]
+    ListLicenseActivationCredentials: _aio.UnaryUnaryMultiCallable[_connector_pb2.ListLicenseActivationCredentialsRequest, _connector_pb2.LicenseActivationCredentialsListResponse]  # type: ignore[assignment]
+    """License activation credentials -- the activation id and token admin-console received from the
+    license hub when it activated an organization's license. Without them admin-console can neither
+    refresh that organization's lease nor consume its seats, so they must survive a restart and be
+    shared between replicas. admin-console seals the token before it gets here (AES-256-GCM under a
+    per-organization key derived from the installation's platform key); connector stores the
+    envelope and never sees the token itself. At most one record per organization; Put replaces it.
+    """
+    GetLicenseActivationCredentials: _aio.UnaryUnaryMultiCallable[_connector_pb2.GetLicenseActivationCredentialsRequest, _connector_pb2.LicenseActivationCredentialsSingleResponse]  # type: ignore[assignment]
+    PutLicenseActivationCredentials: _aio.UnaryUnaryMultiCallable[_connector_pb2.PutLicenseActivationCredentialsRequest, _connector_pb2.LicenseActivationCredentialsSingleResponse]  # type: ignore[assignment]
+    DeleteLicenseActivationCredentials: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteLicenseActivationCredentialsRequest, _connector_pb2.DeleteLicenseActivationCredentialsResponse]  # type: ignore[assignment]
     GetAllEventTriggers: _aio.UnaryUnaryMultiCallable[_connector_pb2.ConnectorGetAllEventTriggersRequest, _connector_pb2.ConnectorEventTriggerResponse]  # type: ignore[assignment]
     """Event Triggers — "start Application X on event Y" (detection / telemetry threshold / asset
     status / inbound webhook). CRUD mirrors Theatre's shape; ListRecentDetections and
@@ -395,6 +456,11 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     GetPersistedApplication: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]  # type: ignore[assignment]
     ListPersistedApplications: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListApplicationsRequest, _capability_execution_contracts_pb2.ApplicationListResponse]  # type: ignore[assignment]
     DeletePersistedApplication: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.DeleteApplicationRequest, _capability_execution_contracts_pb2.ApplicationResponse]  # type: ignore[assignment]
+    SetApplicationPause: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.SetApplicationPauseRequest, _capability_execution_contracts_pb2.ApplicationPauseListResponse]  # type: ignore[assignment]
+    """Pausing is operational state, not part of the versioned Application -- see ApplicationPauseProtoDTO.
+    SetApplicationPause answers with every pause of that Application after the change.
+    """
+    ListApplicationPauses: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.ListApplicationPausesRequest, _capability_execution_contracts_pb2.ApplicationPauseListResponse]  # type: ignore[assignment]
     GetApplicationEnvironmentPointers: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.GetApplicationEnvironmentsRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]  # type: ignore[assignment]
     PromoteApplicationVersion: _aio.UnaryUnaryMultiCallable[_capability_execution_contracts_pb2.PromoteApplicationVersionRequest, _capability_execution_contracts_pb2.ApplicationEnvironmentsResponse]  # type: ignore[assignment]
     PersistSkillExecution: _aio.UnaryUnaryMultiCallable[_connector_pb2.PersistSkillExecutionRequest, _capability_execution_contracts_pb2.SkillExecutionResponse]  # type: ignore[assignment]
@@ -704,6 +770,14 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
     ) -> _typing.Union[_mission_autonomy_contracts_pb2.SchedulerResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.SchedulerResponse]]: ...
 
     @_abc_1.abstractmethod
+    def RecordSchedulerFiring(
+        self,
+        request: _mission_autonomy_contracts_pb2.RecordSchedulerFiringRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_mission_autonomy_contracts_pb2.SchedulerResponse, _abc.Awaitable[_mission_autonomy_contracts_pb2.SchedulerResponse]]:
+        """What the last firing of a schedule did; see RecordSchedulerFiringRequest."""
+
+    @_abc_1.abstractmethod
     def StoreTelemetryBatch(
         self,
         request_iterator: _MaybeAsyncIterator[_connector_pb2.ConnectorStoreTelemetryRequest],
@@ -840,6 +914,19 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
     ) -> _typing.Union[_connector_pb2.ConnectorDeleteOrganizationResponse, _abc.Awaitable[_connector_pb2.ConnectorDeleteOrganizationResponse]]: ...
 
     @_abc_1.abstractmethod
+    def ProvisionLicensedOrganization(
+        self,
+        request: _connector_pb2.ProvisionLicensedOrganizationRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.ProvisionLicensedOrganizationResponse, _abc.Awaitable[_connector_pb2.ProvisionLicensedOrganizationResponse]]:
+        """Creates the organization a license names, with the id the license carries (the only way an
+        organization gets a caller-chosen id), and stores that license's sealed activation credentials
+        in the same transaction -- both or neither. An id that already exists is not changed and nothing
+        is written: already_exists = true and organization holds the existing one, so the caller can
+        treat it as activating a license for an existing organization.
+        """
+
+    @_abc_1.abstractmethod
     def GetAllTheatres(
         self,
         request: _connector_pb2.ConnectorGetAllTheatresRequest,
@@ -894,6 +981,67 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
         request: _connector_pb2.RemoveUserFromTheatreRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_connector_pb2.TheatreAssignmentResponse, _abc.Awaitable[_connector_pb2.TheatreAssignmentResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def ListNoFlyZones(
+        self,
+        request: _connector_pb2.ListNoFlyZonesRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.NoFlyZoneListResponse, _abc.Awaitable[_connector_pb2.NoFlyZoneListResponse]]:
+        """No-fly zones -- the one store of an organization's no-fly zones. Mission-autonomy reads them to
+        plan and refuse flights (RouteExecutionGraphExpander), admin-console to draw and edit them.
+        Ids are chosen by the caller (the console's own ids survive the move from Redis). An id that
+        belongs to another organization is answered as not found.
+        """
+
+    @_abc_1.abstractmethod
+    def UpsertNoFlyZone(
+        self,
+        request: _connector_pb2.UpsertNoFlyZoneRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.NoFlyZoneSingleResponse, _abc.Awaitable[_connector_pb2.NoFlyZoneSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeleteNoFlyZone(
+        self,
+        request: _connector_pb2.DeleteNoFlyZoneRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.DeleteNoFlyZoneResponse, _abc.Awaitable[_connector_pb2.DeleteNoFlyZoneResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def ListLicenseActivationCredentials(
+        self,
+        request: _connector_pb2.ListLicenseActivationCredentialsRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.LicenseActivationCredentialsListResponse, _abc.Awaitable[_connector_pb2.LicenseActivationCredentialsListResponse]]:
+        """License activation credentials -- the activation id and token admin-console received from the
+        license hub when it activated an organization's license. Without them admin-console can neither
+        refresh that organization's lease nor consume its seats, so they must survive a restart and be
+        shared between replicas. admin-console seals the token before it gets here (AES-256-GCM under a
+        per-organization key derived from the installation's platform key); connector stores the
+        envelope and never sees the token itself. At most one record per organization; Put replaces it.
+        """
+
+    @_abc_1.abstractmethod
+    def GetLicenseActivationCredentials(
+        self,
+        request: _connector_pb2.GetLicenseActivationCredentialsRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.LicenseActivationCredentialsSingleResponse, _abc.Awaitable[_connector_pb2.LicenseActivationCredentialsSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def PutLicenseActivationCredentials(
+        self,
+        request: _connector_pb2.PutLicenseActivationCredentialsRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.LicenseActivationCredentialsSingleResponse, _abc.Awaitable[_connector_pb2.LicenseActivationCredentialsSingleResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def DeleteLicenseActivationCredentials(
+        self,
+        request: _connector_pb2.DeleteLicenseActivationCredentialsRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.DeleteLicenseActivationCredentialsResponse, _abc.Awaitable[_connector_pb2.DeleteLicenseActivationCredentialsResponse]]: ...
 
     @_abc_1.abstractmethod
     def GetAllEventTriggers(
@@ -1038,6 +1186,23 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
         request: _capability_execution_contracts_pb2.DeleteApplicationRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def SetApplicationPause(
+        self,
+        request: _capability_execution_contracts_pb2.SetApplicationPauseRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationPauseListResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationPauseListResponse]]:
+        """Pausing is operational state, not part of the versioned Application -- see ApplicationPauseProtoDTO.
+        SetApplicationPause answers with every pause of that Application after the change.
+        """
+
+    @_abc_1.abstractmethod
+    def ListApplicationPauses(
+        self,
+        request: _capability_execution_contracts_pb2.ListApplicationPausesRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_capability_execution_contracts_pb2.ApplicationPauseListResponse, _abc.Awaitable[_capability_execution_contracts_pb2.ApplicationPauseListResponse]]: ...
 
     @_abc_1.abstractmethod
     def GetApplicationEnvironmentPointers(
