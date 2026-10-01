@@ -132,6 +132,8 @@ class SkillExecutionEventTypeProto(int, metaclass=_enum_type_wrapper.EnumTypeWra
     SKILL_EXECUTION_EVENT_TYPE_COMPLETED: _ClassVar[SkillExecutionEventTypeProto]
     SKILL_EXECUTION_EVENT_TYPE_FAILED: _ClassVar[SkillExecutionEventTypeProto]
     SKILL_EXECUTION_EVENT_TYPE_CANCELLED: _ClassVar[SkillExecutionEventTypeProto]
+    SKILL_EXECUTION_EVENT_TYPE_WARNING: _ClassVar[SkillExecutionEventTypeProto]
+    SKILL_EXECUTION_EVENT_TYPE_SAFETY_ALERT: _ClassVar[SkillExecutionEventTypeProto]
 EXECUTION_MODE_UNSPECIFIED: ExecutionModeProto
 EXECUTION_MODE_SIMPLE: ExecutionModeProto
 EXECUTION_MODE_APPLICATION: ExecutionModeProto
@@ -222,3 +224,5 @@ SKILL_EXECUTION_EVENT_TYPE_BLOCKED: SkillExecutionEventTypeProto
 SKILL_EXECUTION_EVENT_TYPE_COMPLETED: SkillExecutionEventTypeProto
 SKILL_EXECUTION_EVENT_TYPE_FAILED: SkillExecutionEventTypeProto
 SKILL_EXECUTION_EVENT_TYPE_CANCELLED: SkillExecutionEventTypeProto
+SKILL_EXECUTION_EVENT_TYPE_WARNING: SkillExecutionEventTypeProto
+SKILL_EXECUTION_EVENT_TYPE_SAFETY_ALERT: SkillExecutionEventTypeProto

@@ -448,12 +448,14 @@ class EmptyCommandRequest(_message.Message):
     def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ...) -> None: ...
 
 class CoordinateCommandRequest(_message.Message):
-    __slots__ = ("base", "coordinate")
+    __slots__ = ("base", "coordinate", "no_fly_zone_override")
     BASE_FIELD_NUMBER: _ClassVar[int]
     COORDINATE_FIELD_NUMBER: _ClassVar[int]
+    NO_FLY_ZONE_OVERRIDE_FIELD_NUMBER: _ClassVar[int]
     base: _base_pb2.RequestBase
     coordinate: GeoCoordinate
-    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., coordinate: _Optional[_Union[GeoCoordinate, _Mapping]] = ...) -> None: ...
+    no_fly_zone_override: bool
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., coordinate: _Optional[_Union[GeoCoordinate, _Mapping]] = ..., no_fly_zone_override: bool = ...) -> None: ...
 
 class LookAtCommandRequest(_message.Message):
     __slots__ = ("base", "coordinate", "payload_index", "locked")
