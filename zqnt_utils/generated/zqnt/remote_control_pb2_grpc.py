@@ -92,11 +92,6 @@ class RemoteControlServiceStub(object):
                 request_serializer=device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
                 response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
                 _registered_method=True)
-        self.PlayTTSAudio = channel.unary_unary(
-                '/zqnt.RemoteControlService/PlayTTSAudio',
-                request_serializer=device__control__contracts__pb2.TextToSpeechCommandRequest.SerializeToString,
-                response_deserializer=device__control__contracts__pb2.CommandResponse.FromString,
-                _registered_method=True)
         self.LiveStreamSplitScreen = channel.unary_unary(
                 '/zqnt.RemoteControlService/LiveStreamSplitScreen',
                 request_serializer=device__control__contracts__pb2.ToggleCommandRequest.SerializeToString,
@@ -242,12 +237,6 @@ class RemoteControlServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def PlayTTSAudio(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
     def LiveStreamSplitScreen(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -388,11 +377,6 @@ def add_RemoteControlServiceServicer_to_server(servicer, server):
             'CapturePhoto': grpc.unary_unary_rpc_method_handler(
                     servicer.CapturePhoto,
                     request_deserializer=device__control__contracts__pb2.EmptyCommandRequest.FromString,
-                    response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
-            ),
-            'PlayTTSAudio': grpc.unary_unary_rpc_method_handler(
-                    servicer.PlayTTSAudio,
-                    request_deserializer=device__control__contracts__pb2.TextToSpeechCommandRequest.FromString,
                     response_serializer=device__control__contracts__pb2.CommandResponse.SerializeToString,
             ),
             'LiveStreamSplitScreen': grpc.unary_unary_rpc_method_handler(
@@ -760,33 +744,6 @@ class RemoteControlService(object):
             target,
             '/zqnt.RemoteControlService/CapturePhoto',
             device__control__contracts__pb2.EmptyCommandRequest.SerializeToString,
-            device__control__contracts__pb2.CommandResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def PlayTTSAudio(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.RemoteControlService/PlayTTSAudio',
-            device__control__contracts__pb2.TextToSpeechCommandRequest.SerializeToString,
             device__control__contracts__pb2.CommandResponse.FromString,
             options,
             channel_credentials,

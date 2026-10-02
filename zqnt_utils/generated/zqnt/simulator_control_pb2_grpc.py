@@ -28,7 +28,8 @@ if _version_not_supported:
 
 class SimulatorControlServiceStub(object):
     """SimulatorControlService is the authenticated control-plane API for a running ZQNT edge
-    simulator process: add/remove simulated devices, list their live status. This is a separate
+    simulator process: add/remove/start/stop simulated devices (drones, and SAPIENT radars and
+    jammers), load ready-made presets, list their live status. This is a separate
     concern from EdgeAdapterService (edge.proto) -- that's the unauthenticated-by-design wire
     contract remote-control dials directly to command a device, mirroring exactly what a real
     hardware adapter exposes; this is the platform console's own API for managing the simulator
@@ -66,11 +67,32 @@ class SimulatorControlServiceStub(object):
                 request_serializer=simulator__control__pb2.ListDevicesRequest.SerializeToString,
                 response_deserializer=simulator__control__pb2.ListDevicesResponse.FromString,
                 _registered_method=True)
+        self.StartDevice = channel.unary_unary(
+                '/zqnt.SimulatorControlService/StartDevice',
+                request_serializer=simulator__control__pb2.StartDeviceRequest.SerializeToString,
+                response_deserializer=simulator__control__pb2.Device.FromString,
+                _registered_method=True)
+        self.StopDevice = channel.unary_unary(
+                '/zqnt.SimulatorControlService/StopDevice',
+                request_serializer=simulator__control__pb2.StopDeviceRequest.SerializeToString,
+                response_deserializer=simulator__control__pb2.Device.FromString,
+                _registered_method=True)
+        self.ListPresets = channel.unary_unary(
+                '/zqnt.SimulatorControlService/ListPresets',
+                request_serializer=simulator__control__pb2.ListPresetsRequest.SerializeToString,
+                response_deserializer=simulator__control__pb2.ListPresetsResponse.FromString,
+                _registered_method=True)
+        self.LoadPreset = channel.unary_unary(
+                '/zqnt.SimulatorControlService/LoadPreset',
+                request_serializer=simulator__control__pb2.LoadPresetRequest.SerializeToString,
+                response_deserializer=simulator__control__pb2.ListDevicesResponse.FromString,
+                _registered_method=True)
 
 
 class SimulatorControlServiceServicer(object):
     """SimulatorControlService is the authenticated control-plane API for a running ZQNT edge
-    simulator process: add/remove simulated devices, list their live status. This is a separate
+    simulator process: add/remove/start/stop simulated devices (drones, and SAPIENT radars and
+    jammers), load ready-made presets, list their live status. This is a separate
     concern from EdgeAdapterService (edge.proto) -- that's the unauthenticated-by-design wire
     contract remote-control dials directly to command a device, mirroring exactly what a real
     hardware adapter exposes; this is the platform console's own API for managing the simulator
@@ -106,6 +128,35 @@ class SimulatorControlServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def StartDevice(self, request, context):
+        """A stopped device keeps its asset and its settings but does nothing: a drone stops ticking and
+        publishing telemetry, a radar or jammer drops its SAPIENT connection. Starting it again brings
+        a drone back at its home position.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def StopDevice(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListPresets(self, request, context):
+        """Ready-made sets of devices (e.g. a protected perimeter: one radar, one jammer). Loading one adds
+        every device of it that this simulator does not have yet; existing SNs are left alone.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def LoadPreset(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_SimulatorControlServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -129,6 +180,26 @@ def add_SimulatorControlServiceServicer_to_server(servicer, server):
                     request_deserializer=simulator__control__pb2.ListDevicesRequest.FromString,
                     response_serializer=simulator__control__pb2.ListDevicesResponse.SerializeToString,
             ),
+            'StartDevice': grpc.unary_unary_rpc_method_handler(
+                    servicer.StartDevice,
+                    request_deserializer=simulator__control__pb2.StartDeviceRequest.FromString,
+                    response_serializer=simulator__control__pb2.Device.SerializeToString,
+            ),
+            'StopDevice': grpc.unary_unary_rpc_method_handler(
+                    servicer.StopDevice,
+                    request_deserializer=simulator__control__pb2.StopDeviceRequest.FromString,
+                    response_serializer=simulator__control__pb2.Device.SerializeToString,
+            ),
+            'ListPresets': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListPresets,
+                    request_deserializer=simulator__control__pb2.ListPresetsRequest.FromString,
+                    response_serializer=simulator__control__pb2.ListPresetsResponse.SerializeToString,
+            ),
+            'LoadPreset': grpc.unary_unary_rpc_method_handler(
+                    servicer.LoadPreset,
+                    request_deserializer=simulator__control__pb2.LoadPresetRequest.FromString,
+                    response_serializer=simulator__control__pb2.ListDevicesResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'zqnt.SimulatorControlService', rpc_method_handlers)
@@ -139,7 +210,8 @@ def add_SimulatorControlServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class SimulatorControlService(object):
     """SimulatorControlService is the authenticated control-plane API for a running ZQNT edge
-    simulator process: add/remove simulated devices, list their live status. This is a separate
+    simulator process: add/remove/start/stop simulated devices (drones, and SAPIENT radars and
+    jammers), load ready-made presets, list their live status. This is a separate
     concern from EdgeAdapterService (edge.proto) -- that's the unauthenticated-by-design wire
     contract remote-control dials directly to command a device, mirroring exactly what a real
     hardware adapter exposes; this is the platform console's own API for managing the simulator
@@ -248,6 +320,114 @@ class SimulatorControlService(object):
             target,
             '/zqnt.SimulatorControlService/ListDevices',
             simulator__control__pb2.ListDevicesRequest.SerializeToString,
+            simulator__control__pb2.ListDevicesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def StartDevice(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.SimulatorControlService/StartDevice',
+            simulator__control__pb2.StartDeviceRequest.SerializeToString,
+            simulator__control__pb2.Device.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def StopDevice(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.SimulatorControlService/StopDevice',
+            simulator__control__pb2.StopDeviceRequest.SerializeToString,
+            simulator__control__pb2.Device.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListPresets(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.SimulatorControlService/ListPresets',
+            simulator__control__pb2.ListPresetsRequest.SerializeToString,
+            simulator__control__pb2.ListPresetsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def LoadPreset(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.SimulatorControlService/LoadPreset',
+            simulator__control__pb2.LoadPresetRequest.SerializeToString,
             simulator__control__pb2.ListDevicesResponse.FromString,
             options,
             channel_credentials,

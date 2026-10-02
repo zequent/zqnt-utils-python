@@ -26,7 +26,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17simulator-control.proto\x12\x04zqnt\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"K\n\x0bGeoPosition\x12\x10\n\x08latitude\x18\x01 \x01(\x01\x12\x11\n\tlongitude\x18\x02 \x01(\x01\x12\x17\n\x0f\x61ltitude_meters\x18\x03 \x01(\x01\"\xf9\x01\n\x06\x44\x65vice\x12\n\n\x02sn\x18\x01 \x01(\t\x12\x1f\n\x04home\x18\x02 \x01(\x0b\x32\x11.zqnt.GeoPosition\x12#\n\x08position\x18\x03 \x01(\x0b\x32\x11.zqnt.GeoPosition\x12\x17\n\x0fheading_degrees\x18\x04 \x01(\x01\x12\x17\n\x0f\x62\x61ttery_percent\x18\x05 \x01(\x01\x12\x1e\n\x04mode\x18\x06 \x01(\x0e\x32\x10.zqnt.DeviceMode\x12\x1d\n\x15manual_control_active\x18\x07 \x01(\x08\x12,\n\x08\x61\x64\x64\x65\x64_at\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"?\n\x10\x41\x64\x64\x44\x65viceRequest\x12\n\n\x02sn\x18\x01 \x01(\t\x12\x1f\n\x04home\x18\x02 \x01(\x0b\x32\x11.zqnt.GeoPosition\"!\n\x13RemoveDeviceRequest\x12\n\n\x02sn\x18\x01 \x01(\t\"\x1e\n\x10GetDeviceRequest\x12\n\n\x02sn\x18\x01 \x01(\t\"\x14\n\x12ListDevicesRequest\"4\n\x13ListDevicesResponse\x12\x1d\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\x0c.zqnt.Device*t\n\nDeviceMode\x12\x1b\n\x17\x44\x45VICE_MODE_UNSPECIFIED\x10\x00\x12\x16\n\x12\x44\x45VICE_MODE_DOCKED\x10\x01\x12\x16\n\x12\x44\x45VICE_MODE_FLYING\x10\x02\x12\x19\n\x15\x44\x45VICE_MODE_RETURNING\x10\x03\x32\x86\x02\n\x17SimulatorControlService\x12\x31\n\tAddDevice\x12\x16.zqnt.AddDeviceRequest\x1a\x0c.zqnt.Device\x12\x41\n\x0cRemoveDevice\x12\x19.zqnt.RemoveDeviceRequest\x1a\x16.google.protobuf.Empty\x12\x31\n\tGetDevice\x12\x16.zqnt.GetDeviceRequest\x1a\x0c.zqnt.Device\x12\x42\n\x0bListDevices\x12\x18.zqnt.ListDevicesRequest\x1a\x19.zqnt.ListDevicesResponseB\\\n%com.zqnt.utils.simulatorcontrol.protoB\x15SimulatorControlProtoP\x01Z\x1agen/simulatorcontrol/protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x17simulator-control.proto\x12\x04zqnt\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa5\x01\n\x0eSensorSettings\x12\x17\n\x0f\x61zimuth_degrees\x18\x01 \x01(\x01\x12\x1c\n\x14sector_width_degrees\x18\x02 \x01(\x01\x12\x19\n\x11\x62\x65\x61mwidth_degrees\x18\x03 \x01(\x01\x12\x14\n\x0crange_meters\x18\x04 \x01(\x01\x12\r\n\x05\x62\x61nds\x18\x05 \x03(\t\x12\x1c\n\x14synthetic_detections\x18\x06 \x01(\x08\"K\n\x0bGeoPosition\x12\x10\n\x08latitude\x18\x01 \x01(\x01\x12\x11\n\tlongitude\x18\x02 \x01(\x01\x12\x17\n\x0f\x61ltitude_meters\x18\x03 \x01(\x01\"\xf8\x03\n\x06\x44\x65vice\x12\n\n\x02sn\x18\x01 \x01(\t\x12\x1f\n\x04home\x18\x02 \x01(\x0b\x32\x11.zqnt.GeoPosition\x12#\n\x08position\x18\x03 \x01(\x0b\x32\x11.zqnt.GeoPosition\x12\x17\n\x0fheading_degrees\x18\x04 \x01(\x01\x12\x17\n\x0f\x62\x61ttery_percent\x18\x05 \x01(\x01\x12\x1e\n\x04mode\x18\x06 \x01(\x0e\x32\x10.zqnt.DeviceMode\x12\x1d\n\x15manual_control_active\x18\x07 \x01(\x08\x12,\n\x08\x61\x64\x64\x65\x64_at\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1e\n\x04kind\x18\t \x01(\x0e\x32\x10.zqnt.DeviceKind\x12$\n\x06sensor\x18\n \x01(\x0b\x32\x14.zqnt.SensorSettings\x12\x0f\n\x07running\x18\x0b \x01(\x08\x12\x11\n\x04name\x18\x0c \x01(\tH\x00\x88\x01\x01\x12\x1b\n\x0elink_connected\x18\r \x01(\x08H\x01\x88\x01\x01\x12\x18\n\x0bsensor_mode\x18\x0e \x01(\tH\x02\x88\x01\x01\x12\x1c\n\x0forganization_id\x18\x0f \x01(\tH\x03\x88\x01\x01\x42\x07\n\x05_nameB\x11\n\x0f_link_connectedB\x0e\n\x0c_sensor_modeB\x12\n\x10_organization_id\"\xf1\x01\n\x10\x41\x64\x64\x44\x65viceRequest\x12\n\n\x02sn\x18\x01 \x01(\t\x12\x1f\n\x04home\x18\x02 \x01(\x0b\x32\x11.zqnt.GeoPosition\x12\x1e\n\x04kind\x18\x03 \x01(\x0e\x32\x10.zqnt.DeviceKind\x12$\n\x06sensor\x18\x04 \x01(\x0b\x32\x14.zqnt.SensorSettings\x12\x11\n\x04name\x18\x05 \x01(\tH\x00\x88\x01\x01\x12\x12\n\x05start\x18\x06 \x01(\x08H\x01\x88\x01\x01\x12\x1c\n\x0forganization_id\x18\x07 \x01(\tH\x02\x88\x01\x01\x42\x07\n\x05_nameB\x08\n\x06_startB\x12\n\x10_organization_id\" \n\x12StartDeviceRequest\x12\n\n\x02sn\x18\x01 \x01(\t\"\x1f\n\x11StopDeviceRequest\x12\n\n\x02sn\x18\x01 \x01(\t\"`\n\x06Preset\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\'\n\x07\x64\x65vices\x18\x04 \x03(\x0b\x32\x16.zqnt.AddDeviceRequest\"\x14\n\x12ListPresetsRequest\"4\n\x13ListPresetsResponse\x12\x1d\n\x07presets\x18\x01 \x03(\x0b\x32\x0c.zqnt.Preset\"Q\n\x11LoadPresetRequest\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1c\n\x0forganization_id\x18\x02 \x01(\tH\x00\x88\x01\x01\x42\x12\n\x10_organization_id\"!\n\x13RemoveDeviceRequest\x12\n\n\x02sn\x18\x01 \x01(\t\"\x1e\n\x10GetDeviceRequest\x12\n\n\x02sn\x18\x01 \x01(\t\"\x14\n\x12ListDevicesRequest\"4\n\x13ListDevicesResponse\x12\x1d\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\x0c.zqnt.Device*o\n\nDeviceKind\x12\x1b\n\x17\x44\x45VICE_KIND_UNSPECIFIED\x10\x00\x12\x15\n\x11\x44\x45VICE_KIND_DRONE\x10\x01\x12\x15\n\x11\x44\x45VICE_KIND_RADAR\x10\x02\x12\x16\n\x12\x44\x45VICE_KIND_JAMMER\x10\x03*t\n\nDeviceMode\x12\x1b\n\x17\x44\x45VICE_MODE_UNSPECIFIED\x10\x00\x12\x16\n\x12\x44\x45VICE_MODE_DOCKED\x10\x01\x12\x16\n\x12\x44\x45VICE_MODE_FLYING\x10\x02\x12\x19\n\x15\x44\x45VICE_MODE_RETURNING\x10\x03\x32\xf8\x03\n\x17SimulatorControlService\x12\x31\n\tAddDevice\x12\x16.zqnt.AddDeviceRequest\x1a\x0c.zqnt.Device\x12\x41\n\x0cRemoveDevice\x12\x19.zqnt.RemoveDeviceRequest\x1a\x16.google.protobuf.Empty\x12\x31\n\tGetDevice\x12\x16.zqnt.GetDeviceRequest\x1a\x0c.zqnt.Device\x12\x42\n\x0bListDevices\x12\x18.zqnt.ListDevicesRequest\x1a\x19.zqnt.ListDevicesResponse\x12\x35\n\x0bStartDevice\x12\x18.zqnt.StartDeviceRequest\x1a\x0c.zqnt.Device\x12\x33\n\nStopDevice\x12\x17.zqnt.StopDeviceRequest\x1a\x0c.zqnt.Device\x12\x42\n\x0bListPresets\x12\x18.zqnt.ListPresetsRequest\x1a\x19.zqnt.ListPresetsResponse\x12@\n\nLoadPreset\x12\x17.zqnt.LoadPresetRequest\x1a\x19.zqnt.ListDevicesResponseB\\\n%com.zqnt.utils.simulatorcontrol.protoB\x15SimulatorControlProtoP\x01Z\x1agen/simulatorcontrol/protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,22 +34,38 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'simulator_control_pb2', _gl
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'\n%com.zqnt.utils.simulatorcontrol.protoB\025SimulatorControlProtoP\001Z\032gen/simulatorcontrol/proto'
-  _globals['_DEVICEMODE']._serialized_start=632
-  _globals['_DEVICEMODE']._serialized_end=748
-  _globals['_GEOPOSITION']._serialized_start=95
-  _globals['_GEOPOSITION']._serialized_end=170
-  _globals['_DEVICE']._serialized_start=173
-  _globals['_DEVICE']._serialized_end=422
-  _globals['_ADDDEVICEREQUEST']._serialized_start=424
-  _globals['_ADDDEVICEREQUEST']._serialized_end=487
-  _globals['_REMOVEDEVICEREQUEST']._serialized_start=489
-  _globals['_REMOVEDEVICEREQUEST']._serialized_end=522
-  _globals['_GETDEVICEREQUEST']._serialized_start=524
-  _globals['_GETDEVICEREQUEST']._serialized_end=554
-  _globals['_LISTDEVICESREQUEST']._serialized_start=556
-  _globals['_LISTDEVICESREQUEST']._serialized_end=576
-  _globals['_LISTDEVICESRESPONSE']._serialized_start=578
-  _globals['_LISTDEVICESRESPONSE']._serialized_end=630
-  _globals['_SIMULATORCONTROLSERVICE']._serialized_start=751
-  _globals['_SIMULATORCONTROLSERVICE']._serialized_end=1013
+  _globals['_DEVICEKIND']._serialized_start=1558
+  _globals['_DEVICEKIND']._serialized_end=1669
+  _globals['_DEVICEMODE']._serialized_start=1671
+  _globals['_DEVICEMODE']._serialized_end=1787
+  _globals['_SENSORSETTINGS']._serialized_start=96
+  _globals['_SENSORSETTINGS']._serialized_end=261
+  _globals['_GEOPOSITION']._serialized_start=263
+  _globals['_GEOPOSITION']._serialized_end=338
+  _globals['_DEVICE']._serialized_start=341
+  _globals['_DEVICE']._serialized_end=845
+  _globals['_ADDDEVICEREQUEST']._serialized_start=848
+  _globals['_ADDDEVICEREQUEST']._serialized_end=1089
+  _globals['_STARTDEVICEREQUEST']._serialized_start=1091
+  _globals['_STARTDEVICEREQUEST']._serialized_end=1123
+  _globals['_STOPDEVICEREQUEST']._serialized_start=1125
+  _globals['_STOPDEVICEREQUEST']._serialized_end=1156
+  _globals['_PRESET']._serialized_start=1158
+  _globals['_PRESET']._serialized_end=1254
+  _globals['_LISTPRESETSREQUEST']._serialized_start=1256
+  _globals['_LISTPRESETSREQUEST']._serialized_end=1276
+  _globals['_LISTPRESETSRESPONSE']._serialized_start=1278
+  _globals['_LISTPRESETSRESPONSE']._serialized_end=1330
+  _globals['_LOADPRESETREQUEST']._serialized_start=1332
+  _globals['_LOADPRESETREQUEST']._serialized_end=1413
+  _globals['_REMOVEDEVICEREQUEST']._serialized_start=1415
+  _globals['_REMOVEDEVICEREQUEST']._serialized_end=1448
+  _globals['_GETDEVICEREQUEST']._serialized_start=1450
+  _globals['_GETDEVICEREQUEST']._serialized_end=1480
+  _globals['_LISTDEVICESREQUEST']._serialized_start=1482
+  _globals['_LISTDEVICESREQUEST']._serialized_end=1502
+  _globals['_LISTDEVICESRESPONSE']._serialized_start=1504
+  _globals['_LISTDEVICESRESPONSE']._serialized_end=1556
+  _globals['_SIMULATORCONTROLSERVICE']._serialized_start=1790
+  _globals['_SIMULATORCONTROLSERVICE']._serialized_end=2294
 # @@protoc_insertion_point(module_scope)
