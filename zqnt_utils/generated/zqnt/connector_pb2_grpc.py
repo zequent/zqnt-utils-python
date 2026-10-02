@@ -532,6 +532,21 @@ class ConnectorServiceStub(object):
                 request_serializer=connector__pb2.GetUserByIdRequest.SerializeToString,
                 response_deserializer=connector__pb2.AuthenticateUserResponse.FromString,
                 _registered_method=True)
+        self.UpdateUserRoles = channel.unary_unary(
+                '/zqnt.ConnectorService/UpdateUserRoles',
+                request_serializer=connector__pb2.UpdateUserRolesRequest.SerializeToString,
+                response_deserializer=connector__pb2.AuthenticateUserResponse.FromString,
+                _registered_method=True)
+        self.SetUserEnabled = channel.unary_unary(
+                '/zqnt.ConnectorService/SetUserEnabled',
+                request_serializer=connector__pb2.SetUserEnabledRequest.SerializeToString,
+                response_deserializer=connector__pb2.AuthenticateUserResponse.FromString,
+                _registered_method=True)
+        self.DeleteUser = channel.unary_unary(
+                '/zqnt.ConnectorService/DeleteUser',
+                request_serializer=connector__pb2.DeleteUserRequest.SerializeToString,
+                response_deserializer=connector__pb2.AuthenticateUserResponse.FromString,
+                _registered_method=True)
         self.UpsertIdentityProvider = channel.unary_unary(
                 '/zqnt.ConnectorService/UpsertIdentityProvider',
                 request_serializer=connector__pb2.UpsertIdentityProviderRequest.SerializeToString,
@@ -1249,6 +1264,32 @@ class ConnectorServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateUserRoles(self, request, context):
+        """Admin-driven user changes. Each answers with the user as it is afterwards (DeleteUser: as it was
+        just before it went), so the caller knows the organization to act on -- revoking sessions,
+        releasing the license seat -- without a second lookup. Same caller rules as CreateUser: an
+        org-admin acts only inside their own organization and never on a system_admin; nobody acts on
+        themselves, and the last enabled system_admin can be neither demoted, disabled nor deleted.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetUserEnabled(self, request, context):
+        """A disabled user can no longer sign in (password or SSO) and no refresh succeeds; the caller
+        revokes live access tokens. Seats are a licensing concern one layer up: disabling keeps it.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteUser(self, request, context):
+        """Removes the user for good -- the email is free again. The auth audit trail keeps its rows.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def UpsertIdentityProvider(self, request, context):
         """Pluggable SSO — an organization's own OIDC identity provider config (issuer, client
         credentials, which email domains it owns, how its claims map to platform roles). Local
@@ -1790,6 +1831,21 @@ def add_ConnectorServiceServicer_to_server(servicer, server):
             'GetUserById': grpc.unary_unary_rpc_method_handler(
                     servicer.GetUserById,
                     request_deserializer=connector__pb2.GetUserByIdRequest.FromString,
+                    response_serializer=connector__pb2.AuthenticateUserResponse.SerializeToString,
+            ),
+            'UpdateUserRoles': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateUserRoles,
+                    request_deserializer=connector__pb2.UpdateUserRolesRequest.FromString,
+                    response_serializer=connector__pb2.AuthenticateUserResponse.SerializeToString,
+            ),
+            'SetUserEnabled': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetUserEnabled,
+                    request_deserializer=connector__pb2.SetUserEnabledRequest.FromString,
+                    response_serializer=connector__pb2.AuthenticateUserResponse.SerializeToString,
+            ),
+            'DeleteUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteUser,
+                    request_deserializer=connector__pb2.DeleteUserRequest.FromString,
                     response_serializer=connector__pb2.AuthenticateUserResponse.SerializeToString,
             ),
             'UpsertIdentityProvider': grpc.unary_unary_rpc_method_handler(
@@ -4465,6 +4521,87 @@ class ConnectorService(object):
             target,
             '/zqnt.ConnectorService/GetUserById',
             connector__pb2.GetUserByIdRequest.SerializeToString,
+            connector__pb2.AuthenticateUserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def UpdateUserRoles(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/UpdateUserRoles',
+            connector__pb2.UpdateUserRolesRequest.SerializeToString,
+            connector__pb2.AuthenticateUserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetUserEnabled(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/SetUserEnabled',
+            connector__pb2.SetUserEnabledRequest.SerializeToString,
+            connector__pb2.AuthenticateUserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.ConnectorService/DeleteUser',
+            connector__pb2.DeleteUserRequest.SerializeToString,
             connector__pb2.AuthenticateUserResponse.FromString,
             options,
             channel_credentials,

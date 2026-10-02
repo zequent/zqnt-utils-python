@@ -69,20 +69,22 @@ class AuthenticateUserRequest(_message.Message):
     def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., email: _Optional[str] = ..., password: _Optional[str] = ...) -> None: ...
 
 class AuthenticatedUserProtoDTO(_message.Message):
-    __slots__ = ("user_id", "email", "organization_id", "roles", "enabled", "created_at")
+    __slots__ = ("user_id", "email", "organization_id", "roles", "enabled", "created_at", "provider")
     USER_ID_FIELD_NUMBER: _ClassVar[int]
     EMAIL_FIELD_NUMBER: _ClassVar[int]
     ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
     ROLES_FIELD_NUMBER: _ClassVar[int]
     ENABLED_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    PROVIDER_FIELD_NUMBER: _ClassVar[int]
     user_id: str
     email: str
     organization_id: str
     roles: _containers.RepeatedScalarFieldContainer[str]
     enabled: bool
     created_at: _timestamp_pb2.Timestamp
-    def __init__(self, user_id: _Optional[str] = ..., email: _Optional[str] = ..., organization_id: _Optional[str] = ..., roles: _Optional[_Iterable[str]] = ..., enabled: bool = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    provider: str
+    def __init__(self, user_id: _Optional[str] = ..., email: _Optional[str] = ..., organization_id: _Optional[str] = ..., roles: _Optional[_Iterable[str]] = ..., enabled: bool = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., provider: _Optional[str] = ...) -> None: ...
 
 class AuthenticateUserResponse(_message.Message):
     __slots__ = ("has_errors", "meta", "user", "error")
@@ -181,6 +183,34 @@ class ListUsersResponse(_message.Message):
     def __init__(self, has_errors: bool = ..., meta: _Optional[_Union[_base_pb2.ResponseMeta, _Mapping]] = ..., users: _Optional[_Iterable[_Union[AuthenticatedUserProtoDTO, _Mapping]]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
 
 class GetUserByIdRequest(_message.Message):
+    __slots__ = ("base", "user_id")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    USER_ID_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    user_id: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., user_id: _Optional[str] = ...) -> None: ...
+
+class UpdateUserRolesRequest(_message.Message):
+    __slots__ = ("base", "user_id", "roles")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    USER_ID_FIELD_NUMBER: _ClassVar[int]
+    ROLES_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    user_id: str
+    roles: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., user_id: _Optional[str] = ..., roles: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class SetUserEnabledRequest(_message.Message):
+    __slots__ = ("base", "user_id", "enabled")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    USER_ID_FIELD_NUMBER: _ClassVar[int]
+    ENABLED_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    user_id: str
+    enabled: bool
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., user_id: _Optional[str] = ..., enabled: bool = ...) -> None: ...
+
+class DeleteUserRequest(_message.Message):
     __slots__ = ("base", "user_id")
     BASE_FIELD_NUMBER: _ClassVar[int]
     USER_ID_FIELD_NUMBER: _ClassVar[int]

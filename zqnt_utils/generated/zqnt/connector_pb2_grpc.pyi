@@ -257,6 +257,19 @@ class ConnectorServiceStub:
     (a user id, nothing else) into a displayable identity. AuthenticateUser can't serve this: it
     needs a password and is keyed by email, neither of which a bearer token carries.
     """
+    UpdateUserRoles: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpdateUserRolesRequest, _connector_pb2.AuthenticateUserResponse]
+    """Admin-driven user changes. Each answers with the user as it is afterwards (DeleteUser: as it was
+    just before it went), so the caller knows the organization to act on -- revoking sessions,
+    releasing the license seat -- without a second lookup. Same caller rules as CreateUser: an
+    org-admin acts only inside their own organization and never on a system_admin; nobody acts on
+    themselves, and the last enabled system_admin can be neither demoted, disabled nor deleted.
+    """
+    SetUserEnabled: _grpc.UnaryUnaryMultiCallable[_connector_pb2.SetUserEnabledRequest, _connector_pb2.AuthenticateUserResponse]
+    """A disabled user can no longer sign in (password or SSO) and no refresh succeeds; the caller
+    revokes live access tokens. Seats are a licensing concern one layer up: disabling keeps it.
+    """
+    DeleteUser: _grpc.UnaryUnaryMultiCallable[_connector_pb2.DeleteUserRequest, _connector_pb2.AuthenticateUserResponse]
+    """Removes the user for good -- the email is free again. The auth audit trail keeps its rows."""
     UpsertIdentityProvider: _grpc.UnaryUnaryMultiCallable[_connector_pb2.UpsertIdentityProviderRequest, _connector_pb2.IdentityProviderResponse]
     """Pluggable SSO — an organization's own OIDC identity provider config (issuer, client
     credentials, which email domains it owns, how its claims map to platform roles). Local
@@ -510,6 +523,19 @@ class ConnectorServiceAsyncStub(ConnectorServiceStub):
     (a user id, nothing else) into a displayable identity. AuthenticateUser can't serve this: it
     needs a password and is keyed by email, neither of which a bearer token carries.
     """
+    UpdateUserRoles: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpdateUserRolesRequest, _connector_pb2.AuthenticateUserResponse]  # type: ignore[assignment]
+    """Admin-driven user changes. Each answers with the user as it is afterwards (DeleteUser: as it was
+    just before it went), so the caller knows the organization to act on -- revoking sessions,
+    releasing the license seat -- without a second lookup. Same caller rules as CreateUser: an
+    org-admin acts only inside their own organization and never on a system_admin; nobody acts on
+    themselves, and the last enabled system_admin can be neither demoted, disabled nor deleted.
+    """
+    SetUserEnabled: _aio.UnaryUnaryMultiCallable[_connector_pb2.SetUserEnabledRequest, _connector_pb2.AuthenticateUserResponse]  # type: ignore[assignment]
+    """A disabled user can no longer sign in (password or SSO) and no refresh succeeds; the caller
+    revokes live access tokens. Seats are a licensing concern one layer up: disabling keeps it.
+    """
+    DeleteUser: _aio.UnaryUnaryMultiCallable[_connector_pb2.DeleteUserRequest, _connector_pb2.AuthenticateUserResponse]  # type: ignore[assignment]
+    """Removes the user for good -- the email is free again. The auth audit trail keeps its rows."""
     UpsertIdentityProvider: _aio.UnaryUnaryMultiCallable[_connector_pb2.UpsertIdentityProviderRequest, _connector_pb2.IdentityProviderResponse]  # type: ignore[assignment]
     """Pluggable SSO — an organization's own OIDC identity provider config (issuer, client
     credentials, which email domains it owns, how its claims map to platform roles). Local
@@ -1348,6 +1374,37 @@ class ConnectorServiceServicer(metaclass=_abc_1.ABCMeta):
         (a user id, nothing else) into a displayable identity. AuthenticateUser can't serve this: it
         needs a password and is keyed by email, neither of which a bearer token carries.
         """
+
+    @_abc_1.abstractmethod
+    def UpdateUserRoles(
+        self,
+        request: _connector_pb2.UpdateUserRolesRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AuthenticateUserResponse, _abc.Awaitable[_connector_pb2.AuthenticateUserResponse]]:
+        """Admin-driven user changes. Each answers with the user as it is afterwards (DeleteUser: as it was
+        just before it went), so the caller knows the organization to act on -- revoking sessions,
+        releasing the license seat -- without a second lookup. Same caller rules as CreateUser: an
+        org-admin acts only inside their own organization and never on a system_admin; nobody acts on
+        themselves, and the last enabled system_admin can be neither demoted, disabled nor deleted.
+        """
+
+    @_abc_1.abstractmethod
+    def SetUserEnabled(
+        self,
+        request: _connector_pb2.SetUserEnabledRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AuthenticateUserResponse, _abc.Awaitable[_connector_pb2.AuthenticateUserResponse]]:
+        """A disabled user can no longer sign in (password or SSO) and no refresh succeeds; the caller
+        revokes live access tokens. Seats are a licensing concern one layer up: disabling keeps it.
+        """
+
+    @_abc_1.abstractmethod
+    def DeleteUser(
+        self,
+        request: _connector_pb2.DeleteUserRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_connector_pb2.AuthenticateUserResponse, _abc.Awaitable[_connector_pb2.AuthenticateUserResponse]]:
+        """Removes the user for good -- the email is free again. The auth audit trail keeps its rows."""
 
     @_abc_1.abstractmethod
     def UpsertIdentityProvider(
