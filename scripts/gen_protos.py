@@ -46,7 +46,7 @@ WELL_KNOWN_PROTOS = Path(protoc.__file__).parent / "_proto"
 # moved rather than silently generating from whatever it now points at. A real 2.0.0 release MUST
 # replace this with the immutable tag, exactly as the 1.3.1 pin did.
 PROTO_REF = "refactoring/refactoring-ecosystem-v2"
-PROTO_REF_COMMIT = "24ea6cb1703ef143f473b13c29249a807ae2b338"
+PROTO_REF_COMMIT = "db104ba074bb76d8fee1a06dc9e59b9cc9ba51c6"
 
 
 def _git(*args: str) -> str:
