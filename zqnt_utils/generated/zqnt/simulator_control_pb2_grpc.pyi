@@ -29,7 +29,8 @@ GRPC_VERSION: str
 
 class SimulatorControlServiceStub:
     """SimulatorControlService is the authenticated control-plane API for a running ZQNT edge
-    simulator process: add/remove simulated devices, list their live status. This is a separate
+    simulator process: add/remove/start/stop simulated devices (drones, and SAPIENT radars and
+    jammers), load ready-made presets, list their live status. This is a separate
     concern from EdgeAdapterService (edge.proto) -- that's the unauthenticated-by-design wire
     contract remote-control dials directly to command a device, mirroring exactly what a real
     hardware adapter exposes; this is the platform console's own API for managing the simulator
@@ -49,11 +50,23 @@ class SimulatorControlServiceStub:
     RemoveDevice: _grpc.UnaryUnaryMultiCallable[_simulator_control_pb2.RemoveDeviceRequest, _empty_pb2.Empty]
     GetDevice: _grpc.UnaryUnaryMultiCallable[_simulator_control_pb2.GetDeviceRequest, _simulator_control_pb2.Device]
     ListDevices: _grpc.UnaryUnaryMultiCallable[_simulator_control_pb2.ListDevicesRequest, _simulator_control_pb2.ListDevicesResponse]
+    StartDevice: _grpc.UnaryUnaryMultiCallable[_simulator_control_pb2.StartDeviceRequest, _simulator_control_pb2.Device]
+    """A stopped device keeps its asset and its settings but does nothing: a drone stops ticking and
+    publishing telemetry, a radar or jammer drops its SAPIENT connection. Starting it again brings
+    a drone back at its home position.
+    """
+    StopDevice: _grpc.UnaryUnaryMultiCallable[_simulator_control_pb2.StopDeviceRequest, _simulator_control_pb2.Device]
+    ListPresets: _grpc.UnaryUnaryMultiCallable[_simulator_control_pb2.ListPresetsRequest, _simulator_control_pb2.ListPresetsResponse]
+    """Ready-made sets of devices (e.g. a protected perimeter: one radar, one jammer). Loading one adds
+    every device of it that this simulator does not have yet; existing SNs are left alone.
+    """
+    LoadPreset: _grpc.UnaryUnaryMultiCallable[_simulator_control_pb2.LoadPresetRequest, _simulator_control_pb2.ListDevicesResponse]
 
 @_typing.type_check_only
 class SimulatorControlServiceAsyncStub(SimulatorControlServiceStub):
     """SimulatorControlService is the authenticated control-plane API for a running ZQNT edge
-    simulator process: add/remove simulated devices, list their live status. This is a separate
+    simulator process: add/remove/start/stop simulated devices (drones, and SAPIENT radars and
+    jammers), load ready-made presets, list their live status. This is a separate
     concern from EdgeAdapterService (edge.proto) -- that's the unauthenticated-by-design wire
     contract remote-control dials directly to command a device, mirroring exactly what a real
     hardware adapter exposes; this is the platform console's own API for managing the simulator
@@ -70,10 +83,22 @@ class SimulatorControlServiceAsyncStub(SimulatorControlServiceStub):
     RemoveDevice: _aio.UnaryUnaryMultiCallable[_simulator_control_pb2.RemoveDeviceRequest, _empty_pb2.Empty]  # type: ignore[assignment]
     GetDevice: _aio.UnaryUnaryMultiCallable[_simulator_control_pb2.GetDeviceRequest, _simulator_control_pb2.Device]  # type: ignore[assignment]
     ListDevices: _aio.UnaryUnaryMultiCallable[_simulator_control_pb2.ListDevicesRequest, _simulator_control_pb2.ListDevicesResponse]  # type: ignore[assignment]
+    StartDevice: _aio.UnaryUnaryMultiCallable[_simulator_control_pb2.StartDeviceRequest, _simulator_control_pb2.Device]  # type: ignore[assignment]
+    """A stopped device keeps its asset and its settings but does nothing: a drone stops ticking and
+    publishing telemetry, a radar or jammer drops its SAPIENT connection. Starting it again brings
+    a drone back at its home position.
+    """
+    StopDevice: _aio.UnaryUnaryMultiCallable[_simulator_control_pb2.StopDeviceRequest, _simulator_control_pb2.Device]  # type: ignore[assignment]
+    ListPresets: _aio.UnaryUnaryMultiCallable[_simulator_control_pb2.ListPresetsRequest, _simulator_control_pb2.ListPresetsResponse]  # type: ignore[assignment]
+    """Ready-made sets of devices (e.g. a protected perimeter: one radar, one jammer). Loading one adds
+    every device of it that this simulator does not have yet; existing SNs are left alone.
+    """
+    LoadPreset: _aio.UnaryUnaryMultiCallable[_simulator_control_pb2.LoadPresetRequest, _simulator_control_pb2.ListDevicesResponse]  # type: ignore[assignment]
 
 class SimulatorControlServiceServicer(metaclass=_abc_1.ABCMeta):
     """SimulatorControlService is the authenticated control-plane API for a running ZQNT edge
-    simulator process: add/remove simulated devices, list their live status. This is a separate
+    simulator process: add/remove/start/stop simulated devices (drones, and SAPIENT radars and
+    jammers), load ready-made presets, list their live status. This is a separate
     concern from EdgeAdapterService (edge.proto) -- that's the unauthenticated-by-design wire
     contract remote-control dials directly to command a device, mirroring exactly what a real
     hardware adapter exposes; this is the platform console's own API for managing the simulator
@@ -110,6 +135,41 @@ class SimulatorControlServiceServicer(metaclass=_abc_1.ABCMeta):
     def ListDevices(
         self,
         request: _simulator_control_pb2.ListDevicesRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_simulator_control_pb2.ListDevicesResponse, _abc.Awaitable[_simulator_control_pb2.ListDevicesResponse]]: ...
+
+    @_abc_1.abstractmethod
+    def StartDevice(
+        self,
+        request: _simulator_control_pb2.StartDeviceRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_simulator_control_pb2.Device, _abc.Awaitable[_simulator_control_pb2.Device]]:
+        """A stopped device keeps its asset and its settings but does nothing: a drone stops ticking and
+        publishing telemetry, a radar or jammer drops its SAPIENT connection. Starting it again brings
+        a drone back at its home position.
+        """
+
+    @_abc_1.abstractmethod
+    def StopDevice(
+        self,
+        request: _simulator_control_pb2.StopDeviceRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_simulator_control_pb2.Device, _abc.Awaitable[_simulator_control_pb2.Device]]: ...
+
+    @_abc_1.abstractmethod
+    def ListPresets(
+        self,
+        request: _simulator_control_pb2.ListPresetsRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_simulator_control_pb2.ListPresetsResponse, _abc.Awaitable[_simulator_control_pb2.ListPresetsResponse]]:
+        """Ready-made sets of devices (e.g. a protected perimeter: one radar, one jammer). Loading one adds
+        every device of it that this simulator does not have yet; existing SNs are left alone.
+        """
+
+    @_abc_1.abstractmethod
+    def LoadPreset(
+        self,
+        request: _simulator_control_pb2.LoadPresetRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_simulator_control_pb2.ListDevicesResponse, _abc.Awaitable[_simulator_control_pb2.ListDevicesResponse]]: ...
 

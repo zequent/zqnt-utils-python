@@ -282,3 +282,43 @@ class SkillExecutionListResponse(_message.Message):
     result: SkillExecutionList
     error: _base_pb2.GlobalErrorMessage
     def __init__(self, has_errors: bool = ..., meta: _Optional[_Union[_base_pb2.ResponseMeta, _Mapping]] = ..., result: _Optional[_Union[SkillExecutionList, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...
+
+class SetApplicationPauseRequest(_message.Message):
+    __slots__ = ("base", "application_id", "skill_id", "paused", "reason")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
+    SKILL_ID_FIELD_NUMBER: _ClassVar[int]
+    PAUSED_FIELD_NUMBER: _ClassVar[int]
+    REASON_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    application_id: str
+    skill_id: str
+    paused: bool
+    reason: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., paused: bool = ..., reason: _Optional[str] = ...) -> None: ...
+
+class ListApplicationPausesRequest(_message.Message):
+    __slots__ = ("base", "application_id")
+    BASE_FIELD_NUMBER: _ClassVar[int]
+    APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
+    base: _base_pb2.RequestBase
+    application_id: str
+    def __init__(self, base: _Optional[_Union[_base_pb2.RequestBase, _Mapping]] = ..., application_id: _Optional[str] = ...) -> None: ...
+
+class ApplicationPauseList(_message.Message):
+    __slots__ = ("pauses",)
+    PAUSES_FIELD_NUMBER: _ClassVar[int]
+    pauses: _containers.RepeatedCompositeFieldContainer[_capability_execution_dto_pb2.ApplicationPauseProtoDTO]
+    def __init__(self, pauses: _Optional[_Iterable[_Union[_capability_execution_dto_pb2.ApplicationPauseProtoDTO, _Mapping]]] = ...) -> None: ...
+
+class ApplicationPauseListResponse(_message.Message):
+    __slots__ = ("has_errors", "meta", "result", "error")
+    HAS_ERRORS_FIELD_NUMBER: _ClassVar[int]
+    META_FIELD_NUMBER: _ClassVar[int]
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    has_errors: bool
+    meta: _base_pb2.ResponseMeta
+    result: ApplicationPauseList
+    error: _base_pb2.GlobalErrorMessage
+    def __init__(self, has_errors: bool = ..., meta: _Optional[_Union[_base_pb2.ResponseMeta, _Mapping]] = ..., result: _Optional[_Union[ApplicationPauseList, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ...) -> None: ...

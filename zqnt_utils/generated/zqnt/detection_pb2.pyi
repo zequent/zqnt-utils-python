@@ -20,17 +20,39 @@ class BoundingBox(_message.Message):
     height: float
     def __init__(self, x: _Optional[float] = ..., y: _Optional[float] = ..., width: _Optional[float] = ..., height: _Optional[float] = ...) -> None: ...
 
+class DetectionPosition(_message.Message):
+    __slots__ = ("latitude", "longitude", "altitude", "range_m", "bearing_deg", "elevation_deg", "speed_mps", "heading_deg")
+    LATITUDE_FIELD_NUMBER: _ClassVar[int]
+    LONGITUDE_FIELD_NUMBER: _ClassVar[int]
+    ALTITUDE_FIELD_NUMBER: _ClassVar[int]
+    RANGE_M_FIELD_NUMBER: _ClassVar[int]
+    BEARING_DEG_FIELD_NUMBER: _ClassVar[int]
+    ELEVATION_DEG_FIELD_NUMBER: _ClassVar[int]
+    SPEED_MPS_FIELD_NUMBER: _ClassVar[int]
+    HEADING_DEG_FIELD_NUMBER: _ClassVar[int]
+    latitude: float
+    longitude: float
+    altitude: float
+    range_m: float
+    bearing_deg: float
+    elevation_deg: float
+    speed_mps: float
+    heading_deg: float
+    def __init__(self, latitude: _Optional[float] = ..., longitude: _Optional[float] = ..., altitude: _Optional[float] = ..., range_m: _Optional[float] = ..., bearing_deg: _Optional[float] = ..., elevation_deg: _Optional[float] = ..., speed_mps: _Optional[float] = ..., heading_deg: _Optional[float] = ...) -> None: ...
+
 class DetectionResult(_message.Message):
-    __slots__ = ("object_id", "object_type", "confidence", "bounding_box")
+    __slots__ = ("object_id", "object_type", "confidence", "bounding_box", "position")
     OBJECT_ID_FIELD_NUMBER: _ClassVar[int]
     OBJECT_TYPE_FIELD_NUMBER: _ClassVar[int]
     CONFIDENCE_FIELD_NUMBER: _ClassVar[int]
     BOUNDING_BOX_FIELD_NUMBER: _ClassVar[int]
+    POSITION_FIELD_NUMBER: _ClassVar[int]
     object_id: str
     object_type: str
     confidence: float
     bounding_box: BoundingBox
-    def __init__(self, object_id: _Optional[str] = ..., object_type: _Optional[str] = ..., confidence: _Optional[float] = ..., bounding_box: _Optional[_Union[BoundingBox, _Mapping]] = ...) -> None: ...
+    position: DetectionPosition
+    def __init__(self, object_id: _Optional[str] = ..., object_type: _Optional[str] = ..., confidence: _Optional[float] = ..., bounding_box: _Optional[_Union[BoundingBox, _Mapping]] = ..., position: _Optional[_Union[DetectionPosition, _Mapping]] = ...) -> None: ...
 
 class DetectionBatch(_message.Message):
     __slots__ = ("base", "detections", "stream_url")

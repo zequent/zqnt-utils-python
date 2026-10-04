@@ -122,12 +122,16 @@ class CommandNodeConfigProto(_message.Message):
     def __init__(self, command_id: _Optional[str] = ..., required_parameters: _Optional[_Iterable[str]] = ..., parameter_defaults: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., parameter_mapping: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., command_schema_version: _Optional[str] = ...) -> None: ...
 
 class SkillNodeConfigProto(_message.Message):
-    __slots__ = ("skill_id", "parameter_mapping")
+    __slots__ = ("skill_id", "parameter_mapping", "skill_version", "follow_latest")
     SKILL_ID_FIELD_NUMBER: _ClassVar[int]
     PARAMETER_MAPPING_FIELD_NUMBER: _ClassVar[int]
+    SKILL_VERSION_FIELD_NUMBER: _ClassVar[int]
+    FOLLOW_LATEST_FIELD_NUMBER: _ClassVar[int]
     skill_id: str
     parameter_mapping: _struct_pb2.Struct
-    def __init__(self, skill_id: _Optional[str] = ..., parameter_mapping: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
+    skill_version: str
+    follow_latest: bool
+    def __init__(self, skill_id: _Optional[str] = ..., parameter_mapping: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., skill_version: _Optional[str] = ..., follow_latest: bool = ...) -> None: ...
 
 class GatewayNodeConfigProto(_message.Message):
     __slots__ = ("join_mode", "output_mapping")
@@ -256,7 +260,7 @@ class ExecutionGraphProtoDTO(_message.Message):
     def __init__(self, start_node_id: _Optional[str] = ..., nodes: _Optional[_Iterable[_Union[ExecutionNodeProtoDTO, _Mapping]]] = ..., edges: _Optional[_Iterable[_Union[ExecutionEdgeProtoDTO, _Mapping]]] = ..., layout: _Optional[_Union[ExecutionGraphLayoutProtoDTO, _Mapping]] = ...) -> None: ...
 
 class SkillProtoDTO(_message.Message):
-    __slots__ = ("id", "name", "description", "graph", "input_schema", "output_schema", "default_config", "enabled", "required_asset_capabilities", "output_mapping")
+    __slots__ = ("id", "name", "description", "graph", "input_schema", "output_schema", "default_config", "enabled", "required_asset_capabilities", "output_mapping", "source_application_id", "source_version")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
@@ -267,6 +271,8 @@ class SkillProtoDTO(_message.Message):
     ENABLED_FIELD_NUMBER: _ClassVar[int]
     REQUIRED_ASSET_CAPABILITIES_FIELD_NUMBER: _ClassVar[int]
     OUTPUT_MAPPING_FIELD_NUMBER: _ClassVar[int]
+    SOURCE_APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
+    SOURCE_VERSION_FIELD_NUMBER: _ClassVar[int]
     id: str
     name: str
     description: str
@@ -277,10 +283,24 @@ class SkillProtoDTO(_message.Message):
     enabled: bool
     required_asset_capabilities: _containers.RepeatedScalarFieldContainer[str]
     output_mapping: _struct_pb2.Struct
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., graph: _Optional[_Union[ExecutionGraphProtoDTO, _Mapping]] = ..., input_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., output_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., default_config: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., enabled: bool = ..., required_asset_capabilities: _Optional[_Iterable[str]] = ..., output_mapping: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
+    source_application_id: str
+    source_version: str
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., graph: _Optional[_Union[ExecutionGraphProtoDTO, _Mapping]] = ..., input_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., output_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., default_config: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., enabled: bool = ..., required_asset_capabilities: _Optional[_Iterable[str]] = ..., output_mapping: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., source_application_id: _Optional[str] = ..., source_version: _Optional[str] = ...) -> None: ...
+
+class ApplicationChangeProtoDTO(_message.Message):
+    __slots__ = ("at", "author", "note", "automatic")
+    AT_FIELD_NUMBER: _ClassVar[int]
+    AUTHOR_FIELD_NUMBER: _ClassVar[int]
+    NOTE_FIELD_NUMBER: _ClassVar[int]
+    AUTOMATIC_FIELD_NUMBER: _ClassVar[int]
+    at: _timestamp_pb2.Timestamp
+    author: str
+    note: str
+    automatic: bool
+    def __init__(self, at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., author: _Optional[str] = ..., note: _Optional[str] = ..., automatic: bool = ...) -> None: ...
 
 class ApplicationProtoDTO(_message.Message):
-    __slots__ = ("id", "version", "name", "description", "skills", "scopes", "default_config", "enabled", "revision", "created_at", "modified_at")
+    __slots__ = ("id", "version", "name", "description", "skills", "scopes", "default_config", "enabled", "revision", "created_at", "modified_at", "organization_id", "changelog", "change_note")
     ID_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -292,6 +312,9 @@ class ApplicationProtoDTO(_message.Message):
     REVISION_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
     MODIFIED_AT_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    CHANGELOG_FIELD_NUMBER: _ClassVar[int]
+    CHANGE_NOTE_FIELD_NUMBER: _ClassVar[int]
     id: str
     version: str
     name: str
@@ -303,7 +326,26 @@ class ApplicationProtoDTO(_message.Message):
     revision: str
     created_at: _timestamp_pb2.Timestamp
     modified_at: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., version: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., skills: _Optional[_Iterable[_Union[SkillProtoDTO, _Mapping]]] = ..., scopes: _Optional[_Iterable[_Union[ApplicationScopeProtoDTO, _Mapping]]] = ..., default_config: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., enabled: bool = ..., revision: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    organization_id: str
+    changelog: _containers.RepeatedCompositeFieldContainer[ApplicationChangeProtoDTO]
+    change_note: str
+    def __init__(self, id: _Optional[str] = ..., version: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., skills: _Optional[_Iterable[_Union[SkillProtoDTO, _Mapping]]] = ..., scopes: _Optional[_Iterable[_Union[ApplicationScopeProtoDTO, _Mapping]]] = ..., default_config: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., enabled: bool = ..., revision: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., organization_id: _Optional[str] = ..., changelog: _Optional[_Iterable[_Union[ApplicationChangeProtoDTO, _Mapping]]] = ..., change_note: _Optional[str] = ...) -> None: ...
+
+class ApplicationPauseProtoDTO(_message.Message):
+    __slots__ = ("application_id", "skill_id", "paused_by", "paused_at", "reason", "organization_id")
+    APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
+    SKILL_ID_FIELD_NUMBER: _ClassVar[int]
+    PAUSED_BY_FIELD_NUMBER: _ClassVar[int]
+    PAUSED_AT_FIELD_NUMBER: _ClassVar[int]
+    REASON_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    application_id: str
+    skill_id: str
+    paused_by: str
+    paused_at: _timestamp_pb2.Timestamp
+    reason: str
+    organization_id: str
+    def __init__(self, application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., paused_by: _Optional[str] = ..., paused_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., reason: _Optional[str] = ..., organization_id: _Optional[str] = ...) -> None: ...
 
 class ApplicationEnvironmentPointerProtoDTO(_message.Message):
     __slots__ = ("application_id", "environment", "version", "updated_at", "updated_by")
@@ -352,7 +394,7 @@ class SkillExecutionSpecProto(_message.Message):
     def __init__(self, simple: _Optional[_Union[SimpleExecutionSpecProto, _Mapping]] = ..., application: _Optional[_Union[ApplicationExecutionSpecProto, _Mapping]] = ...) -> None: ...
 
 class SkillExecutionOptionsProto(_message.Message):
-    __slots__ = ("dry_run", "validate_only", "auto_start", "priority", "timeout_seconds", "failure_strategy", "retry_policy", "preflight_profile", "nfz_policy_profile", "config_overrides")
+    __slots__ = ("dry_run", "validate_only", "auto_start", "priority", "timeout_seconds", "failure_strategy", "retry_policy", "preflight_profile", "nfz_policy_profile", "config_overrides", "no_fly_zone_override")
     DRY_RUN_FIELD_NUMBER: _ClassVar[int]
     VALIDATE_ONLY_FIELD_NUMBER: _ClassVar[int]
     AUTO_START_FIELD_NUMBER: _ClassVar[int]
@@ -363,6 +405,7 @@ class SkillExecutionOptionsProto(_message.Message):
     PREFLIGHT_PROFILE_FIELD_NUMBER: _ClassVar[int]
     NFZ_POLICY_PROFILE_FIELD_NUMBER: _ClassVar[int]
     CONFIG_OVERRIDES_FIELD_NUMBER: _ClassVar[int]
+    NO_FLY_ZONE_OVERRIDE_FIELD_NUMBER: _ClassVar[int]
     dry_run: bool
     validate_only: bool
     auto_start: bool
@@ -373,10 +416,11 @@ class SkillExecutionOptionsProto(_message.Message):
     preflight_profile: str
     nfz_policy_profile: str
     config_overrides: _struct_pb2.Struct
-    def __init__(self, dry_run: bool = ..., validate_only: bool = ..., auto_start: bool = ..., priority: _Optional[int] = ..., timeout_seconds: _Optional[int] = ..., failure_strategy: _Optional[_Union[_capability_execution_types_pb2.ExecutionFailureStrategyProto, str]] = ..., retry_policy: _Optional[_Union[_mission_autonomy_dto_pb2.RetryPolicyProtoDTO, _Mapping]] = ..., preflight_profile: _Optional[str] = ..., nfz_policy_profile: _Optional[str] = ..., config_overrides: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
+    no_fly_zone_override: bool
+    def __init__(self, dry_run: bool = ..., validate_only: bool = ..., auto_start: bool = ..., priority: _Optional[int] = ..., timeout_seconds: _Optional[int] = ..., failure_strategy: _Optional[_Union[_capability_execution_types_pb2.ExecutionFailureStrategyProto, str]] = ..., retry_policy: _Optional[_Union[_mission_autonomy_dto_pb2.RetryPolicyProtoDTO, _Mapping]] = ..., preflight_profile: _Optional[str] = ..., nfz_policy_profile: _Optional[str] = ..., config_overrides: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., no_fly_zone_override: bool = ...) -> None: ...
 
 class ExecutionNodeStateProtoDTO(_message.Message):
-    __slots__ = ("id", "node_id", "command_id", "target", "parameters", "status", "attempt", "progress", "external_execution_id", "started_at", "completed_at", "error", "output")
+    __slots__ = ("id", "node_id", "command_id", "target", "parameters", "status", "attempt", "progress", "external_execution_id", "started_at", "completed_at", "error", "output", "dispatched_asset_sn", "dispatch_reason", "warnings")
     ID_FIELD_NUMBER: _ClassVar[int]
     NODE_ID_FIELD_NUMBER: _ClassVar[int]
     COMMAND_ID_FIELD_NUMBER: _ClassVar[int]
@@ -390,6 +434,9 @@ class ExecutionNodeStateProtoDTO(_message.Message):
     COMPLETED_AT_FIELD_NUMBER: _ClassVar[int]
     ERROR_FIELD_NUMBER: _ClassVar[int]
     OUTPUT_FIELD_NUMBER: _ClassVar[int]
+    DISPATCHED_ASSET_SN_FIELD_NUMBER: _ClassVar[int]
+    DISPATCH_REASON_FIELD_NUMBER: _ClassVar[int]
+    WARNINGS_FIELD_NUMBER: _ClassVar[int]
     id: str
     node_id: str
     command_id: str
@@ -403,7 +450,10 @@ class ExecutionNodeStateProtoDTO(_message.Message):
     completed_at: _timestamp_pb2.Timestamp
     error: _base_pb2.GlobalErrorMessage
     output: _struct_pb2.Struct
-    def __init__(self, id: _Optional[str] = ..., node_id: _Optional[str] = ..., command_id: _Optional[str] = ..., target: _Optional[_Union[_device_control_contracts_pb2.CapabilityTarget, _Mapping]] = ..., parameters: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., status: _Optional[_Union[_capability_execution_types_pb2.ExecutionNodeStatusProto, str]] = ..., attempt: _Optional[int] = ..., progress: _Optional[float] = ..., external_execution_id: _Optional[str] = ..., started_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completed_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., output: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
+    dispatched_asset_sn: str
+    dispatch_reason: str
+    warnings: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, id: _Optional[str] = ..., node_id: _Optional[str] = ..., command_id: _Optional[str] = ..., target: _Optional[_Union[_device_control_contracts_pb2.CapabilityTarget, _Mapping]] = ..., parameters: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., status: _Optional[_Union[_capability_execution_types_pb2.ExecutionNodeStatusProto, str]] = ..., attempt: _Optional[int] = ..., progress: _Optional[float] = ..., external_execution_id: _Optional[str] = ..., started_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., completed_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., error: _Optional[_Union[_base_pb2.GlobalErrorMessage, _Mapping]] = ..., output: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., dispatched_asset_sn: _Optional[str] = ..., dispatch_reason: _Optional[str] = ..., warnings: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class SkillExecutionProtoDTO(_message.Message):
     __slots__ = ("id", "asset_sn", "asset_id", "organization_id", "location_id", "theatre_id", "spec", "options", "status", "node_states", "active_node_ids", "progress", "idempotency_key", "requested_by", "created_at", "started_at", "completed_at", "modified_at", "error", "output", "resolved_config", "graph_snapshot", "application_revision")
