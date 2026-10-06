@@ -111,7 +111,7 @@ class Schedule(_message.Message):
     def __init__(self, id: _Optional[str] = ..., organization_id: _Optional[str] = ..., name: _Optional[str] = ..., cron_expression: _Optional[str] = ..., time_zone: _Optional[str] = ..., active: bool = ..., target: _Optional[_Union[RunTarget, _Mapping]] = ..., asset_sn: _Optional[str] = ..., inputs: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., auto_start: bool = ..., last_fired_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., last_firing_outcome: _Optional[_Union[FiringOutcome, str]] = ..., last_firing_reason: _Optional[str] = ..., last_execution_id: _Optional[str] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class Trigger(_message.Message):
-    __slots__ = ("id", "organization_id", "name", "active", "type", "asset_sn", "object_type", "min_confidence", "telemetry_field", "comparison", "comparison_value", "webhook_token", "bridge_id", "target", "inputs", "auto_start", "cooldown_seconds", "dispatch_target", "priority", "site_id", "attention_reason", "last_fired_at", "created_at", "modified_at")
+    __slots__ = ("id", "organization_id", "name", "active", "type", "asset_sn", "object_type", "min_confidence", "telemetry_field", "operator", "comparison_value", "webhook_token", "bridge_id", "target", "inputs", "auto_start", "cooldown_seconds", "dispatch_target", "priority", "site_id", "attention_reason", "last_fired_at", "created_at", "modified_at")
     ID_FIELD_NUMBER: _ClassVar[int]
     ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
@@ -121,7 +121,7 @@ class Trigger(_message.Message):
     OBJECT_TYPE_FIELD_NUMBER: _ClassVar[int]
     MIN_CONFIDENCE_FIELD_NUMBER: _ClassVar[int]
     TELEMETRY_FIELD_FIELD_NUMBER: _ClassVar[int]
-    COMPARISON_FIELD_NUMBER: _ClassVar[int]
+    OPERATOR_FIELD_NUMBER: _ClassVar[int]
     COMPARISON_VALUE_FIELD_NUMBER: _ClassVar[int]
     WEBHOOK_TOKEN_FIELD_NUMBER: _ClassVar[int]
     BRIDGE_ID_FIELD_NUMBER: _ClassVar[int]
@@ -145,7 +145,7 @@ class Trigger(_message.Message):
     object_type: str
     min_confidence: float
     telemetry_field: str
-    comparison: Comparison
+    operator: Comparison
     comparison_value: str
     webhook_token: str
     bridge_id: str
@@ -160,7 +160,7 @@ class Trigger(_message.Message):
     last_fired_at: _timestamp_pb2.Timestamp
     created_at: _timestamp_pb2.Timestamp
     modified_at: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., organization_id: _Optional[str] = ..., name: _Optional[str] = ..., active: bool = ..., type: _Optional[_Union[TriggerType, str]] = ..., asset_sn: _Optional[str] = ..., object_type: _Optional[str] = ..., min_confidence: _Optional[float] = ..., telemetry_field: _Optional[str] = ..., comparison: _Optional[_Union[Comparison, str]] = ..., comparison_value: _Optional[str] = ..., webhook_token: _Optional[str] = ..., bridge_id: _Optional[str] = ..., target: _Optional[_Union[RunTarget, _Mapping]] = ..., inputs: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., auto_start: bool = ..., cooldown_seconds: _Optional[int] = ..., dispatch_target: _Optional[_Union[DispatchTarget, str]] = ..., priority: _Optional[int] = ..., site_id: _Optional[str] = ..., attention_reason: _Optional[str] = ..., last_fired_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., organization_id: _Optional[str] = ..., name: _Optional[str] = ..., active: bool = ..., type: _Optional[_Union[TriggerType, str]] = ..., asset_sn: _Optional[str] = ..., object_type: _Optional[str] = ..., min_confidence: _Optional[float] = ..., telemetry_field: _Optional[str] = ..., operator: _Optional[_Union[Comparison, str]] = ..., comparison_value: _Optional[str] = ..., webhook_token: _Optional[str] = ..., bridge_id: _Optional[str] = ..., target: _Optional[_Union[RunTarget, _Mapping]] = ..., inputs: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., auto_start: bool = ..., cooldown_seconds: _Optional[int] = ..., dispatch_target: _Optional[_Union[DispatchTarget, str]] = ..., priority: _Optional[int] = ..., site_id: _Optional[str] = ..., attention_reason: _Optional[str] = ..., last_fired_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., modified_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class ListSchedulesRequest(_message.Message):
     __slots__ = ("context", "organization_id")
