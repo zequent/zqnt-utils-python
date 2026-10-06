@@ -28,7 +28,7 @@ from zqnt_utils.generated.zqnt.common.v3 import common_pb2 as zqnt_dot_common_do
 from zqnt_utils.generated.zqnt.edge.v3 import edge_adapter_service_pb2 as zqnt_dot_edge_dot_v3_dot_edge__adapter__service__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,zqnt/control/v3/remote_control_service.proto\x12\x0fzqnt.control.v3\x1a#zqnt/capability/v3/capability.proto\x1a zqnt/capability/v3/command.proto\x1a\x1bzqnt/common/v3/common.proto\x1a\'zqnt/edge/v3/edge_adapter_service.proto\"\x9e\x01\n\x16GetCapabilitiesRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12\'\n\x05\x61sset\x18\x02 \x01(\x0b\x32\x18.zqnt.common.v3.AssetRef\x12*\n\x06target\x18\x03 \x01(\x0b\x32\x1a.zqnt.capability.v3.Target\"R\n\x17GetCapabilitiesResponse\x12\x37\n\x0c\x63\x61pabilities\x18\x01 \x01(\x0b\x32!.zqnt.capability.v3.CapabilitySet\"\x86\x01\n\x15\x45xecuteCommandRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12,\n\x07\x63ommand\x18\x02 \x01(\x0b\x32\x1b.zqnt.capability.v3.Command\x12\x0e\n\x06reason\x18\x03 \x01(\t\"K\n\x16\x45xecuteCommandResponse\x12\x31\n\x06result\x18\x01 \x01(\x0b\x32!.zqnt.capability.v3.CommandResult\"u\n\x14\x43\x61ncelCommandRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12\x1c\n\x14\x63ommand_execution_id\x18\x02 \x01(\t\x12\x0e\n\x06reason\x18\x03 \x01(\t\"J\n\x15\x43\x61ncelCommandResponse\x12\x31\n\x06result\x18\x01 \x01(\x0b\x32!.zqnt.capability.v3.CommandResult\"b\n\x19WatchCommandEventsRequest\x12\x1c\n\x14\x63ommand_execution_id\x18\x01 \x01(\t\x12\'\n\x05\x61sset\x18\x02 \x01(\x0b\x32\x18.zqnt.common.v3.AssetRef\"M\n\x1aWatchCommandEventsResponse\x12/\n\x05\x65vent\x18\x01 \x01(\x0b\x32 .zqnt.capability.v3.CommandEvent\"v\n\x1aStreamManualControlRequest\x12\'\n\x05\x61sset\x18\x01 \x01(\x0b\x32\x18.zqnt.common.v3.AssetRef\x12/\n\x05input\x18\x02 \x01(\x0b\x32 .zqnt.edge.v3.ManualControlInput\"\\\n\x1bStreamManualControlResponse\x12\x17\n\x0f\x61\x63\x63\x65pted_inputs\x18\x01 \x01(\x03\x12$\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x15.zqnt.common.v3.Error2\xa4\x04\n\x14RemoteControlService\x12\x64\n\x0fGetCapabilities\x12\'.zqnt.control.v3.GetCapabilitiesRequest\x1a(.zqnt.control.v3.GetCapabilitiesResponse\x12\x61\n\x0e\x45xecuteCommand\x12&.zqnt.control.v3.ExecuteCommandRequest\x1a\'.zqnt.control.v3.ExecuteCommandResponse\x12^\n\rCancelCommand\x12%.zqnt.control.v3.CancelCommandRequest\x1a&.zqnt.control.v3.CancelCommandResponse\x12o\n\x12WatchCommandEvents\x12*.zqnt.control.v3.WatchCommandEventsRequest\x1a+.zqnt.control.v3.WatchCommandEventsResponse0\x01\x12r\n\x13StreamManualControl\x12+.zqnt.control.v3.StreamManualControlRequest\x1a,.zqnt.control.v3.StreamManualControlResponse(\x01\x42\x65\n\x1a\x63om.zqnt.protos.control.v3P\x01ZEgithub.com/zequent/zqnt-utils-golang/v2/gen/zqnt/control/v3;controlv3b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n,zqnt/control/v3/remote_control_service.proto\x12\x0fzqnt.control.v3\x1a#zqnt/capability/v3/capability.proto\x1a zqnt/capability/v3/command.proto\x1a\x1bzqnt/common/v3/common.proto\x1a\'zqnt/edge/v3/edge_adapter_service.proto\"\x9e\x01\n\x16GetCapabilitiesRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12\'\n\x05\x61sset\x18\x02 \x01(\x0b\x32\x18.zqnt.common.v3.AssetRef\x12*\n\x06target\x18\x03 \x01(\x0b\x32\x1a.zqnt.capability.v3.Target\"R\n\x17GetCapabilitiesResponse\x12\x37\n\x0c\x63\x61pabilities\x18\x01 \x01(\x0b\x32!.zqnt.capability.v3.CapabilitySet\"\xa4\x01\n\x15\x45xecuteCommandRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12,\n\x07\x63ommand\x18\x02 \x01(\x0b\x32\x1b.zqnt.capability.v3.Command\x12\x0e\n\x06reason\x18\x03 \x01(\t\x12\x1c\n\x14no_fly_zone_override\x18\x04 \x01(\x08\"K\n\x16\x45xecuteCommandResponse\x12\x31\n\x06result\x18\x01 \x01(\x0b\x32!.zqnt.capability.v3.CommandResult\"u\n\x14\x43\x61ncelCommandRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12\x1c\n\x14\x63ommand_execution_id\x18\x02 \x01(\t\x12\x0e\n\x06reason\x18\x03 \x01(\t\"J\n\x15\x43\x61ncelCommandResponse\x12\x31\n\x06result\x18\x01 \x01(\x0b\x32!.zqnt.capability.v3.CommandResult\"b\n\x19WatchCommandEventsRequest\x12\x1c\n\x14\x63ommand_execution_id\x18\x01 \x01(\t\x12\'\n\x05\x61sset\x18\x02 \x01(\x0b\x32\x18.zqnt.common.v3.AssetRef\"M\n\x1aWatchCommandEventsResponse\x12/\n\x05\x65vent\x18\x01 \x01(\x0b\x32 .zqnt.capability.v3.CommandEvent\"v\n\x1aStreamManualControlRequest\x12\'\n\x05\x61sset\x18\x01 \x01(\x0b\x32\x18.zqnt.common.v3.AssetRef\x12/\n\x05input\x18\x02 \x01(\x0b\x32 .zqnt.edge.v3.ManualControlInput\"\\\n\x1bStreamManualControlResponse\x12\x17\n\x0f\x61\x63\x63\x65pted_inputs\x18\x01 \x01(\x03\x12$\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x15.zqnt.common.v3.Error2\xa4\x04\n\x14RemoteControlService\x12\x64\n\x0fGetCapabilities\x12\'.zqnt.control.v3.GetCapabilitiesRequest\x1a(.zqnt.control.v3.GetCapabilitiesResponse\x12\x61\n\x0e\x45xecuteCommand\x12&.zqnt.control.v3.ExecuteCommandRequest\x1a\'.zqnt.control.v3.ExecuteCommandResponse\x12^\n\rCancelCommand\x12%.zqnt.control.v3.CancelCommandRequest\x1a&.zqnt.control.v3.CancelCommandResponse\x12o\n\x12WatchCommandEvents\x12*.zqnt.control.v3.WatchCommandEventsRequest\x1a+.zqnt.control.v3.WatchCommandEventsResponse0\x01\x12r\n\x13StreamManualControl\x12+.zqnt.control.v3.StreamManualControlRequest\x1a,.zqnt.control.v3.StreamManualControlResponse(\x01\x42\x65\n\x1a\x63om.zqnt.protos.control.v3P\x01ZEgithub.com/zequent/zqnt-utils-golang/v2/gen/zqnt/control/v3;controlv3b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -41,21 +41,21 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_GETCAPABILITIESRESPONSE']._serialized_start=367
   _globals['_GETCAPABILITIESRESPONSE']._serialized_end=449
   _globals['_EXECUTECOMMANDREQUEST']._serialized_start=452
-  _globals['_EXECUTECOMMANDREQUEST']._serialized_end=586
-  _globals['_EXECUTECOMMANDRESPONSE']._serialized_start=588
-  _globals['_EXECUTECOMMANDRESPONSE']._serialized_end=663
-  _globals['_CANCELCOMMANDREQUEST']._serialized_start=665
-  _globals['_CANCELCOMMANDREQUEST']._serialized_end=782
-  _globals['_CANCELCOMMANDRESPONSE']._serialized_start=784
-  _globals['_CANCELCOMMANDRESPONSE']._serialized_end=858
-  _globals['_WATCHCOMMANDEVENTSREQUEST']._serialized_start=860
-  _globals['_WATCHCOMMANDEVENTSREQUEST']._serialized_end=958
-  _globals['_WATCHCOMMANDEVENTSRESPONSE']._serialized_start=960
-  _globals['_WATCHCOMMANDEVENTSRESPONSE']._serialized_end=1037
-  _globals['_STREAMMANUALCONTROLREQUEST']._serialized_start=1039
-  _globals['_STREAMMANUALCONTROLREQUEST']._serialized_end=1157
-  _globals['_STREAMMANUALCONTROLRESPONSE']._serialized_start=1159
-  _globals['_STREAMMANUALCONTROLRESPONSE']._serialized_end=1251
-  _globals['_REMOTECONTROLSERVICE']._serialized_start=1254
-  _globals['_REMOTECONTROLSERVICE']._serialized_end=1802
+  _globals['_EXECUTECOMMANDREQUEST']._serialized_end=616
+  _globals['_EXECUTECOMMANDRESPONSE']._serialized_start=618
+  _globals['_EXECUTECOMMANDRESPONSE']._serialized_end=693
+  _globals['_CANCELCOMMANDREQUEST']._serialized_start=695
+  _globals['_CANCELCOMMANDREQUEST']._serialized_end=812
+  _globals['_CANCELCOMMANDRESPONSE']._serialized_start=814
+  _globals['_CANCELCOMMANDRESPONSE']._serialized_end=888
+  _globals['_WATCHCOMMANDEVENTSREQUEST']._serialized_start=890
+  _globals['_WATCHCOMMANDEVENTSREQUEST']._serialized_end=988
+  _globals['_WATCHCOMMANDEVENTSRESPONSE']._serialized_start=990
+  _globals['_WATCHCOMMANDEVENTSRESPONSE']._serialized_end=1067
+  _globals['_STREAMMANUALCONTROLREQUEST']._serialized_start=1069
+  _globals['_STREAMMANUALCONTROLREQUEST']._serialized_end=1187
+  _globals['_STREAMMANUALCONTROLRESPONSE']._serialized_start=1189
+  _globals['_STREAMMANUALCONTROLRESPONSE']._serialized_end=1281
+  _globals['_REMOTECONTROLSERVICE']._serialized_start=1284
+  _globals['_REMOTECONTROLSERVICE']._serialized_end=1832
 # @@protoc_insertion_point(module_scope)

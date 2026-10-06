@@ -26,14 +26,16 @@ class GetCapabilitiesResponse(_message.Message):
     def __init__(self, capabilities: _Optional[_Union[_capability_pb2.CapabilitySet, _Mapping]] = ...) -> None: ...
 
 class ExecuteCommandRequest(_message.Message):
-    __slots__ = ("context", "command", "reason")
+    __slots__ = ("context", "command", "reason", "no_fly_zone_override")
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     COMMAND_FIELD_NUMBER: _ClassVar[int]
     REASON_FIELD_NUMBER: _ClassVar[int]
+    NO_FLY_ZONE_OVERRIDE_FIELD_NUMBER: _ClassVar[int]
     context: _common_pb2.RequestContext
     command: _command_pb2.Command
     reason: str
-    def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., command: _Optional[_Union[_command_pb2.Command, _Mapping]] = ..., reason: _Optional[str] = ...) -> None: ...
+    no_fly_zone_override: bool
+    def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., command: _Optional[_Union[_command_pb2.Command, _Mapping]] = ..., reason: _Optional[str] = ..., no_fly_zone_override: bool = ...) -> None: ...
 
 class ExecuteCommandResponse(_message.Message):
     __slots__ = ("result",)
