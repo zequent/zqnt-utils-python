@@ -26,7 +26,7 @@ from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__
 from zqnt_utils.generated.zqnt.common.v3 import common_pb2 as zqnt_dot_common_dot_v3_dot_common__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19zqnt/media/v3/media.proto\x12\rzqnt.media.v3\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bzqnt/common/v3/common.proto\"\x98\x01\n\x0f\x43\x61pturePosition\x12\'\n\x05point\x18\x01 \x01(\x0b\x32\x18.zqnt.common.v3.GeoPoint\x12\x1e\n\x11relative_altitude\x18\x02 \x01(\x01H\x00\x88\x01\x01\x12\x17\n\ngimbal_yaw\x18\x03 \x01(\x01H\x01\x88\x01\x01\x42\x14\n\x12_relative_altitudeB\r\n\x0b_gimbal_yaw\"\xf4\x04\n\tMediaFile\x12\n\n\x02id\x18\x01 \x01(\t\x12,\n\nmedia_type\x18\x02 \x01(\x0e\x32\x18.zqnt.media.v3.MediaType\x12.\n\x06status\x18\x03 \x01(\x0e\x32\x1e.zqnt.media.v3.MediaFileStatus\x12\x11\n\tfile_name\x18\x04 \x01(\t\x12\x14\n\x0c\x63ontent_type\x18\x05 \x01(\t\x12\x12\n\nsize_bytes\x18\x06 \x01(\x03\x12\x13\n\x0b\x66older_path\x18\x07 \x01(\t\x12\x10\n\x08\x61sset_sn\x18\x08 \x01(\t\x12\x11\n\tdevice_sn\x18\t \x01(\t\x12\x17\n\x0forganization_id\x18\n \x01(\t\x12\x14\n\x0c\x65xecution_id\x18\x0b \x01(\t\x12\x16\n\x0e\x61pplication_id\x18\x0c \x01(\t\x12\x10\n\x08skill_id\x18\r \x01(\t\x12/\n\x0b\x63\x61ptured_at\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0buploaded_at\x18\x0f \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x08position\x18\x10 \x01(\x0b\x32\x1e.zqnt.media.v3.CapturePosition\x12\x18\n\x10vendor_flight_id\x18\x11 \x01(\t\x12\x38\n\x08metadata\x18\x12 \x03(\x0b\x32&.zqnt.media.v3.MediaFile.MetadataEntry\x12\x14\n\x0c\x64ownload_url\x18\x13 \x01(\t\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xc2\x03\n\x18RegisterMediaFileRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12\x10\n\x08\x61sset_sn\x18\x02 \x01(\t\x12\x11\n\tdevice_sn\x18\x03 \x01(\t\x12\x15\n\rsource_bucket\x18\x04 \x01(\t\x12\x19\n\x11source_object_key\x18\x05 \x01(\t\x12\x11\n\tfile_name\x18\x06 \x01(\t\x12\x14\n\x0c\x65xecution_id\x18\x07 \x01(\t\x12\x18\n\x10vendor_flight_id\x18\x08 \x01(\t\x12/\n\x0b\x63\x61ptured_at\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x08position\x18\n \x01(\x0b\x32\x1e.zqnt.media.v3.CapturePosition\x12G\n\x08metadata\x18\x0b \x03(\x0b\x32\x35.zqnt.media.v3.RegisterMediaFileRequest.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"C\n\x19RegisterMediaFileResponse\x12&\n\x04\x66ile\x18\x01 \x01(\x0b\x32\x18.zqnt.media.v3.MediaFile\"\xc9\x01\n\x15ListMediaFilesRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12\x17\n\x0forganization_id\x18\x02 \x01(\t\x12\x13\n\x0b\x66older_path\x18\x03 \x01(\t\x12\x14\n\x0c\x65xecution_id\x18\x04 \x01(\t\x12\x10\n\x08\x61sset_sn\x18\x05 \x01(\t\x12)\n\x04page\x18\x06 \x01(\x0b\x32\x1b.zqnt.common.v3.PageRequest\"~\n\x16ListMediaFilesResponse\x12\'\n\x05\x66iles\x18\x01 \x03(\x0b\x32\x18.zqnt.media.v3.MediaFile\x12\x0f\n\x07\x66olders\x18\x02 \x03(\t\x12*\n\x04page\x18\x03 \x01(\x0b\x32\x1c.zqnt.common.v3.PageResponse\"k\n\x13GetMediaFileRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12\n\n\x02id\x18\x02 \x01(\t\x12\x17\n\x0forganization_id\x18\x03 \x01(\t\">\n\x14GetMediaFileResponse\x12&\n\x04\x66ile\x18\x01 \x01(\x0b\x32\x18.zqnt.media.v3.MediaFile*i\n\tMediaType\x12\x1a\n\x16MEDIA_TYPE_UNSPECIFIED\x10\x00\x12\x14\n\x10MEDIA_TYPE_PHOTO\x10\x01\x12\x14\n\x10MEDIA_TYPE_VIDEO\x10\x02\x12\x14\n\x10MEDIA_TYPE_OTHER\x10\x03*q\n\x0fMediaFileStatus\x12!\n\x1dMEDIA_FILE_STATUS_UNSPECIFIED\x10\x00\x12\x1c\n\x18MEDIA_FILE_STATUS_STORED\x10\x01\x12\x1d\n\x19MEDIA_FILE_STATUS_PENDING\x10\x02\x32\xae\x02\n\x0cMediaService\x12\x66\n\x11RegisterMediaFile\x12\'.zqnt.media.v3.RegisterMediaFileRequest\x1a(.zqnt.media.v3.RegisterMediaFileResponse\x12]\n\x0eListMediaFiles\x12$.zqnt.media.v3.ListMediaFilesRequest\x1a%.zqnt.media.v3.ListMediaFilesResponse\x12W\n\x0cGetMediaFile\x12\".zqnt.media.v3.GetMediaFileRequest\x1a#.zqnt.media.v3.GetMediaFileResponseB_\n\x18\x63om.zqnt.protos.media.v3P\x01ZAgithub.com/zequent/zqnt-utils-golang/v2/gen/zqnt/media/v3;mediav3b\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19zqnt/media/v3/media.proto\x12\rzqnt.media.v3\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bzqnt/common/v3/common.proto\"\x98\x01\n\x0f\x43\x61pturePosition\x12\'\n\x05point\x18\x01 \x01(\x0b\x32\x18.zqnt.common.v3.GeoPoint\x12\x1e\n\x11relative_altitude\x18\x02 \x01(\x01H\x00\x88\x01\x01\x12\x17\n\ngimbal_yaw\x18\x03 \x01(\x01H\x01\x88\x01\x01\x42\x14\n\x12_relative_altitudeB\r\n\x0b_gimbal_yaw\"\xbd\x05\n\tMediaFile\x12\n\n\x02id\x18\x01 \x01(\t\x12,\n\nmedia_type\x18\x02 \x01(\x0e\x32\x18.zqnt.media.v3.MediaType\x12.\n\x06status\x18\x03 \x01(\x0e\x32\x1e.zqnt.media.v3.MediaFileStatus\x12\x11\n\tfile_name\x18\x04 \x01(\t\x12\x14\n\x0c\x63ontent_type\x18\x05 \x01(\t\x12\x12\n\nsize_bytes\x18\x06 \x01(\x03\x12\x13\n\x0b\x66older_path\x18\x07 \x01(\t\x12\x10\n\x08\x61sset_sn\x18\x08 \x01(\t\x12\x11\n\tdevice_sn\x18\t \x01(\t\x12\x17\n\x0forganization_id\x18\n \x01(\t\x12\x14\n\x0c\x65xecution_id\x18\x0b \x01(\t\x12\x16\n\x0e\x61pplication_id\x18\x0c \x01(\t\x12\x10\n\x08skill_id\x18\r \x01(\t\x12/\n\x0b\x63\x61ptured_at\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0buploaded_at\x18\x0f \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x08position\x18\x10 \x01(\x0b\x32\x1e.zqnt.media.v3.CapturePosition\x12\x18\n\x10vendor_flight_id\x18\x11 \x01(\t\x12\x38\n\x08metadata\x18\x12 \x03(\x0b\x32&.zqnt.media.v3.MediaFile.MetadataEntry\x12\x14\n\x0c\x64ownload_url\x18\x13 \x01(\t\x12\x19\n\x11organization_name\x18\x14 \x01(\t\x12\x18\n\x10\x61pplication_name\x18\x15 \x01(\t\x12\x12\n\nskill_name\x18\x16 \x01(\t\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xc2\x03\n\x18RegisterMediaFileRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12\x10\n\x08\x61sset_sn\x18\x02 \x01(\t\x12\x11\n\tdevice_sn\x18\x03 \x01(\t\x12\x15\n\rsource_bucket\x18\x04 \x01(\t\x12\x19\n\x11source_object_key\x18\x05 \x01(\t\x12\x11\n\tfile_name\x18\x06 \x01(\t\x12\x14\n\x0c\x65xecution_id\x18\x07 \x01(\t\x12\x18\n\x10vendor_flight_id\x18\x08 \x01(\t\x12/\n\x0b\x63\x61ptured_at\x18\t \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x08position\x18\n \x01(\x0b\x32\x1e.zqnt.media.v3.CapturePosition\x12G\n\x08metadata\x18\x0b \x03(\x0b\x32\x35.zqnt.media.v3.RegisterMediaFileRequest.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"C\n\x19RegisterMediaFileResponse\x12&\n\x04\x66ile\x18\x01 \x01(\x0b\x32\x18.zqnt.media.v3.MediaFile\"\xc9\x01\n\x15ListMediaFilesRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12\x17\n\x0forganization_id\x18\x02 \x01(\t\x12\x13\n\x0b\x66older_path\x18\x03 \x01(\t\x12\x14\n\x0c\x65xecution_id\x18\x04 \x01(\t\x12\x10\n\x08\x61sset_sn\x18\x05 \x01(\t\x12)\n\x04page\x18\x06 \x01(\x0b\x32\x1b.zqnt.common.v3.PageRequest\"~\n\x16ListMediaFilesResponse\x12\'\n\x05\x66iles\x18\x01 \x03(\x0b\x32\x18.zqnt.media.v3.MediaFile\x12\x0f\n\x07\x66olders\x18\x02 \x03(\t\x12*\n\x04page\x18\x03 \x01(\x0b\x32\x1c.zqnt.common.v3.PageResponse\"k\n\x13GetMediaFileRequest\x12/\n\x07\x63ontext\x18\x01 \x01(\x0b\x32\x1e.zqnt.common.v3.RequestContext\x12\n\n\x02id\x18\x02 \x01(\t\x12\x17\n\x0forganization_id\x18\x03 \x01(\t\">\n\x14GetMediaFileResponse\x12&\n\x04\x66ile\x18\x01 \x01(\x0b\x32\x18.zqnt.media.v3.MediaFile*i\n\tMediaType\x12\x1a\n\x16MEDIA_TYPE_UNSPECIFIED\x10\x00\x12\x14\n\x10MEDIA_TYPE_PHOTO\x10\x01\x12\x14\n\x10MEDIA_TYPE_VIDEO\x10\x02\x12\x14\n\x10MEDIA_TYPE_OTHER\x10\x03*q\n\x0fMediaFileStatus\x12!\n\x1dMEDIA_FILE_STATUS_UNSPECIFIED\x10\x00\x12\x1c\n\x18MEDIA_FILE_STATUS_STORED\x10\x01\x12\x1d\n\x19MEDIA_FILE_STATUS_PENDING\x10\x02\x32\xae\x02\n\x0cMediaService\x12\x66\n\x11RegisterMediaFile\x12\'.zqnt.media.v3.RegisterMediaFileRequest\x1a(.zqnt.media.v3.RegisterMediaFileResponse\x12]\n\x0eListMediaFiles\x12$.zqnt.media.v3.ListMediaFilesRequest\x1a%.zqnt.media.v3.ListMediaFilesResponse\x12W\n\x0cGetMediaFile\x12\".zqnt.media.v3.GetMediaFileRequest\x1a#.zqnt.media.v3.GetMediaFileResponseB_\n\x18\x63om.zqnt.protos.media.v3P\x01ZAgithub.com/zequent/zqnt-utils-golang/v2/gen/zqnt/media/v3;mediav3b\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -38,30 +38,30 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_MEDIAFILE_METADATAENTRY']._serialized_options = b'8\001'
   _globals['_REGISTERMEDIAFILEREQUEST_METADATAENTRY']._loaded_options = None
   _globals['_REGISTERMEDIAFILEREQUEST_METADATAENTRY']._serialized_options = b'8\001'
-  _globals['_MEDIATYPE']._serialized_start=1919
-  _globals['_MEDIATYPE']._serialized_end=2024
-  _globals['_MEDIAFILESTATUS']._serialized_start=2026
-  _globals['_MEDIAFILESTATUS']._serialized_end=2139
+  _globals['_MEDIATYPE']._serialized_start=1992
+  _globals['_MEDIATYPE']._serialized_end=2097
+  _globals['_MEDIAFILESTATUS']._serialized_start=2099
+  _globals['_MEDIAFILESTATUS']._serialized_end=2212
   _globals['_CAPTUREPOSITION']._serialized_start=107
   _globals['_CAPTUREPOSITION']._serialized_end=259
   _globals['_MEDIAFILE']._serialized_start=262
-  _globals['_MEDIAFILE']._serialized_end=890
-  _globals['_MEDIAFILE_METADATAENTRY']._serialized_start=843
-  _globals['_MEDIAFILE_METADATAENTRY']._serialized_end=890
-  _globals['_REGISTERMEDIAFILEREQUEST']._serialized_start=893
-  _globals['_REGISTERMEDIAFILEREQUEST']._serialized_end=1343
-  _globals['_REGISTERMEDIAFILEREQUEST_METADATAENTRY']._serialized_start=843
-  _globals['_REGISTERMEDIAFILEREQUEST_METADATAENTRY']._serialized_end=890
-  _globals['_REGISTERMEDIAFILERESPONSE']._serialized_start=1345
-  _globals['_REGISTERMEDIAFILERESPONSE']._serialized_end=1412
-  _globals['_LISTMEDIAFILESREQUEST']._serialized_start=1415
-  _globals['_LISTMEDIAFILESREQUEST']._serialized_end=1616
-  _globals['_LISTMEDIAFILESRESPONSE']._serialized_start=1618
-  _globals['_LISTMEDIAFILESRESPONSE']._serialized_end=1744
-  _globals['_GETMEDIAFILEREQUEST']._serialized_start=1746
-  _globals['_GETMEDIAFILEREQUEST']._serialized_end=1853
-  _globals['_GETMEDIAFILERESPONSE']._serialized_start=1855
-  _globals['_GETMEDIAFILERESPONSE']._serialized_end=1917
-  _globals['_MEDIASERVICE']._serialized_start=2142
-  _globals['_MEDIASERVICE']._serialized_end=2444
+  _globals['_MEDIAFILE']._serialized_end=963
+  _globals['_MEDIAFILE_METADATAENTRY']._serialized_start=916
+  _globals['_MEDIAFILE_METADATAENTRY']._serialized_end=963
+  _globals['_REGISTERMEDIAFILEREQUEST']._serialized_start=966
+  _globals['_REGISTERMEDIAFILEREQUEST']._serialized_end=1416
+  _globals['_REGISTERMEDIAFILEREQUEST_METADATAENTRY']._serialized_start=916
+  _globals['_REGISTERMEDIAFILEREQUEST_METADATAENTRY']._serialized_end=963
+  _globals['_REGISTERMEDIAFILERESPONSE']._serialized_start=1418
+  _globals['_REGISTERMEDIAFILERESPONSE']._serialized_end=1485
+  _globals['_LISTMEDIAFILESREQUEST']._serialized_start=1488
+  _globals['_LISTMEDIAFILESREQUEST']._serialized_end=1689
+  _globals['_LISTMEDIAFILESRESPONSE']._serialized_start=1691
+  _globals['_LISTMEDIAFILESRESPONSE']._serialized_end=1817
+  _globals['_GETMEDIAFILEREQUEST']._serialized_start=1819
+  _globals['_GETMEDIAFILEREQUEST']._serialized_end=1926
+  _globals['_GETMEDIAFILERESPONSE']._serialized_start=1928
+  _globals['_GETMEDIAFILERESPONSE']._serialized_end=1990
+  _globals['_MEDIASERVICE']._serialized_start=2215
+  _globals['_MEDIASERVICE']._serialized_end=2517
 # @@protoc_insertion_point(module_scope)

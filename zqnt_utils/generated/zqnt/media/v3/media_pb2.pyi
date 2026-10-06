@@ -42,7 +42,7 @@ class CapturePosition(_message.Message):
     def __init__(self, point: _Optional[_Union[_common_pb2.GeoPoint, _Mapping]] = ..., relative_altitude: _Optional[float] = ..., gimbal_yaw: _Optional[float] = ...) -> None: ...
 
 class MediaFile(_message.Message):
-    __slots__ = ("id", "media_type", "status", "file_name", "content_type", "size_bytes", "folder_path", "asset_sn", "device_sn", "organization_id", "execution_id", "application_id", "skill_id", "captured_at", "uploaded_at", "position", "vendor_flight_id", "metadata", "download_url")
+    __slots__ = ("id", "media_type", "status", "file_name", "content_type", "size_bytes", "folder_path", "asset_sn", "device_sn", "organization_id", "execution_id", "application_id", "skill_id", "captured_at", "uploaded_at", "position", "vendor_flight_id", "metadata", "download_url", "organization_name", "application_name", "skill_name")
     class MetadataEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -69,6 +69,9 @@ class MediaFile(_message.Message):
     VENDOR_FLIGHT_ID_FIELD_NUMBER: _ClassVar[int]
     METADATA_FIELD_NUMBER: _ClassVar[int]
     DOWNLOAD_URL_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_NAME_FIELD_NUMBER: _ClassVar[int]
+    APPLICATION_NAME_FIELD_NUMBER: _ClassVar[int]
+    SKILL_NAME_FIELD_NUMBER: _ClassVar[int]
     id: str
     media_type: MediaType
     status: MediaFileStatus
@@ -88,7 +91,10 @@ class MediaFile(_message.Message):
     vendor_flight_id: str
     metadata: _containers.ScalarMap[str, str]
     download_url: str
-    def __init__(self, id: _Optional[str] = ..., media_type: _Optional[_Union[MediaType, str]] = ..., status: _Optional[_Union[MediaFileStatus, str]] = ..., file_name: _Optional[str] = ..., content_type: _Optional[str] = ..., size_bytes: _Optional[int] = ..., folder_path: _Optional[str] = ..., asset_sn: _Optional[str] = ..., device_sn: _Optional[str] = ..., organization_id: _Optional[str] = ..., execution_id: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., captured_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., uploaded_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., position: _Optional[_Union[CapturePosition, _Mapping]] = ..., vendor_flight_id: _Optional[str] = ..., metadata: _Optional[_Mapping[str, str]] = ..., download_url: _Optional[str] = ...) -> None: ...
+    organization_name: str
+    application_name: str
+    skill_name: str
+    def __init__(self, id: _Optional[str] = ..., media_type: _Optional[_Union[MediaType, str]] = ..., status: _Optional[_Union[MediaFileStatus, str]] = ..., file_name: _Optional[str] = ..., content_type: _Optional[str] = ..., size_bytes: _Optional[int] = ..., folder_path: _Optional[str] = ..., asset_sn: _Optional[str] = ..., device_sn: _Optional[str] = ..., organization_id: _Optional[str] = ..., execution_id: _Optional[str] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., captured_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., uploaded_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., position: _Optional[_Union[CapturePosition, _Mapping]] = ..., vendor_flight_id: _Optional[str] = ..., metadata: _Optional[_Mapping[str, str]] = ..., download_url: _Optional[str] = ..., organization_name: _Optional[str] = ..., application_name: _Optional[str] = ..., skill_name: _Optional[str] = ...) -> None: ...
 
 class RegisterMediaFileRequest(_message.Message):
     __slots__ = ("context", "asset_sn", "device_sn", "source_bucket", "source_object_key", "file_name", "execution_id", "vendor_flight_id", "captured_at", "position", "metadata")
