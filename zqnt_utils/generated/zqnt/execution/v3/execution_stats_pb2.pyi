@@ -22,6 +22,7 @@ class ExecutionStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     EXECUTION_STATUS_FAILED: _ClassVar[ExecutionStatus]
     EXECUTION_STATUS_CANCELLED: _ClassVar[ExecutionStatus]
     EXECUTION_STATUS_TIMED_OUT: _ClassVar[ExecutionStatus]
+    EXECUTION_STATUS_CANCELLING: _ClassVar[ExecutionStatus]
 
 class NodeStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -33,6 +34,8 @@ class NodeStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     NODE_STATUS_SKIPPED: _ClassVar[NodeStatus]
     NODE_STATUS_CANCELLED: _ClassVar[NodeStatus]
     NODE_STATUS_TIMED_OUT: _ClassVar[NodeStatus]
+    NODE_STATUS_WAITING: _ClassVar[NodeStatus]
+    NODE_STATUS_PAUSED: _ClassVar[NodeStatus]
 
 class StatsGrouping(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -50,6 +53,7 @@ EXECUTION_STATUS_SUCCEEDED: ExecutionStatus
 EXECUTION_STATUS_FAILED: ExecutionStatus
 EXECUTION_STATUS_CANCELLED: ExecutionStatus
 EXECUTION_STATUS_TIMED_OUT: ExecutionStatus
+EXECUTION_STATUS_CANCELLING: ExecutionStatus
 NODE_STATUS_UNSPECIFIED: NodeStatus
 NODE_STATUS_PENDING: NodeStatus
 NODE_STATUS_RUNNING: NodeStatus
@@ -58,6 +62,8 @@ NODE_STATUS_FAILED: NodeStatus
 NODE_STATUS_SKIPPED: NodeStatus
 NODE_STATUS_CANCELLED: NodeStatus
 NODE_STATUS_TIMED_OUT: NodeStatus
+NODE_STATUS_WAITING: NodeStatus
+NODE_STATUS_PAUSED: NodeStatus
 STATS_GROUPING_UNSPECIFIED: StatsGrouping
 STATS_GROUPING_NONE: StatsGrouping
 STATS_GROUPING_DAY: StatsGrouping
