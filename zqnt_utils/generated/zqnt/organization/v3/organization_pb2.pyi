@@ -2,6 +2,7 @@ import datetime
 
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from zqnt_utils.generated.zqnt.common.v3 import common_pb2 as _common_pb2
+from zqnt_utils.generated.zqnt.licensing.v3 import license_activation_pb2 as _license_activation_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -239,3 +240,25 @@ class UnassignUserResponse(_message.Message):
     SITE_FIELD_NUMBER: _ClassVar[int]
     site: Site
     def __init__(self, site: _Optional[_Union[Site, _Mapping]] = ...) -> None: ...
+
+class ProvisionLicensedOrganizationRequest(_message.Message):
+    __slots__ = ("context", "organization_id", "name", "description", "activation")
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    ACTIVATION_FIELD_NUMBER: _ClassVar[int]
+    context: _common_pb2.RequestContext
+    organization_id: str
+    name: str
+    description: str
+    activation: _license_activation_pb2.LicenseActivation
+    def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., organization_id: _Optional[str] = ..., name: _Optional[str] = ..., description: _Optional[str] = ..., activation: _Optional[_Union[_license_activation_pb2.LicenseActivation, _Mapping]] = ...) -> None: ...
+
+class ProvisionLicensedOrganizationResponse(_message.Message):
+    __slots__ = ("organization", "already_exists")
+    ORGANIZATION_FIELD_NUMBER: _ClassVar[int]
+    ALREADY_EXISTS_FIELD_NUMBER: _ClassVar[int]
+    organization: Organization
+    already_exists: bool
+    def __init__(self, organization: _Optional[_Union[Organization, _Mapping]] = ..., already_exists: bool = ...) -> None: ...

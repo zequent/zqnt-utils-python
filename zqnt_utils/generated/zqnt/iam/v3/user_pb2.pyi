@@ -168,3 +168,17 @@ class SetIdentityProviderResponse(_message.Message):
     IDENTITY_PROVIDER_FIELD_NUMBER: _ClassVar[int]
     identity_provider: IdentityProvider
     def __init__(self, identity_provider: _Optional[_Union[IdentityProvider, _Mapping]] = ...) -> None: ...
+
+class FindIdentityProviderForEmailRequest(_message.Message):
+    __slots__ = ("context", "email")
+    CONTEXT_FIELD_NUMBER: _ClassVar[int]
+    EMAIL_FIELD_NUMBER: _ClassVar[int]
+    context: _common_pb2.RequestContext
+    email: str
+    def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., email: _Optional[str] = ...) -> None: ...
+
+class FindIdentityProviderForEmailResponse(_message.Message):
+    __slots__ = ("identity_provider",)
+    IDENTITY_PROVIDER_FIELD_NUMBER: _ClassVar[int]
+    identity_provider: IdentityProvider
+    def __init__(self, identity_provider: _Optional[_Union[IdentityProvider, _Mapping]] = ...) -> None: ...

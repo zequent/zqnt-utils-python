@@ -41,7 +41,8 @@ class DispatchRuleServiceStub:
     @_typing.overload
     def __new__(cls, channel: _aio.Channel) -> DispatchRuleServiceAsyncStub: ...
     ListDispatchRules: _grpc.UnaryUnaryMultiCallable[_dispatch_pb2.ListDispatchRulesRequest, _dispatch_pb2.ListDispatchRulesResponse]
-    """One organization's rules, highest priority first. A user always gets their own
+    """The rules that decide one organization's runs -- its own and the platform-wide ones --
+    highest priority first. A user always gets their own
     organization's, whatever the request names; a platform service or a system admin names it.
     """
     GetDispatchRule: _grpc.UnaryUnaryMultiCallable[_dispatch_pb2.GetDispatchRuleRequest, _dispatch_pb2.GetDispatchRuleResponse]
@@ -60,7 +61,8 @@ class DispatchRuleServiceAsyncStub(DispatchRuleServiceStub):
 
     def __init__(self, channel: _aio.Channel) -> None: ...
     ListDispatchRules: _aio.UnaryUnaryMultiCallable[_dispatch_pb2.ListDispatchRulesRequest, _dispatch_pb2.ListDispatchRulesResponse]  # type: ignore[assignment]
-    """One organization's rules, highest priority first. A user always gets their own
+    """The rules that decide one organization's runs -- its own and the platform-wide ones --
+    highest priority first. A user always gets their own
     organization's, whatever the request names; a platform service or a system admin names it.
     """
     GetDispatchRule: _aio.UnaryUnaryMultiCallable[_dispatch_pb2.GetDispatchRuleRequest, _dispatch_pb2.GetDispatchRuleResponse]  # type: ignore[assignment]
@@ -82,7 +84,8 @@ class DispatchRuleServiceServicer(metaclass=_abc_1.ABCMeta):
         request: _dispatch_pb2.ListDispatchRulesRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_dispatch_pb2.ListDispatchRulesResponse, _abc.Awaitable[_dispatch_pb2.ListDispatchRulesResponse]]:
-        """One organization's rules, highest priority first. A user always gets their own
+        """The rules that decide one organization's runs -- its own and the platform-wide ones --
+        highest priority first. A user always gets their own
         organization's, whatever the request names; a platform service or a system admin names it.
         """
 

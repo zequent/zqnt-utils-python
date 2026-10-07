@@ -307,6 +307,11 @@ class IdentityProviderServiceStub(object):
                 request_serializer=zqnt_dot_iam_dot_v3_dot_user__pb2.SetIdentityProviderRequest.SerializeToString,
                 response_deserializer=zqnt_dot_iam_dot_v3_dot_user__pb2.SetIdentityProviderResponse.FromString,
                 _registered_method=True)
+        self.FindIdentityProviderForEmail = channel.unary_unary(
+                '/zqnt.iam.v3.IdentityProviderService/FindIdentityProviderForEmail',
+                request_serializer=zqnt_dot_iam_dot_v3_dot_user__pb2.FindIdentityProviderForEmailRequest.SerializeToString,
+                response_deserializer=zqnt_dot_iam_dot_v3_dot_user__pb2.FindIdentityProviderForEmailResponse.FromString,
+                _registered_method=True)
 
 
 class IdentityProviderServiceServicer(object):
@@ -328,6 +333,15 @@ class IdentityProviderServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def FindIdentityProviderForEmail(self, request, context):
+        """Sign-in discovery: the enabled provider that owns an email's domain, if any (none = sign in
+        with a password). Platform services only, and the one answer that carries the client secret --
+        admin-console needs it for the code exchange.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_IdentityProviderServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -340,6 +354,11 @@ def add_IdentityProviderServiceServicer_to_server(servicer, server):
                     servicer.SetIdentityProvider,
                     request_deserializer=zqnt_dot_iam_dot_v3_dot_user__pb2.SetIdentityProviderRequest.FromString,
                     response_serializer=zqnt_dot_iam_dot_v3_dot_user__pb2.SetIdentityProviderResponse.SerializeToString,
+            ),
+            'FindIdentityProviderForEmail': grpc.unary_unary_rpc_method_handler(
+                    servicer.FindIdentityProviderForEmail,
+                    request_deserializer=zqnt_dot_iam_dot_v3_dot_user__pb2.FindIdentityProviderForEmailRequest.FromString,
+                    response_serializer=zqnt_dot_iam_dot_v3_dot_user__pb2.FindIdentityProviderForEmailResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -398,6 +417,33 @@ class IdentityProviderService(object):
             '/zqnt.iam.v3.IdentityProviderService/SetIdentityProvider',
             zqnt_dot_iam_dot_v3_dot_user__pb2.SetIdentityProviderRequest.SerializeToString,
             zqnt_dot_iam_dot_v3_dot_user__pb2.SetIdentityProviderResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def FindIdentityProviderForEmail(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.iam.v3.IdentityProviderService/FindIdentityProviderForEmail',
+            zqnt_dot_iam_dot_v3_dot_user__pb2.FindIdentityProviderForEmailRequest.SerializeToString,
+            zqnt_dot_iam_dot_v3_dot_user__pb2.FindIdentityProviderForEmailResponse.FromString,
             options,
             channel_credentials,
             insecure,

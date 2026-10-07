@@ -67,7 +67,8 @@ class DispatchRuleServiceServicer(object):
     """
 
     def ListDispatchRules(self, request, context):
-        """One organization's rules, highest priority first. A user always gets their own
+        """The rules that decide one organization's runs -- its own and the platform-wide ones --
+        highest priority first. A user always gets their own
         organization's, whatever the request names; a platform service or a system admin names it.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)

@@ -61,6 +61,11 @@ class OrganizationServiceStub(object):
                 request_serializer=zqnt_dot_organization_dot_v3_dot_organization__pb2.DeleteOrganizationRequest.SerializeToString,
                 response_deserializer=zqnt_dot_organization_dot_v3_dot_organization__pb2.DeleteOrganizationResponse.FromString,
                 _registered_method=True)
+        self.ProvisionLicensedOrganization = channel.unary_unary(
+                '/zqnt.organization.v3.OrganizationService/ProvisionLicensedOrganization',
+                request_serializer=zqnt_dot_organization_dot_v3_dot_organization__pb2.ProvisionLicensedOrganizationRequest.SerializeToString,
+                response_deserializer=zqnt_dot_organization_dot_v3_dot_organization__pb2.ProvisionLicensedOrganizationResponse.FromString,
+                _registered_method=True)
 
 
 class OrganizationServiceServicer(object):
@@ -99,6 +104,16 @@ class OrganizationServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ProvisionLicensedOrganization(self, request, context):
+        """Creates the organization a verified license names, with the id the license carries, and
+        stores its activation -- in one step, so an organization never exists without the activation
+        that renews its lease. Platform services only (admin-console, after verifying the license).
+        Nothing is created or stored when the id already exists (already_exists).
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_OrganizationServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -126,6 +141,11 @@ def add_OrganizationServiceServicer_to_server(servicer, server):
                     servicer.DeleteOrganization,
                     request_deserializer=zqnt_dot_organization_dot_v3_dot_organization__pb2.DeleteOrganizationRequest.FromString,
                     response_serializer=zqnt_dot_organization_dot_v3_dot_organization__pb2.DeleteOrganizationResponse.SerializeToString,
+            ),
+            'ProvisionLicensedOrganization': grpc.unary_unary_rpc_method_handler(
+                    servicer.ProvisionLicensedOrganization,
+                    request_deserializer=zqnt_dot_organization_dot_v3_dot_organization__pb2.ProvisionLicensedOrganizationRequest.FromString,
+                    response_serializer=zqnt_dot_organization_dot_v3_dot_organization__pb2.ProvisionLicensedOrganizationResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -275,10 +295,38 @@ class OrganizationService(object):
             metadata,
             _registered_method=True)
 
+    @staticmethod
+    def ProvisionLicensedOrganization(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.organization.v3.OrganizationService/ProvisionLicensedOrganization',
+            zqnt_dot_organization_dot_v3_dot_organization__pb2.ProvisionLicensedOrganizationRequest.SerializeToString,
+            zqnt_dot_organization_dot_v3_dot_organization__pb2.ProvisionLicensedOrganizationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
 
 class SiteServiceStub(object):
     """Sites: named operational areas of one organization (2.x: theatres). Every user reads their
-    organization's; setting them up is a system admin's or a platform service's.
+    organization's; an organization admin sets up its own (sites:edit), who may work at one needs
+    users:edit. A site never moves to, or nests under, another organization.
     """
 
     def __init__(self, channel):
@@ -326,7 +374,8 @@ class SiteServiceStub(object):
 
 class SiteServiceServicer(object):
     """Sites: named operational areas of one organization (2.x: theatres). Every user reads their
-    organization's; setting them up is a system admin's or a platform service's.
+    organization's; an organization admin sets up its own (sites:edit), who may work at one needs
+    users:edit. A site never moves to, or nests under, another organization.
     """
 
     def ListSites(self, request, context):
@@ -421,7 +470,8 @@ def add_SiteServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class SiteService(object):
     """Sites: named operational areas of one organization (2.x: theatres). Every user reads their
-    organization's; setting them up is a system admin's or a platform service's.
+    organization's; an organization admin sets up its own (sites:edit), who may work at one needs
+    users:edit. A site never moves to, or nests under, another organization.
     """
 
     @staticmethod

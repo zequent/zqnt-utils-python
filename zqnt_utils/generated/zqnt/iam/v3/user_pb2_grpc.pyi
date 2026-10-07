@@ -3,10 +3,9 @@
 isort:skip_file
 The organization's users, and the single sign-on it may bring. Served by connector.
 
-Not here, on purpose: creating a user (it reserves a license seat first), and the sign-in flows
-themselves (password and OIDC). Both stay with admin-console, which also revokes a changed
-user's live sessions and releases a deleted user's seat -- a UserService change made around it
-would skip both.
+Signing in and creating users are AccountService's (account.proto), reached by admin-console
+only: it reserves a license seat before a user is created, revokes a changed user's live
+sessions and releases a deleted user's seat -- a change made around it would skip all three.
 """
 
 from collections import abc as _abc
@@ -130,6 +129,11 @@ class IdentityProviderServiceStub:
     """Unset organization_id = the caller's own. Answers no provider when none is configured."""
     SetIdentityProvider: _grpc.UnaryUnaryMultiCallable[_user_pb2.SetIdentityProviderRequest, _user_pb2.SetIdentityProviderResponse]
     """Creates or replaces it. An unset client_secret keeps the stored one."""
+    FindIdentityProviderForEmail: _grpc.UnaryUnaryMultiCallable[_user_pb2.FindIdentityProviderForEmailRequest, _user_pb2.FindIdentityProviderForEmailResponse]
+    """Sign-in discovery: the enabled provider that owns an email's domain, if any (none = sign in
+    with a password). Platform services only, and the one answer that carries the client secret --
+    admin-console needs it for the code exchange.
+    """
 
 @_typing.type_check_only
 class IdentityProviderServiceAsyncStub(IdentityProviderServiceStub):
@@ -142,6 +146,11 @@ class IdentityProviderServiceAsyncStub(IdentityProviderServiceStub):
     """Unset organization_id = the caller's own. Answers no provider when none is configured."""
     SetIdentityProvider: _aio.UnaryUnaryMultiCallable[_user_pb2.SetIdentityProviderRequest, _user_pb2.SetIdentityProviderResponse]  # type: ignore[assignment]
     """Creates or replaces it. An unset client_secret keeps the stored one."""
+    FindIdentityProviderForEmail: _aio.UnaryUnaryMultiCallable[_user_pb2.FindIdentityProviderForEmailRequest, _user_pb2.FindIdentityProviderForEmailResponse]  # type: ignore[assignment]
+    """Sign-in discovery: the enabled provider that owns an email's domain, if any (none = sign in
+    with a password). Platform services only, and the one answer that carries the client secret --
+    admin-console needs it for the code exchange.
+    """
 
 class IdentityProviderServiceServicer(metaclass=_abc_1.ABCMeta):
     """An organization's own OIDC provider. Its admins (and system admins, platform services) read and
@@ -163,5 +172,16 @@ class IdentityProviderServiceServicer(metaclass=_abc_1.ABCMeta):
         context: _ServicerContext,
     ) -> _typing.Union[_user_pb2.SetIdentityProviderResponse, _abc.Awaitable[_user_pb2.SetIdentityProviderResponse]]:
         """Creates or replaces it. An unset client_secret keeps the stored one."""
+
+    @_abc_1.abstractmethod
+    def FindIdentityProviderForEmail(
+        self,
+        request: _user_pb2.FindIdentityProviderForEmailRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_user_pb2.FindIdentityProviderForEmailResponse, _abc.Awaitable[_user_pb2.FindIdentityProviderForEmailResponse]]:
+        """Sign-in discovery: the enabled provider that owns an email's domain, if any (none = sign in
+        with a password). Platform services only, and the one answer that carries the client secret --
+        admin-console needs it for the code exchange.
+        """
 
 def add_IdentityProviderServiceServicer_to_server(servicer: IdentityProviderServiceServicer, server: _typing.Union[_grpc.Server, _aio.Server]) -> None: ...

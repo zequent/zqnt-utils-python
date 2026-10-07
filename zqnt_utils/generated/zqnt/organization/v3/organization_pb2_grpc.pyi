@@ -41,6 +41,12 @@ class OrganizationServiceStub:
     CreateOrganization: _grpc.UnaryUnaryMultiCallable[_organization_pb2.CreateOrganizationRequest, _organization_pb2.CreateOrganizationResponse]
     UpdateOrganization: _grpc.UnaryUnaryMultiCallable[_organization_pb2.UpdateOrganizationRequest, _organization_pb2.UpdateOrganizationResponse]
     DeleteOrganization: _grpc.UnaryUnaryMultiCallable[_organization_pb2.DeleteOrganizationRequest, _organization_pb2.DeleteOrganizationResponse]
+    ProvisionLicensedOrganization: _grpc.UnaryUnaryMultiCallable[_organization_pb2.ProvisionLicensedOrganizationRequest, _organization_pb2.ProvisionLicensedOrganizationResponse]
+    """Creates the organization a verified license names, with the id the license carries, and
+    stores its activation -- in one step, so an organization never exists without the activation
+    that renews its lease. Platform services only (admin-console, after verifying the license).
+    Nothing is created or stored when the id already exists (already_exists).
+    """
 
 @_typing.type_check_only
 class OrganizationServiceAsyncStub(OrganizationServiceStub):
@@ -55,6 +61,12 @@ class OrganizationServiceAsyncStub(OrganizationServiceStub):
     CreateOrganization: _aio.UnaryUnaryMultiCallable[_organization_pb2.CreateOrganizationRequest, _organization_pb2.CreateOrganizationResponse]  # type: ignore[assignment]
     UpdateOrganization: _aio.UnaryUnaryMultiCallable[_organization_pb2.UpdateOrganizationRequest, _organization_pb2.UpdateOrganizationResponse]  # type: ignore[assignment]
     DeleteOrganization: _aio.UnaryUnaryMultiCallable[_organization_pb2.DeleteOrganizationRequest, _organization_pb2.DeleteOrganizationResponse]  # type: ignore[assignment]
+    ProvisionLicensedOrganization: _aio.UnaryUnaryMultiCallable[_organization_pb2.ProvisionLicensedOrganizationRequest, _organization_pb2.ProvisionLicensedOrganizationResponse]  # type: ignore[assignment]
+    """Creates the organization a verified license names, with the id the license carries, and
+    stores its activation -- in one step, so an organization never exists without the activation
+    that renews its lease. Platform services only (admin-console, after verifying the license).
+    Nothing is created or stored when the id already exists (already_exists).
+    """
 
 class OrganizationServiceServicer(metaclass=_abc_1.ABCMeta):
     """Every user reads their own organization. Listing, creating, changing and deleting organizations
@@ -97,11 +109,24 @@ class OrganizationServiceServicer(metaclass=_abc_1.ABCMeta):
         context: _ServicerContext,
     ) -> _typing.Union[_organization_pb2.DeleteOrganizationResponse, _abc.Awaitable[_organization_pb2.DeleteOrganizationResponse]]: ...
 
+    @_abc_1.abstractmethod
+    def ProvisionLicensedOrganization(
+        self,
+        request: _organization_pb2.ProvisionLicensedOrganizationRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_organization_pb2.ProvisionLicensedOrganizationResponse, _abc.Awaitable[_organization_pb2.ProvisionLicensedOrganizationResponse]]:
+        """Creates the organization a verified license names, with the id the license carries, and
+        stores its activation -- in one step, so an organization never exists without the activation
+        that renews its lease. Platform services only (admin-console, after verifying the license).
+        Nothing is created or stored when the id already exists (already_exists).
+        """
+
 def add_OrganizationServiceServicer_to_server(servicer: OrganizationServiceServicer, server: _typing.Union[_grpc.Server, _aio.Server]) -> None: ...
 
 class SiteServiceStub:
     """Sites: named operational areas of one organization (2.x: theatres). Every user reads their
-    organization's; setting them up is a system admin's or a platform service's.
+    organization's; an organization admin sets up its own (sites:edit), who may work at one needs
+    users:edit. A site never moves to, or nests under, another organization.
     """
 
     @_typing.overload
@@ -121,7 +146,8 @@ class SiteServiceStub:
 @_typing.type_check_only
 class SiteServiceAsyncStub(SiteServiceStub):
     """Sites: named operational areas of one organization (2.x: theatres). Every user reads their
-    organization's; setting them up is a system admin's or a platform service's.
+    organization's; an organization admin sets up its own (sites:edit), who may work at one needs
+    users:edit. A site never moves to, or nests under, another organization.
     """
 
     def __init__(self, channel: _aio.Channel) -> None: ...
@@ -137,7 +163,8 @@ class SiteServiceAsyncStub(SiteServiceStub):
 
 class SiteServiceServicer(metaclass=_abc_1.ABCMeta):
     """Sites: named operational areas of one organization (2.x: theatres). Every user reads their
-    organization's; setting them up is a system admin's or a platform service's.
+    organization's; an organization admin sets up its own (sites:edit), who may work at one needs
+    users:edit. A site never moves to, or nests under, another organization.
     """
 
     @_abc_1.abstractmethod
