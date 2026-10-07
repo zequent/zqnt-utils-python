@@ -4,8 +4,9 @@ isort:skip_file
 Storage: where mission-autonomy keeps Applications and its runs. Served by connector, the system of
 record; reached by platform services only (mission-autonomy) -- never by a user or a customer
 application, who go through zqnt_utils.generated.zqnt.application.v3.ApplicationService and
-zqnt_utils.generated.zqnt.execution.v3.ExecutionService instead. Every call acts in the organization of the credential
-it carries, as on 2.x.
+zqnt_utils.generated.zqnt.execution.v3.ExecutionService, which validate first. (2.x let any signed-in user write here.)
+mission-autonomy calls with its own service token for the organization it acts in, and names the
+person it acts for in `acted_by` where the store records who did something.
 
 Applications are stored as zqnt_utils.generated.zqnt.application.v3.Application, which is byte-compatible with what
 2.x stored. A run is stored as a snapshot of mission-autonomy's own run state: the public

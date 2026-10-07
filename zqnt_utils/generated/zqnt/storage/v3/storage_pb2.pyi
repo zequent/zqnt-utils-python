@@ -25,14 +25,16 @@ class ExecutionEventSnapshot(_message.Message):
     def __init__(self, format: _Optional[str] = ..., event: _Optional[bytes] = ...) -> None: ...
 
 class SaveApplicationRequest(_message.Message):
-    __slots__ = ("context", "application", "expected_revision")
+    __slots__ = ("context", "application", "expected_revision", "acted_by")
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     APPLICATION_FIELD_NUMBER: _ClassVar[int]
     EXPECTED_REVISION_FIELD_NUMBER: _ClassVar[int]
+    ACTED_BY_FIELD_NUMBER: _ClassVar[int]
     context: _common_pb2.RequestContext
     application: _application_pb2.Application
     expected_revision: str
-    def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., application: _Optional[_Union[_application_pb2.Application, _Mapping]] = ..., expected_revision: _Optional[str] = ...) -> None: ...
+    acted_by: str
+    def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., application: _Optional[_Union[_application_pb2.Application, _Mapping]] = ..., expected_revision: _Optional[str] = ..., acted_by: _Optional[str] = ...) -> None: ...
 
 class SaveApplicationResponse(_message.Message):
     __slots__ = ("application", "warnings")
@@ -101,16 +103,18 @@ class ListEnvironmentsResponse(_message.Message):
     def __init__(self, pointers: _Optional[_Iterable[_Union[_application_pb2.EnvironmentPointer, _Mapping]]] = ...) -> None: ...
 
 class PromoteVersionRequest(_message.Message):
-    __slots__ = ("context", "application_id", "version", "environment")
+    __slots__ = ("context", "application_id", "version", "environment", "acted_by")
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
     ENVIRONMENT_FIELD_NUMBER: _ClassVar[int]
+    ACTED_BY_FIELD_NUMBER: _ClassVar[int]
     context: _common_pb2.RequestContext
     application_id: str
     version: str
     environment: _application_pb2.Environment
-    def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., application_id: _Optional[str] = ..., version: _Optional[str] = ..., environment: _Optional[_Union[_application_pb2.Environment, str]] = ...) -> None: ...
+    acted_by: str
+    def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., application_id: _Optional[str] = ..., version: _Optional[str] = ..., environment: _Optional[_Union[_application_pb2.Environment, str]] = ..., acted_by: _Optional[str] = ...) -> None: ...
 
 class PromoteVersionResponse(_message.Message):
     __slots__ = ("pointers",)
@@ -119,18 +123,20 @@ class PromoteVersionResponse(_message.Message):
     def __init__(self, pointers: _Optional[_Iterable[_Union[_application_pb2.EnvironmentPointer, _Mapping]]] = ...) -> None: ...
 
 class SetPauseRequest(_message.Message):
-    __slots__ = ("context", "application_id", "skill_id", "paused", "reason")
+    __slots__ = ("context", "application_id", "skill_id", "paused", "reason", "acted_by")
     CONTEXT_FIELD_NUMBER: _ClassVar[int]
     APPLICATION_ID_FIELD_NUMBER: _ClassVar[int]
     SKILL_ID_FIELD_NUMBER: _ClassVar[int]
     PAUSED_FIELD_NUMBER: _ClassVar[int]
     REASON_FIELD_NUMBER: _ClassVar[int]
+    ACTED_BY_FIELD_NUMBER: _ClassVar[int]
     context: _common_pb2.RequestContext
     application_id: str
     skill_id: str
     paused: bool
     reason: str
-    def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., paused: bool = ..., reason: _Optional[str] = ...) -> None: ...
+    acted_by: str
+    def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., application_id: _Optional[str] = ..., skill_id: _Optional[str] = ..., paused: bool = ..., reason: _Optional[str] = ..., acted_by: _Optional[str] = ...) -> None: ...
 
 class SetPauseResponse(_message.Message):
     __slots__ = ("pauses",)
