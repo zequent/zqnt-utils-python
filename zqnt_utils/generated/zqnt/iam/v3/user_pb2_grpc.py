@@ -27,10 +27,10 @@ if _version_not_supported:
 
 class UserServiceStub(object):
     """Reading: an organization admin their organization's users, a system admin every user, any user
-    their own record. Changing a user (roles, enabled, delete) is a platform service's -- admin-console,
-    acting for an administrator under the same rules (an organization admin never acts on a system
-    admin or on their own account), revoking the user's live sessions and releasing a deleted user's
-    seat.
+    their own record. Changing a user (roles, enabled, delete) is an administrator's act (users:edit),
+    never a service's: an organization admin only inside their own organization and never on a system
+    admin, nobody on their own account. admin-console makes it with the administrator's token and,
+    around it, revokes the user's live sessions and releases a deleted user's seat.
     """
 
     def __init__(self, channel):
@@ -68,10 +68,10 @@ class UserServiceStub(object):
 
 class UserServiceServicer(object):
     """Reading: an organization admin their organization's users, a system admin every user, any user
-    their own record. Changing a user (roles, enabled, delete) is a platform service's -- admin-console,
-    acting for an administrator under the same rules (an organization admin never acts on a system
-    admin or on their own account), revoking the user's live sessions and releasing a deleted user's
-    seat.
+    their own record. Changing a user (roles, enabled, delete) is an administrator's act (users:edit),
+    never a service's: an organization admin only inside their own organization and never on a system
+    admin, nobody on their own account. admin-console makes it with the administrator's token and,
+    around it, revokes the user's live sessions and releases a deleted user's seat.
     """
 
     def ListUsers(self, request, context):
@@ -144,10 +144,10 @@ def add_UserServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class UserService(object):
     """Reading: an organization admin their organization's users, a system admin every user, any user
-    their own record. Changing a user (roles, enabled, delete) is a platform service's -- admin-console,
-    acting for an administrator under the same rules (an organization admin never acts on a system
-    admin or on their own account), revoking the user's live sessions and releasing a deleted user's
-    seat.
+    their own record. Changing a user (roles, enabled, delete) is an administrator's act (users:edit),
+    never a service's: an organization admin only inside their own organization and never on a system
+    admin, nobody on their own account. admin-console makes it with the administrator's token and,
+    around it, revokes the user's live sessions and releases a deleted user's seat.
     """
 
     @staticmethod
