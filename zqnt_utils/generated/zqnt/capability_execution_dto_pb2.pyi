@@ -169,8 +169,24 @@ class HumanApprovalNodeConfigProto(_message.Message):
     timeout_seconds: int
     def __init__(self, approval_type: _Optional[str] = ..., approval_group: _Optional[str] = ..., timeout_seconds: _Optional[int] = ...) -> None: ...
 
+class AiNodeConfigProto(_message.Message):
+    __slots__ = ("prompt", "prompt_version", "model_id", "output_schema", "allowed_tool_categories", "max_cost_micro_eur")
+    PROMPT_FIELD_NUMBER: _ClassVar[int]
+    PROMPT_VERSION_FIELD_NUMBER: _ClassVar[int]
+    MODEL_ID_FIELD_NUMBER: _ClassVar[int]
+    OUTPUT_SCHEMA_FIELD_NUMBER: _ClassVar[int]
+    ALLOWED_TOOL_CATEGORIES_FIELD_NUMBER: _ClassVar[int]
+    MAX_COST_MICRO_EUR_FIELD_NUMBER: _ClassVar[int]
+    prompt: str
+    prompt_version: str
+    model_id: str
+    output_schema: _struct_pb2.Struct
+    allowed_tool_categories: _containers.RepeatedScalarFieldContainer[str]
+    max_cost_micro_eur: int
+    def __init__(self, prompt: _Optional[str] = ..., prompt_version: _Optional[str] = ..., model_id: _Optional[str] = ..., output_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., allowed_tool_categories: _Optional[_Iterable[str]] = ..., max_cost_micro_eur: _Optional[int] = ...) -> None: ...
+
 class ExecutionNodeProtoDTO(_message.Message):
-    __slots__ = ("id", "name", "type", "command", "skill", "condition", "gateway", "wait", "event_wait", "human_approval", "timeout_seconds", "failure_strategy", "retry_policy", "enabled")
+    __slots__ = ("id", "name", "type", "command", "skill", "condition", "gateway", "wait", "event_wait", "human_approval", "ai", "timeout_seconds", "failure_strategy", "retry_policy", "enabled")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -181,6 +197,7 @@ class ExecutionNodeProtoDTO(_message.Message):
     WAIT_FIELD_NUMBER: _ClassVar[int]
     EVENT_WAIT_FIELD_NUMBER: _ClassVar[int]
     HUMAN_APPROVAL_FIELD_NUMBER: _ClassVar[int]
+    AI_FIELD_NUMBER: _ClassVar[int]
     TIMEOUT_SECONDS_FIELD_NUMBER: _ClassVar[int]
     FAILURE_STRATEGY_FIELD_NUMBER: _ClassVar[int]
     RETRY_POLICY_FIELD_NUMBER: _ClassVar[int]
@@ -195,11 +212,12 @@ class ExecutionNodeProtoDTO(_message.Message):
     wait: WaitNodeConfigProto
     event_wait: EventWaitNodeConfigProto
     human_approval: HumanApprovalNodeConfigProto
+    ai: AiNodeConfigProto
     timeout_seconds: int
     failure_strategy: _capability_execution_types_pb2.ExecutionFailureStrategyProto
     retry_policy: _mission_autonomy_dto_pb2.RetryPolicyProtoDTO
     enabled: bool
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[_capability_execution_types_pb2.ExecutionNodeTypeProto, str]] = ..., command: _Optional[_Union[CommandNodeConfigProto, _Mapping]] = ..., skill: _Optional[_Union[SkillNodeConfigProto, _Mapping]] = ..., condition: _Optional[_Union[ExecutionConditionProto, _Mapping]] = ..., gateway: _Optional[_Union[GatewayNodeConfigProto, _Mapping]] = ..., wait: _Optional[_Union[WaitNodeConfigProto, _Mapping]] = ..., event_wait: _Optional[_Union[EventWaitNodeConfigProto, _Mapping]] = ..., human_approval: _Optional[_Union[HumanApprovalNodeConfigProto, _Mapping]] = ..., timeout_seconds: _Optional[int] = ..., failure_strategy: _Optional[_Union[_capability_execution_types_pb2.ExecutionFailureStrategyProto, str]] = ..., retry_policy: _Optional[_Union[_mission_autonomy_dto_pb2.RetryPolicyProtoDTO, _Mapping]] = ..., enabled: bool = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[_capability_execution_types_pb2.ExecutionNodeTypeProto, str]] = ..., command: _Optional[_Union[CommandNodeConfigProto, _Mapping]] = ..., skill: _Optional[_Union[SkillNodeConfigProto, _Mapping]] = ..., condition: _Optional[_Union[ExecutionConditionProto, _Mapping]] = ..., gateway: _Optional[_Union[GatewayNodeConfigProto, _Mapping]] = ..., wait: _Optional[_Union[WaitNodeConfigProto, _Mapping]] = ..., event_wait: _Optional[_Union[EventWaitNodeConfigProto, _Mapping]] = ..., human_approval: _Optional[_Union[HumanApprovalNodeConfigProto, _Mapping]] = ..., ai: _Optional[_Union[AiNodeConfigProto, _Mapping]] = ..., timeout_seconds: _Optional[int] = ..., failure_strategy: _Optional[_Union[_capability_execution_types_pb2.ExecutionFailureStrategyProto, str]] = ..., retry_policy: _Optional[_Union[_mission_autonomy_dto_pb2.RetryPolicyProtoDTO, _Mapping]] = ..., enabled: bool = ...) -> None: ...
 
 class ExecutionEdgeProtoDTO(_message.Message):
     __slots__ = ("id", "source_node_id", "target_node_id", "type", "condition", "priority", "label")
