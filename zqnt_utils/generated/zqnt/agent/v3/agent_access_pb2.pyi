@@ -502,16 +502,22 @@ class StartApplicationRunResponse(_message.Message):
     def __init__(self, execution_id: _Optional[str] = ...) -> None: ...
 
 class OpenRunSessionRequest(_message.Message):
-    __slots__ = ("organization_id", "execution_id", "started_by_user_id", "ttl")
+    __slots__ = ("organization_id", "execution_id", "started_by_user_id", "ttl", "node_id", "allowed_categories", "max_cost_micro_eur")
     ORGANIZATION_ID_FIELD_NUMBER: _ClassVar[int]
     EXECUTION_ID_FIELD_NUMBER: _ClassVar[int]
     STARTED_BY_USER_ID_FIELD_NUMBER: _ClassVar[int]
     TTL_FIELD_NUMBER: _ClassVar[int]
+    NODE_ID_FIELD_NUMBER: _ClassVar[int]
+    ALLOWED_CATEGORIES_FIELD_NUMBER: _ClassVar[int]
+    MAX_COST_MICRO_EUR_FIELD_NUMBER: _ClassVar[int]
     organization_id: str
     execution_id: str
     started_by_user_id: str
     ttl: _duration_pb2.Duration
-    def __init__(self, organization_id: _Optional[str] = ..., execution_id: _Optional[str] = ..., started_by_user_id: _Optional[str] = ..., ttl: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ...) -> None: ...
+    node_id: str
+    allowed_categories: _containers.RepeatedScalarFieldContainer[_agent_pb2.ToolCategory]
+    max_cost_micro_eur: int
+    def __init__(self, organization_id: _Optional[str] = ..., execution_id: _Optional[str] = ..., started_by_user_id: _Optional[str] = ..., ttl: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., node_id: _Optional[str] = ..., allowed_categories: _Optional[_Iterable[_Union[_agent_pb2.ToolCategory, str]]] = ..., max_cost_micro_eur: _Optional[int] = ...) -> None: ...
 
 class OpenRunSessionResponse(_message.Message):
     __slots__ = ("grant",)
