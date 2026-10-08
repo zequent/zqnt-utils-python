@@ -25,8 +25,351 @@ if _version_not_supported:
     )
 
 
+class ModelCatalogServiceStub(object):
+    """Installation-wide model catalog. Reading is open to platform services and organization admins
+    (to pick models); changing models needs a system admin; keys are set by organization admins
+    for their own organization.
+    """
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.ListModels = channel.unary_unary(
+                '/zqnt.agent.v3.ModelCatalogService/ListModels',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListModelsRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListModelsResponse.FromString,
+                _registered_method=True)
+        self.SaveModel = channel.unary_unary(
+                '/zqnt.agent.v3.ModelCatalogService/SaveModel',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveModelRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveModelResponse.FromString,
+                _registered_method=True)
+        self.DeleteModel = channel.unary_unary(
+                '/zqnt.agent.v3.ModelCatalogService/DeleteModel',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteModelRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteModelResponse.FromString,
+                _registered_method=True)
+        self.ListOrganizationModelKeys = channel.unary_unary(
+                '/zqnt.agent.v3.ModelCatalogService/ListOrganizationModelKeys',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListOrganizationModelKeysRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListOrganizationModelKeysResponse.FromString,
+                _registered_method=True)
+        self.SetOrganizationModelKey = channel.unary_unary(
+                '/zqnt.agent.v3.ModelCatalogService/SetOrganizationModelKey',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SetOrganizationModelKeyRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SetOrganizationModelKeyResponse.FromString,
+                _registered_method=True)
+        self.DeleteOrganizationModelKey = channel.unary_unary(
+                '/zqnt.agent.v3.ModelCatalogService/DeleteOrganizationModelKey',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteOrganizationModelKeyRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteOrganizationModelKeyResponse.FromString,
+                _registered_method=True)
+        self.ResolveOrganizationModelKey = channel.unary_unary(
+                '/zqnt.agent.v3.ModelCatalogService/ResolveOrganizationModelKey',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ResolveOrganizationModelKeyRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ResolveOrganizationModelKeyResponse.FromString,
+                _registered_method=True)
+
+
+class ModelCatalogServiceServicer(object):
+    """Installation-wide model catalog. Reading is open to platform services and organization admins
+    (to pick models); changing models needs a system admin; keys are set by organization admins
+    for their own organization.
+    """
+
+    def ListModels(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SaveModel(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteModel(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListOrganizationModelKeys(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SetOrganizationModelKey(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteOrganizationModelKey(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ResolveOrganizationModelKey(self, request, context):
+        """The decrypted key for one provider of one organization. Only admin-console may call it, and
+        only to answer the agent service's GetModelAccess for a live session.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_ModelCatalogServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'ListModels': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListModels,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListModelsRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListModelsResponse.SerializeToString,
+            ),
+            'SaveModel': grpc.unary_unary_rpc_method_handler(
+                    servicer.SaveModel,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveModelRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveModelResponse.SerializeToString,
+            ),
+            'DeleteModel': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteModel,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteModelRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteModelResponse.SerializeToString,
+            ),
+            'ListOrganizationModelKeys': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListOrganizationModelKeys,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListOrganizationModelKeysRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListOrganizationModelKeysResponse.SerializeToString,
+            ),
+            'SetOrganizationModelKey': grpc.unary_unary_rpc_method_handler(
+                    servicer.SetOrganizationModelKey,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SetOrganizationModelKeyRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SetOrganizationModelKeyResponse.SerializeToString,
+            ),
+            'DeleteOrganizationModelKey': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteOrganizationModelKey,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteOrganizationModelKeyRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteOrganizationModelKeyResponse.SerializeToString,
+            ),
+            'ResolveOrganizationModelKey': grpc.unary_unary_rpc_method_handler(
+                    servicer.ResolveOrganizationModelKey,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ResolveOrganizationModelKeyRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ResolveOrganizationModelKeyResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'zqnt.agent.v3.ModelCatalogService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('zqnt.agent.v3.ModelCatalogService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class ModelCatalogService(object):
+    """Installation-wide model catalog. Reading is open to platform services and organization admins
+    (to pick models); changing models needs a system admin; keys are set by organization admins
+    for their own organization.
+    """
+
+    @staticmethod
+    def ListModels(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.ModelCatalogService/ListModels',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListModelsRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListModelsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SaveModel(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.ModelCatalogService/SaveModel',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveModelRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveModelResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteModel(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.ModelCatalogService/DeleteModel',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteModelRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteModelResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListOrganizationModelKeys(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.ModelCatalogService/ListOrganizationModelKeys',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListOrganizationModelKeysRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListOrganizationModelKeysResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SetOrganizationModelKey(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.ModelCatalogService/SetOrganizationModelKey',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.SetOrganizationModelKeyRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.SetOrganizationModelKeyResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteOrganizationModelKey(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.ModelCatalogService/DeleteOrganizationModelKey',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteOrganizationModelKeyRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteOrganizationModelKeyResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ResolveOrganizationModelKey(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.ModelCatalogService/ResolveOrganizationModelKey',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ResolveOrganizationModelKeyRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ResolveOrganizationModelKeyResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
 class AgentPolicyServiceStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """Reading the policy is open to the organization's users (the console shows what is allowed);
+    changing it needs an organization admin.
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -44,20 +387,22 @@ class AgentPolicyServiceStub(object):
                 request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateAgentPolicyRequest.SerializeToString,
                 response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateAgentPolicyResponse.FromString,
                 _registered_method=True)
-        self.PreviewAgentTools = channel.unary_unary(
-                '/zqnt.agent.v3.AgentPolicyService/PreviewAgentTools',
-                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.PreviewAgentToolsRequest.SerializeToString,
-                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.PreviewAgentToolsResponse.FromString,
-                _registered_method=True)
         self.GetAgentUsage = channel.unary_unary(
                 '/zqnt.agent.v3.AgentPolicyService/GetAgentUsage',
                 request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetAgentUsageRequest.SerializeToString,
                 response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetAgentUsageResponse.FromString,
                 _registered_method=True)
+        self.RecordAgentUsage = channel.unary_unary(
+                '/zqnt.agent.v3.AgentPolicyService/RecordAgentUsage',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.RecordAgentUsageRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.RecordAgentUsageResponse.FromString,
+                _registered_method=True)
 
 
 class AgentPolicyServiceServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """Reading the policy is open to the organization's users (the console shows what is allowed);
+    changing it needs an organization admin.
+    """
 
     def GetAgentPolicy(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -71,15 +416,16 @@ class AgentPolicyServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def PreviewAgentTools(self, request, context):
-        """Which tools a role would get under the current policy ("test policy" in the console).
+    def GetAgentUsage(self, request, context):
+        """Usage of the organization (organization admin) or of the caller (everyone else).
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetAgentUsage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+    def RecordAgentUsage(self, request, context):
+        """Adds settled usage. Only admin-console calls it, after SettleUsage in agent_access.proto.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -97,15 +443,15 @@ def add_AgentPolicyServiceServicer_to_server(servicer, server):
                     request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateAgentPolicyRequest.FromString,
                     response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateAgentPolicyResponse.SerializeToString,
             ),
-            'PreviewAgentTools': grpc.unary_unary_rpc_method_handler(
-                    servicer.PreviewAgentTools,
-                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.PreviewAgentToolsRequest.FromString,
-                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.PreviewAgentToolsResponse.SerializeToString,
-            ),
             'GetAgentUsage': grpc.unary_unary_rpc_method_handler(
                     servicer.GetAgentUsage,
                     request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetAgentUsageRequest.FromString,
                     response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetAgentUsageResponse.SerializeToString,
+            ),
+            'RecordAgentUsage': grpc.unary_unary_rpc_method_handler(
+                    servicer.RecordAgentUsage,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.RecordAgentUsageRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.RecordAgentUsageResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -116,7 +462,9 @@ def add_AgentPolicyServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class AgentPolicyService(object):
-    """Missing associated documentation comment in .proto file."""
+    """Reading the policy is open to the organization's users (the console shows what is allowed);
+    changing it needs an organization admin.
+    """
 
     @staticmethod
     def GetAgentPolicy(request,
@@ -173,33 +521,6 @@ class AgentPolicyService(object):
             _registered_method=True)
 
     @staticmethod
-    def PreviewAgentTools(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.agent.v3.AgentPolicyService/PreviewAgentTools',
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.PreviewAgentToolsRequest.SerializeToString,
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.PreviewAgentToolsResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
     def GetAgentUsage(request,
             target,
             options=(),
@@ -226,9 +547,38 @@ class AgentPolicyService(object):
             metadata,
             _registered_method=True)
 
+    @staticmethod
+    def RecordAgentUsage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.AgentPolicyService/RecordAgentUsage',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.RecordAgentUsageRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.RecordAgentUsageResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
 
-class AgentSessionServiceStub(object):
-    """Missing associated documentation comment in .proto file."""
+
+class ConversationStoreServiceStub(object):
+    """Every call acts in the caller's organization. A user sees their own conversations; an
+    organization admin may export or delete another member's (GDPR requests).
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -236,172 +586,210 @@ class AgentSessionServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.CreateSession = channel.unary_unary(
-                '/zqnt.agent.v3.AgentSessionService/CreateSession',
-                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateSessionRequest.SerializeToString,
-                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateSessionResponse.FromString,
+        self.CreateConversation = channel.unary_unary(
+                '/zqnt.agent.v3.ConversationStoreService/CreateConversation',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateConversationRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateConversationResponse.FromString,
                 _registered_method=True)
-        self.GetSession = channel.unary_unary(
-                '/zqnt.agent.v3.AgentSessionService/GetSession',
-                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetSessionRequest.SerializeToString,
-                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetSessionResponse.FromString,
+        self.GetConversation = channel.unary_unary(
+                '/zqnt.agent.v3.ConversationStoreService/GetConversation',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetConversationRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetConversationResponse.FromString,
                 _registered_method=True)
-        self.ListSessions = channel.unary_unary(
-                '/zqnt.agent.v3.AgentSessionService/ListSessions',
-                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListSessionsRequest.SerializeToString,
-                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListSessionsResponse.FromString,
+        self.ListConversations = channel.unary_unary(
+                '/zqnt.agent.v3.ConversationStoreService/ListConversations',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListConversationsRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListConversationsResponse.FromString,
                 _registered_method=True)
-        self.UpdateSession = channel.unary_unary(
-                '/zqnt.agent.v3.AgentSessionService/UpdateSession',
-                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateSessionRequest.SerializeToString,
-                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateSessionResponse.FromString,
+        self.UpdateConversation = channel.unary_unary(
+                '/zqnt.agent.v3.ConversationStoreService/UpdateConversation',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateConversationRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateConversationResponse.FromString,
                 _registered_method=True)
-        self.DeleteSession = channel.unary_unary(
-                '/zqnt.agent.v3.AgentSessionService/DeleteSession',
-                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteSessionRequest.SerializeToString,
-                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteSessionResponse.FromString,
+        self.DeleteConversation = channel.unary_unary(
+                '/zqnt.agent.v3.ConversationStoreService/DeleteConversation',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteConversationRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteConversationResponse.FromString,
                 _registered_method=True)
-        self.AppendMessage = channel.unary_unary(
-                '/zqnt.agent.v3.AgentSessionService/AppendMessage',
-                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendMessageRequest.SerializeToString,
-                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendMessageResponse.FromString,
+        self.AppendTurns = channel.unary_unary(
+                '/zqnt.agent.v3.ConversationStoreService/AppendTurns',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendTurnsRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendTurnsResponse.FromString,
                 _registered_method=True)
-        self.ListMessages = channel.unary_unary(
-                '/zqnt.agent.v3.AgentSessionService/ListMessages',
-                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMessagesRequest.SerializeToString,
-                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMessagesResponse.FromString,
+        self.ListTurns = channel.unary_unary(
+                '/zqnt.agent.v3.ConversationStoreService/ListTurns',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListTurnsRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListTurnsResponse.FromString,
                 _registered_method=True)
-        self.DecideToolCall = channel.unary_unary(
-                '/zqnt.agent.v3.AgentSessionService/DecideToolCall',
-                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DecideToolCallRequest.SerializeToString,
-                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DecideToolCallResponse.FromString,
+        self.ExportConversations = channel.unary_stream(
+                '/zqnt.agent.v3.ConversationStoreService/ExportConversations',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportConversationsRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportConversationsResponse.FromString,
                 _registered_method=True)
-        self.ExportSessions = channel.unary_stream(
-                '/zqnt.agent.v3.AgentSessionService/ExportSessions',
-                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportSessionsRequest.SerializeToString,
-                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportSessionsResponse.FromString,
+        self.ListMemoryFacts = channel.unary_unary(
+                '/zqnt.agent.v3.ConversationStoreService/ListMemoryFacts',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMemoryFactsRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMemoryFactsResponse.FromString,
+                _registered_method=True)
+        self.SaveMemoryFact = channel.unary_unary(
+                '/zqnt.agent.v3.ConversationStoreService/SaveMemoryFact',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveMemoryFactRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveMemoryFactResponse.FromString,
+                _registered_method=True)
+        self.DeleteMemoryFact = channel.unary_unary(
+                '/zqnt.agent.v3.ConversationStoreService/DeleteMemoryFact',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteMemoryFactRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteMemoryFactResponse.FromString,
                 _registered_method=True)
 
 
-class AgentSessionServiceServicer(object):
-    """Missing associated documentation comment in .proto file."""
+class ConversationStoreServiceServicer(object):
+    """Every call acts in the caller's organization. A user sees their own conversations; an
+    organization admin may export or delete another member's (GDPR requests).
+    """
 
-    def CreateSession(self, request, context):
+    def CreateConversation(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def GetSession(self, request, context):
+    def GetConversation(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def ListSessions(self, request, context):
+    def ListConversations(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def UpdateSession(self, request, context):
+    def UpdateConversation(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def DeleteSession(self, request, context):
+    def DeleteConversation(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def AppendMessage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ListMessages(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def DecideToolCall(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ExportSessions(self, request, context):
-        """A user's own conversations as JSON (GDPR access request).
+    def AppendTurns(self, request, context):
+        """Appends turns in order; refused with ABORTED when expected_last_sequence does not match, so
+        two agent replicas can never interleave one conversation.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListTurns(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-def add_AgentSessionServiceServicer_to_server(servicer, server):
+    def ExportConversations(self, request, context):
+        """A user's conversations as JSON (GDPR access request).
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListMemoryFacts(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def SaveMemoryFact(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteMemoryFact(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_ConversationStoreServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CreateSession': grpc.unary_unary_rpc_method_handler(
-                    servicer.CreateSession,
-                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateSessionRequest.FromString,
-                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateSessionResponse.SerializeToString,
+            'CreateConversation': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateConversation,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateConversationRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateConversationResponse.SerializeToString,
             ),
-            'GetSession': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetSession,
-                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetSessionRequest.FromString,
-                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetSessionResponse.SerializeToString,
+            'GetConversation': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetConversation,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetConversationRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.GetConversationResponse.SerializeToString,
             ),
-            'ListSessions': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListSessions,
-                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListSessionsRequest.FromString,
-                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListSessionsResponse.SerializeToString,
+            'ListConversations': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListConversations,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListConversationsRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListConversationsResponse.SerializeToString,
             ),
-            'UpdateSession': grpc.unary_unary_rpc_method_handler(
-                    servicer.UpdateSession,
-                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateSessionRequest.FromString,
-                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateSessionResponse.SerializeToString,
+            'UpdateConversation': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateConversation,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateConversationRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateConversationResponse.SerializeToString,
             ),
-            'DeleteSession': grpc.unary_unary_rpc_method_handler(
-                    servicer.DeleteSession,
-                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteSessionRequest.FromString,
-                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteSessionResponse.SerializeToString,
+            'DeleteConversation': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteConversation,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteConversationRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteConversationResponse.SerializeToString,
             ),
-            'AppendMessage': grpc.unary_unary_rpc_method_handler(
-                    servicer.AppendMessage,
-                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendMessageRequest.FromString,
-                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendMessageResponse.SerializeToString,
+            'AppendTurns': grpc.unary_unary_rpc_method_handler(
+                    servicer.AppendTurns,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendTurnsRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendTurnsResponse.SerializeToString,
             ),
-            'ListMessages': grpc.unary_unary_rpc_method_handler(
-                    servicer.ListMessages,
-                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMessagesRequest.FromString,
-                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMessagesResponse.SerializeToString,
+            'ListTurns': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTurns,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListTurnsRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListTurnsResponse.SerializeToString,
             ),
-            'DecideToolCall': grpc.unary_unary_rpc_method_handler(
-                    servicer.DecideToolCall,
-                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DecideToolCallRequest.FromString,
-                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DecideToolCallResponse.SerializeToString,
+            'ExportConversations': grpc.unary_stream_rpc_method_handler(
+                    servicer.ExportConversations,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportConversationsRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportConversationsResponse.SerializeToString,
             ),
-            'ExportSessions': grpc.unary_stream_rpc_method_handler(
-                    servicer.ExportSessions,
-                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportSessionsRequest.FromString,
-                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportSessionsResponse.SerializeToString,
+            'ListMemoryFacts': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListMemoryFacts,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMemoryFactsRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMemoryFactsResponse.SerializeToString,
+            ),
+            'SaveMemoryFact': grpc.unary_unary_rpc_method_handler(
+                    servicer.SaveMemoryFact,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveMemoryFactRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveMemoryFactResponse.SerializeToString,
+            ),
+            'DeleteMemoryFact': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteMemoryFact,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteMemoryFactRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteMemoryFactResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'zqnt.agent.v3.AgentSessionService', rpc_method_handlers)
+            'zqnt.agent.v3.ConversationStoreService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('zqnt.agent.v3.AgentSessionService', rpc_method_handlers)
+    server.add_registered_method_handlers('zqnt.agent.v3.ConversationStoreService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class AgentSessionService(object):
-    """Missing associated documentation comment in .proto file."""
+class ConversationStoreService(object):
+    """Every call acts in the caller's organization. A user sees their own conversations; an
+    organization admin may export or delete another member's (GDPR requests).
+    """
 
     @staticmethod
-    def CreateSession(request,
+    def CreateConversation(request,
             target,
             options=(),
             channel_credentials=None,
@@ -414,9 +802,9 @@ class AgentSessionService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.agent.v3.AgentSessionService/CreateSession',
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateSessionRequest.SerializeToString,
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateSessionResponse.FromString,
+            '/zqnt.agent.v3.ConversationStoreService/CreateConversation',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateConversationRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.CreateConversationResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -428,7 +816,7 @@ class AgentSessionService(object):
             _registered_method=True)
 
     @staticmethod
-    def GetSession(request,
+    def GetConversation(request,
             target,
             options=(),
             channel_credentials=None,
@@ -441,9 +829,9 @@ class AgentSessionService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.agent.v3.AgentSessionService/GetSession',
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.GetSessionRequest.SerializeToString,
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.GetSessionResponse.FromString,
+            '/zqnt.agent.v3.ConversationStoreService/GetConversation',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.GetConversationRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.GetConversationResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -455,7 +843,7 @@ class AgentSessionService(object):
             _registered_method=True)
 
     @staticmethod
-    def ListSessions(request,
+    def ListConversations(request,
             target,
             options=(),
             channel_credentials=None,
@@ -468,9 +856,9 @@ class AgentSessionService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.agent.v3.AgentSessionService/ListSessions',
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListSessionsRequest.SerializeToString,
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListSessionsResponse.FromString,
+            '/zqnt.agent.v3.ConversationStoreService/ListConversations',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListConversationsRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListConversationsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -482,7 +870,7 @@ class AgentSessionService(object):
             _registered_method=True)
 
     @staticmethod
-    def UpdateSession(request,
+    def UpdateConversation(request,
             target,
             options=(),
             channel_credentials=None,
@@ -495,9 +883,9 @@ class AgentSessionService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.agent.v3.AgentSessionService/UpdateSession',
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateSessionRequest.SerializeToString,
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateSessionResponse.FromString,
+            '/zqnt.agent.v3.ConversationStoreService/UpdateConversation',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateConversationRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.UpdateConversationResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -509,7 +897,7 @@ class AgentSessionService(object):
             _registered_method=True)
 
     @staticmethod
-    def DeleteSession(request,
+    def DeleteConversation(request,
             target,
             options=(),
             channel_credentials=None,
@@ -522,9 +910,9 @@ class AgentSessionService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.agent.v3.AgentSessionService/DeleteSession',
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteSessionRequest.SerializeToString,
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteSessionResponse.FromString,
+            '/zqnt.agent.v3.ConversationStoreService/DeleteConversation',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteConversationRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteConversationResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -536,7 +924,7 @@ class AgentSessionService(object):
             _registered_method=True)
 
     @staticmethod
-    def AppendMessage(request,
+    def AppendTurns(request,
             target,
             options=(),
             channel_credentials=None,
@@ -549,9 +937,9 @@ class AgentSessionService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.agent.v3.AgentSessionService/AppendMessage',
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendMessageRequest.SerializeToString,
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendMessageResponse.FromString,
+            '/zqnt.agent.v3.ConversationStoreService/AppendTurns',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendTurnsRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.AppendTurnsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -563,7 +951,7 @@ class AgentSessionService(object):
             _registered_method=True)
 
     @staticmethod
-    def ListMessages(request,
+    def ListTurns(request,
             target,
             options=(),
             channel_credentials=None,
@@ -576,9 +964,9 @@ class AgentSessionService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/zqnt.agent.v3.AgentSessionService/ListMessages',
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMessagesRequest.SerializeToString,
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMessagesResponse.FromString,
+            '/zqnt.agent.v3.ConversationStoreService/ListTurns',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListTurnsRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListTurnsResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -590,34 +978,7 @@ class AgentSessionService(object):
             _registered_method=True)
 
     @staticmethod
-    def DecideToolCall(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/zqnt.agent.v3.AgentSessionService/DecideToolCall',
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.DecideToolCallRequest.SerializeToString,
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.DecideToolCallResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def ExportSessions(request,
+    def ExportConversations(request,
             target,
             options=(),
             channel_credentials=None,
@@ -630,9 +991,90 @@ class AgentSessionService(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/zqnt.agent.v3.AgentSessionService/ExportSessions',
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportSessionsRequest.SerializeToString,
-            zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportSessionsResponse.FromString,
+            '/zqnt.agent.v3.ConversationStoreService/ExportConversations',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportConversationsRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ExportConversationsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListMemoryFacts(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.ConversationStoreService/ListMemoryFacts',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMemoryFactsRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.ListMemoryFactsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def SaveMemoryFact(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.ConversationStoreService/SaveMemoryFact',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveMemoryFactRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.SaveMemoryFactResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteMemoryFact(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.ConversationStoreService/DeleteMemoryFact',
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteMemoryFactRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__pb2.DeleteMemoryFactResponse.FromString,
             options,
             channel_credentials,
             insecure,

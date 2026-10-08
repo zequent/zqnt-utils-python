@@ -51,6 +51,11 @@ class ApplicationServiceStub(object):
                 request_serializer=zqnt_dot_application_dot_v3_dot_application__pb2.SaveApplicationRequest.SerializeToString,
                 response_deserializer=zqnt_dot_application_dot_v3_dot_application__pb2.SaveApplicationResponse.FromString,
                 _registered_method=True)
+        self.ValidateApplication = channel.unary_unary(
+                '/zqnt.application.v3.ApplicationService/ValidateApplication',
+                request_serializer=zqnt_dot_application_dot_v3_dot_application__pb2.ValidateApplicationRequest.SerializeToString,
+                response_deserializer=zqnt_dot_application_dot_v3_dot_application__pb2.ValidateApplicationResponse.FromString,
+                _registered_method=True)
         self.DeleteApplication = channel.unary_unary(
                 '/zqnt.application.v3.ApplicationService/DeleteApplication',
                 request_serializer=zqnt_dot_application_dot_v3_dot_application__pb2.DeleteApplicationRequest.SerializeToString,
@@ -99,6 +104,15 @@ class ApplicationServiceServicer(object):
     def SaveApplication(self, request, context):
         """Saves one version. Validated first (graph, data flow between nodes, composed Skills brought to
         the version their nodes ask for); a refusal is INVALID_ARGUMENT with the reasons.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ValidateApplication(self, request, context):
+        """Runs exactly the validation SaveApplication runs and returns every finding; nothing is stored,
+        versioned or announced. Used by the console while editing and by the AI assistant's
+        draft -> validate -> fix loop (#159). Open to every user of the organization.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -154,6 +168,11 @@ def add_ApplicationServiceServicer_to_server(servicer, server):
                     servicer.SaveApplication,
                     request_deserializer=zqnt_dot_application_dot_v3_dot_application__pb2.SaveApplicationRequest.FromString,
                     response_serializer=zqnt_dot_application_dot_v3_dot_application__pb2.SaveApplicationResponse.SerializeToString,
+            ),
+            'ValidateApplication': grpc.unary_unary_rpc_method_handler(
+                    servicer.ValidateApplication,
+                    request_deserializer=zqnt_dot_application_dot_v3_dot_application__pb2.ValidateApplicationRequest.FromString,
+                    response_serializer=zqnt_dot_application_dot_v3_dot_application__pb2.ValidateApplicationResponse.SerializeToString,
             ),
             'DeleteApplication': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteApplication,
@@ -264,6 +283,33 @@ class ApplicationService(object):
             '/zqnt.application.v3.ApplicationService/SaveApplication',
             zqnt_dot_application_dot_v3_dot_application__pb2.SaveApplicationRequest.SerializeToString,
             zqnt_dot_application_dot_v3_dot_application__pb2.SaveApplicationResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ValidateApplication(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.application.v3.ApplicationService/ValidateApplication',
+            zqnt_dot_application_dot_v3_dot_application__pb2.ValidateApplicationRequest.SerializeToString,
+            zqnt_dot_application_dot_v3_dot_application__pb2.ValidateApplicationResponse.FromString,
             options,
             channel_credentials,
             insecure,

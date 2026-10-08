@@ -48,6 +48,11 @@ class ApplicationServiceStub:
     """Saves one version. Validated first (graph, data flow between nodes, composed Skills brought to
     the version their nodes ask for); a refusal is INVALID_ARGUMENT with the reasons.
     """
+    ValidateApplication: _grpc.UnaryUnaryMultiCallable[_application_pb2.ValidateApplicationRequest, _application_pb2.ValidateApplicationResponse]
+    """Runs exactly the validation SaveApplication runs and returns every finding; nothing is stored,
+    versioned or announced. Used by the console while editing and by the AI assistant's
+    draft -> validate -> fix loop (#159). Open to every user of the organization.
+    """
     DeleteApplication: _grpc.UnaryUnaryMultiCallable[_application_pb2.DeleteApplicationRequest, _application_pb2.DeleteApplicationResponse]
     """Unset version = every version."""
     ListEnvironments: _grpc.UnaryUnaryMultiCallable[_application_pb2.ListEnvironmentsRequest, _application_pb2.ListEnvironmentsResponse]
@@ -70,6 +75,11 @@ class ApplicationServiceAsyncStub(ApplicationServiceStub):
     SaveApplication: _aio.UnaryUnaryMultiCallable[_application_pb2.SaveApplicationRequest, _application_pb2.SaveApplicationResponse]  # type: ignore[assignment]
     """Saves one version. Validated first (graph, data flow between nodes, composed Skills brought to
     the version their nodes ask for); a refusal is INVALID_ARGUMENT with the reasons.
+    """
+    ValidateApplication: _aio.UnaryUnaryMultiCallable[_application_pb2.ValidateApplicationRequest, _application_pb2.ValidateApplicationResponse]  # type: ignore[assignment]
+    """Runs exactly the validation SaveApplication runs and returns every finding; nothing is stored,
+    versioned or announced. Used by the console while editing and by the AI assistant's
+    draft -> validate -> fix loop (#159). Open to every user of the organization.
     """
     DeleteApplication: _aio.UnaryUnaryMultiCallable[_application_pb2.DeleteApplicationRequest, _application_pb2.DeleteApplicationResponse]  # type: ignore[assignment]
     """Unset version = every version."""
@@ -108,6 +118,17 @@ class ApplicationServiceServicer(metaclass=_abc_1.ABCMeta):
     ) -> _typing.Union[_application_pb2.SaveApplicationResponse, _abc.Awaitable[_application_pb2.SaveApplicationResponse]]:
         """Saves one version. Validated first (graph, data flow between nodes, composed Skills brought to
         the version their nodes ask for); a refusal is INVALID_ARGUMENT with the reasons.
+        """
+
+    @_abc_1.abstractmethod
+    def ValidateApplication(
+        self,
+        request: _application_pb2.ValidateApplicationRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_application_pb2.ValidateApplicationResponse, _abc.Awaitable[_application_pb2.ValidateApplicationResponse]]:
+        """Runs exactly the validation SaveApplication runs and returns every finding; nothing is stored,
+        versioned or announced. Used by the console while editing and by the AI assistant's
+        draft -> validate -> fix loop (#159). Open to every user of the organization.
         """
 
     @_abc_1.abstractmethod

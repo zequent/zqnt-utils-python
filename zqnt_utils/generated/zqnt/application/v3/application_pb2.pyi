@@ -24,6 +24,7 @@ class NodeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     NODE_TYPE_EVENT_WAIT: _ClassVar[NodeType]
     NODE_TYPE_HUMAN_APPROVAL: _ClassVar[NodeType]
     NODE_TYPE_END: _ClassVar[NodeType]
+    NODE_TYPE_AI: _ClassVar[NodeType]
 
 class EdgeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -91,6 +92,7 @@ NODE_TYPE_WAIT: NodeType
 NODE_TYPE_EVENT_WAIT: NodeType
 NODE_TYPE_HUMAN_APPROVAL: NodeType
 NODE_TYPE_END: NodeType
+NODE_TYPE_AI: NodeType
 EDGE_TYPE_UNSPECIFIED: EdgeType
 EDGE_TYPE_NORMAL: EdgeType
 EDGE_TYPE_SUCCESS: EdgeType
@@ -222,6 +224,22 @@ class HumanApprovalNodeConfig(_message.Message):
     timeout_seconds: int
     def __init__(self, approval_type: _Optional[str] = ..., approval_group: _Optional[str] = ..., timeout_seconds: _Optional[int] = ...) -> None: ...
 
+class AiNodeConfig(_message.Message):
+    __slots__ = ("prompt", "prompt_version", "model_id", "output_schema", "allowed_tool_categories", "max_cost_micro_eur")
+    PROMPT_FIELD_NUMBER: _ClassVar[int]
+    PROMPT_VERSION_FIELD_NUMBER: _ClassVar[int]
+    MODEL_ID_FIELD_NUMBER: _ClassVar[int]
+    OUTPUT_SCHEMA_FIELD_NUMBER: _ClassVar[int]
+    ALLOWED_TOOL_CATEGORIES_FIELD_NUMBER: _ClassVar[int]
+    MAX_COST_MICRO_EUR_FIELD_NUMBER: _ClassVar[int]
+    prompt: str
+    prompt_version: str
+    model_id: str
+    output_schema: _struct_pb2.Struct
+    allowed_tool_categories: _containers.RepeatedScalarFieldContainer[str]
+    max_cost_micro_eur: int
+    def __init__(self, prompt: _Optional[str] = ..., prompt_version: _Optional[str] = ..., model_id: _Optional[str] = ..., output_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., allowed_tool_categories: _Optional[_Iterable[str]] = ..., max_cost_micro_eur: _Optional[int] = ...) -> None: ...
+
 class RetryPolicy(_message.Message):
     __slots__ = ("max_attempts", "retry_delay_seconds", "backoff_multiplier")
     MAX_ATTEMPTS_FIELD_NUMBER: _ClassVar[int]
@@ -233,7 +251,7 @@ class RetryPolicy(_message.Message):
     def __init__(self, max_attempts: _Optional[int] = ..., retry_delay_seconds: _Optional[int] = ..., backoff_multiplier: _Optional[float] = ...) -> None: ...
 
 class Node(_message.Message):
-    __slots__ = ("id", "name", "type", "command", "skill", "condition", "gateway", "wait", "event_wait", "human_approval", "timeout_seconds", "failure_strategy", "retry_policy", "enabled")
+    __slots__ = ("id", "name", "type", "command", "skill", "condition", "gateway", "wait", "event_wait", "human_approval", "ai", "timeout_seconds", "failure_strategy", "retry_policy", "enabled")
     ID_FIELD_NUMBER: _ClassVar[int]
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
@@ -244,6 +262,7 @@ class Node(_message.Message):
     WAIT_FIELD_NUMBER: _ClassVar[int]
     EVENT_WAIT_FIELD_NUMBER: _ClassVar[int]
     HUMAN_APPROVAL_FIELD_NUMBER: _ClassVar[int]
+    AI_FIELD_NUMBER: _ClassVar[int]
     TIMEOUT_SECONDS_FIELD_NUMBER: _ClassVar[int]
     FAILURE_STRATEGY_FIELD_NUMBER: _ClassVar[int]
     RETRY_POLICY_FIELD_NUMBER: _ClassVar[int]
@@ -258,11 +277,12 @@ class Node(_message.Message):
     wait: WaitNodeConfig
     event_wait: EventWaitNodeConfig
     human_approval: HumanApprovalNodeConfig
+    ai: AiNodeConfig
     timeout_seconds: int
     failure_strategy: FailureStrategy
     retry_policy: RetryPolicy
     enabled: bool
-    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[NodeType, str]] = ..., command: _Optional[_Union[CommandNodeConfig, _Mapping]] = ..., skill: _Optional[_Union[SkillNodeConfig, _Mapping]] = ..., condition: _Optional[_Union[Condition, _Mapping]] = ..., gateway: _Optional[_Union[GatewayNodeConfig, _Mapping]] = ..., wait: _Optional[_Union[WaitNodeConfig, _Mapping]] = ..., event_wait: _Optional[_Union[EventWaitNodeConfig, _Mapping]] = ..., human_approval: _Optional[_Union[HumanApprovalNodeConfig, _Mapping]] = ..., timeout_seconds: _Optional[int] = ..., failure_strategy: _Optional[_Union[FailureStrategy, str]] = ..., retry_policy: _Optional[_Union[RetryPolicy, _Mapping]] = ..., enabled: bool = ...) -> None: ...
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[NodeType, str]] = ..., command: _Optional[_Union[CommandNodeConfig, _Mapping]] = ..., skill: _Optional[_Union[SkillNodeConfig, _Mapping]] = ..., condition: _Optional[_Union[Condition, _Mapping]] = ..., gateway: _Optional[_Union[GatewayNodeConfig, _Mapping]] = ..., wait: _Optional[_Union[WaitNodeConfig, _Mapping]] = ..., event_wait: _Optional[_Union[EventWaitNodeConfig, _Mapping]] = ..., human_approval: _Optional[_Union[HumanApprovalNodeConfig, _Mapping]] = ..., ai: _Optional[_Union[AiNodeConfig, _Mapping]] = ..., timeout_seconds: _Optional[int] = ..., failure_strategy: _Optional[_Union[FailureStrategy, str]] = ..., retry_policy: _Optional[_Union[RetryPolicy, _Mapping]] = ..., enabled: bool = ...) -> None: ...
 
 class Edge(_message.Message):
     __slots__ = ("id", "source_node_id", "target_node_id", "type", "condition", "priority", "label")
@@ -477,6 +497,42 @@ class SaveApplicationRequest(_message.Message):
     application: Application
     expected_revision: str
     def __init__(self, context: _Optional[_Union[_common_pb2.RequestContext, _Mapping]] = ..., application: _Optional[_Union[Application, _Mapping]] = ..., expected_revision: _Optional[str] = ...) -> None: ...
+
+class ValidateApplicationRequest(_message.Message):
+    __slots__ = ("application",)
+    APPLICATION_FIELD_NUMBER: _ClassVar[int]
+    application: Application
+    def __init__(self, application: _Optional[_Union[Application, _Mapping]] = ...) -> None: ...
+
+class ValidationIssue(_message.Message):
+    __slots__ = ("severity", "code", "message", "node_id", "edge_id")
+    class Severity(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+        __slots__ = ()
+        SEVERITY_UNSPECIFIED: _ClassVar[ValidationIssue.Severity]
+        SEVERITY_ERROR: _ClassVar[ValidationIssue.Severity]
+        SEVERITY_WARNING: _ClassVar[ValidationIssue.Severity]
+    SEVERITY_UNSPECIFIED: ValidationIssue.Severity
+    SEVERITY_ERROR: ValidationIssue.Severity
+    SEVERITY_WARNING: ValidationIssue.Severity
+    SEVERITY_FIELD_NUMBER: _ClassVar[int]
+    CODE_FIELD_NUMBER: _ClassVar[int]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    NODE_ID_FIELD_NUMBER: _ClassVar[int]
+    EDGE_ID_FIELD_NUMBER: _ClassVar[int]
+    severity: ValidationIssue.Severity
+    code: str
+    message: str
+    node_id: str
+    edge_id: str
+    def __init__(self, severity: _Optional[_Union[ValidationIssue.Severity, str]] = ..., code: _Optional[str] = ..., message: _Optional[str] = ..., node_id: _Optional[str] = ..., edge_id: _Optional[str] = ...) -> None: ...
+
+class ValidateApplicationResponse(_message.Message):
+    __slots__ = ("valid", "issues")
+    VALID_FIELD_NUMBER: _ClassVar[int]
+    ISSUES_FIELD_NUMBER: _ClassVar[int]
+    valid: bool
+    issues: _containers.RepeatedCompositeFieldContainer[ValidationIssue]
+    def __init__(self, valid: bool = ..., issues: _Optional[_Iterable[_Union[ValidationIssue, _Mapping]]] = ...) -> None: ...
 
 class SaveApplicationResponse(_message.Message):
     __slots__ = ("application", "warnings")

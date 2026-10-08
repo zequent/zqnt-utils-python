@@ -5,8 +5,9 @@ Storage: where mission-autonomy keeps Applications and its runs. Served by conne
 record; reached by platform services only (mission-autonomy) -- never by a user or a customer
 application, who go through zqnt_utils.generated.zqnt.application.v3.ApplicationService and
 zqnt_utils.generated.zqnt.execution.v3.ExecutionService, which validate first. (2.x let any signed-in user write here.)
-mission-autonomy calls with its own service token for the organization it acts in, and names the
-person it acts for in `acted_by` where the store records who did something.
+mission-autonomy calls with its own service token for the organization it acts in (a system admin's
+token, whose view spans every organization, it forwards), and names the person it acts for in
+`acted_by` where the store records who did something.
 
 Applications are stored as zqnt_utils.generated.zqnt.application.v3.Application, which is byte-compatible with what
 2.x stored. A run is stored as a snapshot of mission-autonomy's own run state: the public
