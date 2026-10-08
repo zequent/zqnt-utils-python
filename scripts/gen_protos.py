@@ -73,7 +73,9 @@ def check_pin() -> None:
     if tag.returncode == 0:
         print(f"Generating from zqnt-protos {tag.stdout.strip()} ({current})...")
     elif os.environ.get("ALLOW_UNTAGGED") == "1":
-        print(f"Generating from untagged zqnt-protos {current} (preview, ALLOW_UNTAGGED=1)...")
+        print(
+            f"Generating from untagged zqnt-protos {current} (preview, ALLOW_UNTAGGED=1)..."
+        )
     else:
         sys.exit(
             f"zqnt-protos {current} carries no release tag. Pin a tag, or set ALLOW_UNTAGGED=1 for a "
@@ -118,7 +120,9 @@ def generate_v2() -> None:
 
 def generate_v3() -> None:
     files = sorted(V3_DIR.rglob("*.proto"))
-    print(f"v3: {len(files)} proto file(s) -> {GENERATED.relative_to(ROOT)}/zqnt/<domain>/v3")
+    print(
+        f"v3: {len(files)} proto file(s) -> {GENERATED.relative_to(ROOT)}/zqnt/<domain>/v3"
+    )
     _protoc(V3_DIR, GENERATED, files)
     for proto in files:
         ensure_init_files(GENERATED / proto.relative_to(V3_DIR).parent, GENERATED)
@@ -157,7 +161,9 @@ def _fix_v3_imports(directory: Path) -> None:
     """
     v3_module = r"zqnt\.[a-z_]+\.v3"
     py_import = re.compile(rf"^(from|import) ({v3_module})", re.MULTILINE)
-    builder = re.compile(rf"(BuildTopDescriptorsAndMessages\(DESCRIPTOR, ')({v3_module})")
+    builder = re.compile(
+        rf"(BuildTopDescriptorsAndMessages\(DESCRIPTOR, ')({v3_module})"
+    )
     pyi_ref = re.compile(rf"(?<![\w.])({v3_module})")
 
     for py_file in (directory / "zqnt").rglob("*"):
