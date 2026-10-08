@@ -60,8 +60,8 @@ class ModelCatalogServiceStub:
     SetOrganizationModelKey: _grpc.UnaryUnaryMultiCallable[_agent_pb2.SetOrganizationModelKeyRequest, _agent_pb2.SetOrganizationModelKeyResponse]
     DeleteOrganizationModelKey: _grpc.UnaryUnaryMultiCallable[_agent_pb2.DeleteOrganizationModelKeyRequest, _agent_pb2.DeleteOrganizationModelKeyResponse]
     ResolveOrganizationModelKey: _grpc.UnaryUnaryMultiCallable[_agent_pb2.ResolveOrganizationModelKeyRequest, _agent_pb2.ResolveOrganizationModelKeyResponse]
-    """The decrypted key for one provider of one organization. Only admin-console may call it, and
-    only to answer the agent service's GetModelAccess for a live session.
+    """The sealed key of one provider of one organization (empty when none). Only a platform service
+    may call it; admin-console opens it to answer the agent service's GetModelAccess.
     """
 
 @_typing.type_check_only
@@ -79,8 +79,8 @@ class ModelCatalogServiceAsyncStub(ModelCatalogServiceStub):
     SetOrganizationModelKey: _aio.UnaryUnaryMultiCallable[_agent_pb2.SetOrganizationModelKeyRequest, _agent_pb2.SetOrganizationModelKeyResponse]  # type: ignore[assignment]
     DeleteOrganizationModelKey: _aio.UnaryUnaryMultiCallable[_agent_pb2.DeleteOrganizationModelKeyRequest, _agent_pb2.DeleteOrganizationModelKeyResponse]  # type: ignore[assignment]
     ResolveOrganizationModelKey: _aio.UnaryUnaryMultiCallable[_agent_pb2.ResolveOrganizationModelKeyRequest, _agent_pb2.ResolveOrganizationModelKeyResponse]  # type: ignore[assignment]
-    """The decrypted key for one provider of one organization. Only admin-console may call it, and
-    only to answer the agent service's GetModelAccess for a live session.
+    """The sealed key of one provider of one organization (empty when none). Only a platform service
+    may call it; admin-console opens it to answer the agent service's GetModelAccess.
     """
 
 class ModelCatalogServiceServicer(metaclass=_abc_1.ABCMeta):
@@ -137,8 +137,8 @@ class ModelCatalogServiceServicer(metaclass=_abc_1.ABCMeta):
         request: _agent_pb2.ResolveOrganizationModelKeyRequest,
         context: _ServicerContext,
     ) -> _typing.Union[_agent_pb2.ResolveOrganizationModelKeyResponse, _abc.Awaitable[_agent_pb2.ResolveOrganizationModelKeyResponse]]:
-        """The decrypted key for one provider of one organization. Only admin-console may call it, and
-        only to answer the agent service's GetModelAccess for a live session.
+        """The sealed key of one provider of one organization (empty when none). Only a platform service
+        may call it; admin-console opens it to answer the agent service's GetModelAccess.
         """
 
 def add_ModelCatalogServiceServicer_to_server(servicer: ModelCatalogServiceServicer, server: _typing.Union[_grpc.Server, _aio.Server]) -> None: ...

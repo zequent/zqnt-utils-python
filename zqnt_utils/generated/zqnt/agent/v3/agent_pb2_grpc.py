@@ -117,8 +117,8 @@ class ModelCatalogServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def ResolveOrganizationModelKey(self, request, context):
-        """The decrypted key for one provider of one organization. Only admin-console may call it, and
-        only to answer the agent service's GetModelAccess for a live session.
+        """The sealed key of one provider of one organization (empty when none). Only a platform service
+        may call it; admin-console opens it to answer the agent service's GetModelAccess.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

@@ -1,5 +1,6 @@
 import datetime
 
+from google.protobuf import any_pb2 as _any_pb2
 from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
@@ -117,6 +118,44 @@ class ToolCallContext(_message.Message):
     tool: str
     approval_id: str
     def __init__(self, session_id: _Optional[str] = ..., tool_call_id: _Optional[str] = ..., tool: _Optional[str] = ..., approval_id: _Optional[str] = ...) -> None: ...
+
+class RequestApprovalRequest(_message.Message):
+    __slots__ = ("call", "category", "description", "request")
+    CALL_FIELD_NUMBER: _ClassVar[int]
+    CATEGORY_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    REQUEST_FIELD_NUMBER: _ClassVar[int]
+    call: ToolCallContext
+    category: _agent_pb2.ToolCategory
+    description: str
+    request: _any_pb2.Any
+    def __init__(self, call: _Optional[_Union[ToolCallContext, _Mapping]] = ..., category: _Optional[_Union[_agent_pb2.ToolCategory, str]] = ..., description: _Optional[str] = ..., request: _Optional[_Union[_any_pb2.Any, _Mapping]] = ...) -> None: ...
+
+class RequestApprovalResponse(_message.Message):
+    __slots__ = ("approval_id", "expires_at")
+    APPROVAL_ID_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    approval_id: str
+    expires_at: _timestamp_pb2.Timestamp
+    def __init__(self, approval_id: _Optional[str] = ..., expires_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+
+class GetApprovalRequest(_message.Message):
+    __slots__ = ("session_id", "approval_id")
+    SESSION_ID_FIELD_NUMBER: _ClassVar[int]
+    APPROVAL_ID_FIELD_NUMBER: _ClassVar[int]
+    session_id: str
+    approval_id: str
+    def __init__(self, session_id: _Optional[str] = ..., approval_id: _Optional[str] = ...) -> None: ...
+
+class GetApprovalResponse(_message.Message):
+    __slots__ = ("state", "decided_by", "reason")
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    DECIDED_BY_FIELD_NUMBER: _ClassVar[int]
+    REASON_FIELD_NUMBER: _ClassVar[int]
+    state: _agent_pb2.ApprovalState
+    decided_by: str
+    reason: str
+    def __init__(self, state: _Optional[_Union[_agent_pb2.ApprovalState, str]] = ..., decided_by: _Optional[str] = ..., reason: _Optional[str] = ...) -> None: ...
 
 class GetSessionGrantRequest(_message.Message):
     __slots__ = ("session_id",)

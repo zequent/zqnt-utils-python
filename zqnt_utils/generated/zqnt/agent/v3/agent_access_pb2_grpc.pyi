@@ -14,10 +14,11 @@ behalf of the session's actor; refused calls too, with the reason.
 Tools are defined in the agent service (names, descriptions, prompts change with it); this API
 stays coarse and stable. Results are compact summaries, never raw rows or telemetry dumps.
 
-Approvals: a call in a category that needs one carries `tool_call_id` and `approval_id`. The
-approval is created by admin-console when a person approves that tool call in the console; it
-binds the session, the tool call id and a hash of the arguments, so it cannot be reused for a
-different call. ACT_ON_DEVICE calls always need one.
+Approvals: before a call in a category that needs one, the agent registers the exact request it
+will send (RequestApproval). admin-console keeps it and shows the person what admin-console
+itself will execute -- never what the agent's stream claims. Once approved, the call carries
+`approval_id`; it must be byte-for-byte the registered request (apart from its `call` context),
+and the approval is used up. ACT_ON_DEVICE calls always need one.
 """
 
 from collections import abc as _abc
@@ -68,6 +69,10 @@ class AgentAccessServiceStub:
     """Facts the organization taught the assistant (READ)."""
     Remember: _grpc.UnaryUnaryMultiCallable[_agent_access_pb2.RememberRequest, _agent_access_pb2.RememberResponse]
     """Keeps a fact for later conversations (DRAFT)."""
+    RequestApproval: _grpc.UnaryUnaryMultiCallable[_agent_access_pb2.RequestApprovalRequest, _agent_access_pb2.RequestApprovalResponse]
+    """Registers a call that needs a person's approval; answers the id the console shows it under."""
+    GetApproval: _grpc.UnaryUnaryMultiCallable[_agent_access_pb2.GetApprovalRequest, _agent_access_pb2.GetApprovalResponse]
+    """Whether the person decided yet (PENDING / APPROVED / REJECTED / EXPIRED)."""
     ListEntities: _grpc.UnaryUnaryMultiCallable[_agent_access_pb2.ListEntitiesRequest, _agent_access_pb2.ListEntitiesResponse]
     """--- READ ---"""
     GetEntitySummary: _grpc.UnaryUnaryMultiCallable[_agent_access_pb2.GetEntitySummaryRequest, _agent_access_pb2.GetEntitySummaryResponse]
@@ -113,6 +118,10 @@ class AgentAccessServiceAsyncStub(AgentAccessServiceStub):
     """Facts the organization taught the assistant (READ)."""
     Remember: _aio.UnaryUnaryMultiCallable[_agent_access_pb2.RememberRequest, _agent_access_pb2.RememberResponse]  # type: ignore[assignment]
     """Keeps a fact for later conversations (DRAFT)."""
+    RequestApproval: _aio.UnaryUnaryMultiCallable[_agent_access_pb2.RequestApprovalRequest, _agent_access_pb2.RequestApprovalResponse]  # type: ignore[assignment]
+    """Registers a call that needs a person's approval; answers the id the console shows it under."""
+    GetApproval: _aio.UnaryUnaryMultiCallable[_agent_access_pb2.GetApprovalRequest, _agent_access_pb2.GetApprovalResponse]  # type: ignore[assignment]
+    """Whether the person decided yet (PENDING / APPROVED / REJECTED / EXPIRED)."""
     ListEntities: _aio.UnaryUnaryMultiCallable[_agent_access_pb2.ListEntitiesRequest, _agent_access_pb2.ListEntitiesResponse]  # type: ignore[assignment]
     """--- READ ---"""
     GetEntitySummary: _aio.UnaryUnaryMultiCallable[_agent_access_pb2.GetEntitySummaryRequest, _agent_access_pb2.GetEntitySummaryResponse]  # type: ignore[assignment]
@@ -203,6 +212,22 @@ class AgentAccessServiceServicer(metaclass=_abc_1.ABCMeta):
         context: _ServicerContext,
     ) -> _typing.Union[_agent_access_pb2.RememberResponse, _abc.Awaitable[_agent_access_pb2.RememberResponse]]:
         """Keeps a fact for later conversations (DRAFT)."""
+
+    @_abc_1.abstractmethod
+    def RequestApproval(
+        self,
+        request: _agent_access_pb2.RequestApprovalRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_agent_access_pb2.RequestApprovalResponse, _abc.Awaitable[_agent_access_pb2.RequestApprovalResponse]]:
+        """Registers a call that needs a person's approval; answers the id the console shows it under."""
+
+    @_abc_1.abstractmethod
+    def GetApproval(
+        self,
+        request: _agent_access_pb2.GetApprovalRequest,
+        context: _ServicerContext,
+    ) -> _typing.Union[_agent_access_pb2.GetApprovalResponse, _abc.Awaitable[_agent_access_pb2.GetApprovalResponse]]:
+        """Whether the person decided yet (PENDING / APPROVED / REJECTED / EXPIRED)."""
 
     @_abc_1.abstractmethod
     def ListEntities(

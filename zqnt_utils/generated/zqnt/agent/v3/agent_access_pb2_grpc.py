@@ -74,6 +74,16 @@ class AgentAccessServiceStub(object):
                 request_serializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RememberRequest.SerializeToString,
                 response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RememberResponse.FromString,
                 _registered_method=True)
+        self.RequestApproval = channel.unary_unary(
+                '/zqnt.agent.v3.AgentAccessService/RequestApproval',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RequestApprovalRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RequestApprovalResponse.FromString,
+                _registered_method=True)
+        self.GetApproval = channel.unary_unary(
+                '/zqnt.agent.v3.AgentAccessService/GetApproval',
+                request_serializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.GetApprovalRequest.SerializeToString,
+                response_deserializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.GetApprovalResponse.FromString,
+                _registered_method=True)
         self.ListEntities = channel.unary_unary(
                 '/zqnt.agent.v3.AgentAccessService/ListEntities',
                 request_serializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.ListEntitiesRequest.SerializeToString,
@@ -187,6 +197,20 @@ class AgentAccessServiceServicer(object):
 
     def Remember(self, request, context):
         """Keeps a fact for later conversations (DRAFT).
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RequestApproval(self, request, context):
+        """Registers a call that needs a person's approval; answers the id the console shows it under.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetApproval(self, request, context):
+        """Whether the person decided yet (PENDING / APPROVED / REJECTED / EXPIRED).
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -308,6 +332,16 @@ def add_AgentAccessServiceServicer_to_server(servicer, server):
                     servicer.Remember,
                     request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RememberRequest.FromString,
                     response_serializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RememberResponse.SerializeToString,
+            ),
+            'RequestApproval': grpc.unary_unary_rpc_method_handler(
+                    servicer.RequestApproval,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RequestApprovalRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RequestApprovalResponse.SerializeToString,
+            ),
+            'GetApproval': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetApproval,
+                    request_deserializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.GetApprovalRequest.FromString,
+                    response_serializer=zqnt_dot_agent_dot_v3_dot_agent__access__pb2.GetApprovalResponse.SerializeToString,
             ),
             'ListEntities': grpc.unary_unary_rpc_method_handler(
                     servicer.ListEntities,
@@ -581,6 +615,60 @@ class AgentAccessService(object):
             '/zqnt.agent.v3.AgentAccessService/Remember',
             zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RememberRequest.SerializeToString,
             zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RememberResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RequestApproval(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.AgentAccessService/RequestApproval',
+            zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RequestApprovalRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__access__pb2.RequestApprovalResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetApproval(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/zqnt.agent.v3.AgentAccessService/GetApproval',
+            zqnt_dot_agent_dot_v3_dot_agent__access__pb2.GetApprovalRequest.SerializeToString,
+            zqnt_dot_agent_dot_v3_dot_agent__access__pb2.GetApprovalResponse.FromString,
             options,
             channel_credentials,
             insecure,
