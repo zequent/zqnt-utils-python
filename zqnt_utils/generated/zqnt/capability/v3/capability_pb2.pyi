@@ -58,6 +58,13 @@ class SnapshotState(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SNAPSHOT_STATE_CURRENT: _ClassVar[SnapshotState]
     SNAPSHOT_STATE_STALE: _ClassVar[SnapshotState]
     SNAPSHOT_STATE_NO_DATA: _ClassVar[SnapshotState]
+
+class TelemetryValueType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    TELEMETRY_VALUE_TYPE_UNSPECIFIED: _ClassVar[TelemetryValueType]
+    TELEMETRY_VALUE_TYPE_NUMBER: _ClassVar[TelemetryValueType]
+    TELEMETRY_VALUE_TYPE_STRING: _ClassVar[TelemetryValueType]
+    TELEMETRY_VALUE_TYPE_BOOLEAN: _ClassVar[TelemetryValueType]
 TARGET_TYPE_UNSPECIFIED: TargetType
 TARGET_TYPE_ASSET: TargetType
 TARGET_TYPE_SUB_ASSET: TargetType
@@ -88,6 +95,10 @@ SNAPSHOT_STATE_UNSPECIFIED: SnapshotState
 SNAPSHOT_STATE_CURRENT: SnapshotState
 SNAPSHOT_STATE_STALE: SnapshotState
 SNAPSHOT_STATE_NO_DATA: SnapshotState
+TELEMETRY_VALUE_TYPE_UNSPECIFIED: TelemetryValueType
+TELEMETRY_VALUE_TYPE_NUMBER: TelemetryValueType
+TELEMETRY_VALUE_TYPE_STRING: TelemetryValueType
+TELEMETRY_VALUE_TYPE_BOOLEAN: TelemetryValueType
 
 class Target(_message.Message):
     __slots__ = ("type", "ref")
@@ -195,7 +206,7 @@ class Capability(_message.Message):
     def __init__(self, command_id: _Optional[str] = ..., display_name: _Optional[str] = ..., description: _Optional[str] = ..., state: _Optional[_Union[CapabilityState, str]] = ..., unavailable_reason: _Optional[str] = ..., target: _Optional[_Union[Target, _Mapping]] = ..., input_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., output_schema: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., schema_version: _Optional[str] = ..., safety: _Optional[_Union[CommandSafety, _Mapping]] = ..., errors: _Optional[_Iterable[_Union[CapabilityErrorSpec, _Mapping]]] = ..., events: _Optional[_Iterable[_Union[CapabilityEventSpec, _Mapping]]] = ..., requirements: _Optional[_Union[CapabilityRequirements, _Mapping]] = ..., skill_id: _Optional[str] = ..., source: _Optional[_Union[CapabilitySource, str]] = ..., provider: _Optional[str] = ..., constraints: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., metadata: _Optional[_Mapping[str, str]] = ..., deprecated_by: _Optional[str] = ..., completion: _Optional[_Union[CompletionMode, str]] = ..., completion_event: _Optional[str] = ...) -> None: ...
 
 class CapabilitySet(_message.Message):
-    __slots__ = ("asset_sn", "asset_type", "capabilities", "observed_at", "valid_until", "revision", "snapshot_state")
+    __slots__ = ("asset_sn", "asset_type", "capabilities", "observed_at", "valid_until", "revision", "snapshot_state", "telemetry_fields")
     ASSET_SN_FIELD_NUMBER: _ClassVar[int]
     ASSET_TYPE_FIELD_NUMBER: _ClassVar[int]
     CAPABILITIES_FIELD_NUMBER: _ClassVar[int]
@@ -203,6 +214,7 @@ class CapabilitySet(_message.Message):
     VALID_UNTIL_FIELD_NUMBER: _ClassVar[int]
     REVISION_FIELD_NUMBER: _ClassVar[int]
     SNAPSHOT_STATE_FIELD_NUMBER: _ClassVar[int]
+    TELEMETRY_FIELDS_FIELD_NUMBER: _ClassVar[int]
     asset_sn: str
     asset_type: str
     capabilities: _containers.RepeatedCompositeFieldContainer[Capability]
@@ -210,4 +222,19 @@ class CapabilitySet(_message.Message):
     valid_until: _timestamp_pb2.Timestamp
     revision: str
     snapshot_state: SnapshotState
-    def __init__(self, asset_sn: _Optional[str] = ..., asset_type: _Optional[str] = ..., capabilities: _Optional[_Iterable[_Union[Capability, _Mapping]]] = ..., observed_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., revision: _Optional[str] = ..., snapshot_state: _Optional[_Union[SnapshotState, str]] = ...) -> None: ...
+    telemetry_fields: _containers.RepeatedCompositeFieldContainer[TelemetryField]
+    def __init__(self, asset_sn: _Optional[str] = ..., asset_type: _Optional[str] = ..., capabilities: _Optional[_Iterable[_Union[Capability, _Mapping]]] = ..., observed_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., valid_until: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., revision: _Optional[str] = ..., snapshot_state: _Optional[_Union[SnapshotState, str]] = ..., telemetry_fields: _Optional[_Iterable[_Union[TelemetryField, _Mapping]]] = ...) -> None: ...
+
+class TelemetryField(_message.Message):
+    __slots__ = ("key", "type", "unit", "description", "allowed_values")
+    KEY_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    UNIT_FIELD_NUMBER: _ClassVar[int]
+    DESCRIPTION_FIELD_NUMBER: _ClassVar[int]
+    ALLOWED_VALUES_FIELD_NUMBER: _ClassVar[int]
+    key: str
+    type: TelemetryValueType
+    unit: str
+    description: str
+    allowed_values: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, key: _Optional[str] = ..., type: _Optional[_Union[TelemetryValueType, str]] = ..., unit: _Optional[str] = ..., description: _Optional[str] = ..., allowed_values: _Optional[_Iterable[str]] = ...) -> None: ...
