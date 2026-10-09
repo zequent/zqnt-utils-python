@@ -423,7 +423,7 @@ class ToolCallRecord(_message.Message):
     def __init__(self, id: _Optional[str] = ..., tool: _Optional[str] = ..., category: _Optional[_Union[ToolCategory, str]] = ..., arguments: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., approval: _Optional[_Union[ApprovalState, str]] = ..., approval_id: _Optional[str] = ..., decided_by: _Optional[str] = ..., result: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., error: _Optional[_Union[_common_pb2.Error, _Mapping]] = ..., duration_ms: _Optional[int] = ..., audit_event_ids: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class Turn(_message.Message):
-    __slots__ = ("id", "conversation_id", "sequence", "role", "text", "tool_calls", "model_id", "input_tokens", "output_tokens", "cost_micro_eur", "ai_generated", "summarizes_until_sequence", "created_at")
+    __slots__ = ("id", "conversation_id", "sequence", "role", "text", "tool_calls", "model_id", "input_tokens", "output_tokens", "cost_micro_eur", "ai_generated", "summarizes_until_sequence", "created_at", "trace_id")
     ID_FIELD_NUMBER: _ClassVar[int]
     CONVERSATION_ID_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
@@ -437,6 +437,7 @@ class Turn(_message.Message):
     AI_GENERATED_FIELD_NUMBER: _ClassVar[int]
     SUMMARIZES_UNTIL_SEQUENCE_FIELD_NUMBER: _ClassVar[int]
     CREATED_AT_FIELD_NUMBER: _ClassVar[int]
+    TRACE_ID_FIELD_NUMBER: _ClassVar[int]
     id: str
     conversation_id: str
     sequence: int
@@ -450,7 +451,8 @@ class Turn(_message.Message):
     ai_generated: bool
     summarizes_until_sequence: int
     created_at: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[str] = ..., conversation_id: _Optional[str] = ..., sequence: _Optional[int] = ..., role: _Optional[_Union[TurnRole, str]] = ..., text: _Optional[str] = ..., tool_calls: _Optional[_Iterable[_Union[ToolCallRecord, _Mapping]]] = ..., model_id: _Optional[str] = ..., input_tokens: _Optional[int] = ..., output_tokens: _Optional[int] = ..., cost_micro_eur: _Optional[int] = ..., ai_generated: bool = ..., summarizes_until_sequence: _Optional[int] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    trace_id: str
+    def __init__(self, id: _Optional[str] = ..., conversation_id: _Optional[str] = ..., sequence: _Optional[int] = ..., role: _Optional[_Union[TurnRole, str]] = ..., text: _Optional[str] = ..., tool_calls: _Optional[_Iterable[_Union[ToolCallRecord, _Mapping]]] = ..., model_id: _Optional[str] = ..., input_tokens: _Optional[int] = ..., output_tokens: _Optional[int] = ..., cost_micro_eur: _Optional[int] = ..., ai_generated: bool = ..., summarizes_until_sequence: _Optional[int] = ..., created_at: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trace_id: _Optional[str] = ...) -> None: ...
 
 class Conversation(_message.Message):
     __slots__ = ("id", "organization_id", "actor_kind", "actor_id", "execution_id", "node_id", "title", "context", "archived", "created_at", "updated_at")
