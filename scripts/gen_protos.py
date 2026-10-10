@@ -2,31 +2,33 @@
 """
 Generate Python protobuf / gRPC stubs from the platform's contracts, zqnt-protos.
 
-Source: ./proto -- this repo's own submodule of github.com/Zequent/zqnt-protos, the same layout
-zqnt-utils-golang uses. It used to read the Java repo's submodule as a sibling directory
-(../zqnt-utils/src/main/proto), pinned by a branch name; that branch was deleted after the 2.0.0
-merge, so generation broke on any fresh checkout. Owning the submodule means generation works in
-any clone (`git submodule update --init proto`) and depends on exactly one recorded commit.
+Source: PROTO_COMMIT of a zqnt-protos clone, by default the sibling checkout ../zqnt-protos
+(zqnt-platform/utils/zqnt-protos), or ZQNT_PROTOS_DIR. The files are read from that commit with
+`git archive`, whatever the clone has checked out. zqnt-protos is private and this repo public, so
+it is deliberately not a submodule: uv clones a git dependency's submodules, and every consumer's
+CI would need credentials for it.
 
 zqnt-protos has two proto roots (see its README):
-  proto/v2  frozen 2.x contracts, byte-identical to 2.0.0 -> zqnt_utils/generated/zqnt/*_pb2.py
-            (unchanged module names: zqnt_utils.generated.zqnt.base_pb2, ...)
-  proto/v3  zqnt.<domain>.v3 packages -> zqnt_utils/generated/zqnt/<domain>/v3/*_pb2.py
-            (zqnt_utils.generated.zqnt.capability.v3.command_pb2, ...)
+  v2  frozen 2.x contracts, byte-identical to 2.0.0 -> zqnt_utils/generated/zqnt/*_pb2.py
+      (unchanged module names: zqnt_utils.generated.zqnt.base_pb2, ...)
+  v3  zqnt.<domain>.v3 packages -> zqnt_utils/generated/zqnt/<domain>/v3/*_pb2.py
+      (zqnt_utils.generated.zqnt.capability.v3.command_pb2, ...)
 
-Pin: the submodule pointer staged in this repo's index; what is checked out must be it. A commit
-without a release tag (a preview from a zqnt-protos PR branch) is refused unless ALLOW_UNTAGGED=1.
-To move: `git -C proto fetch && git -C proto checkout <tag> && git add proto`, re-run, commit the
-pointer together with the regenerated code. Run with PYTHONDONTWRITEBYTECODE=1 (generated/ tracks
-no bytecode of its own and should not gain any).
+Pin: PROTO_COMMIT. A commit without a release tag (a preview from a zqnt-protos PR branch) is
+refused unless ALLOW_UNTAGGED=1. To move: set PROTO_COMMIT, re-run, commit it together with the
+regenerated code. Run with PYTHONDONTWRITEBYTECODE=1 (generated/ tracks no bytecode of its own and
+should not gain any).
 
 Usage:  python scripts/gen_protos.py
 """
 
+import io
 import os
 import re
 import subprocess
 import sys
+import tarfile
+import tempfile
 from pathlib import Path
 
 try:
@@ -34,10 +36,10 @@ try:
 except ImportError:
     sys.exit("grpcio-tools is required: pip install grpcio-tools")
 
+PROTO_COMMIT = "d53456ca66ca31ccf9c76720c2b161d4b8bcdacd"
+
 ROOT = Path(__file__).resolve().parent.parent
-PROTO_DIR = ROOT / "proto"
-V2_DIR = PROTO_DIR / "v2"
-V3_DIR = PROTO_DIR / "v3"
+PROTOS_REPO = Path(os.environ.get("ZQNT_PROTOS_DIR", ROOT.parent / "zqnt-protos"))
 GENERATED = ROOT / "zqnt_utils" / "generated"
 V2_OUT = GENERATED / "zqnt"
 PACKAGE_PREFIX = "zqnt_utils.generated."
@@ -45,42 +47,55 @@ PACKAGE_PREFIX = "zqnt_utils.generated."
 WELL_KNOWN_PROTOS = Path(protoc.__file__).parent / "_proto"
 
 
-def _git(*args: str, cwd: Path = ROOT) -> str:
+def _git(*args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
-        ["git", "-C", str(cwd), *args], check=True, capture_output=True, text=True
-    ).stdout.strip()
+        ["git", "-C", str(PROTOS_REPO), *args], capture_output=True, text=True
+    )
 
 
 def check_pin() -> None:
-    """The checked-out contract must be the recorded one, and a release unless explicitly a preview."""
-    if not (V2_DIR / "common.proto").exists():
+    """PROTO_COMMIT must exist in the clone, and be a release unless explicitly a preview."""
+    if not (PROTOS_REPO / ".git").exists():
         sys.exit(
-            f"Proto submodule is not checked out (or predates the v2/v3 layout) at {PROTO_DIR} -- "
-            "run: git submodule update --init proto"
+            f"No zqnt-protos clone at {PROTOS_REPO} -- clone it there or set ZQNT_PROTOS_DIR"
         )
-    recorded = _git("ls-files", "-s", "proto").split()[1]
-    current = _git("rev-parse", "HEAD", cwd=PROTO_DIR)
-    if current != recorded:
-        sys.exit(
-            f"The proto submodule is at {current}, but this repo records {recorded}. Run "
-            "'git submodule update proto' to restore it, or 'git add proto' to move the pin."
-        )
-    tag = subprocess.run(
-        ["git", "-C", str(PROTO_DIR), "describe", "--tags", "--exact-match"],
-        capture_output=True,
-        text=True,
-    )
+    if _git("cat-file", "-e", f"{PROTO_COMMIT}^{{commit}}").returncode != 0:
+        _git("fetch", "--quiet", "origin")
+        if _git("cat-file", "-e", f"{PROTO_COMMIT}^{{commit}}").returncode != 0:
+            sys.exit(
+                f"zqnt-protos {PROTO_COMMIT} is not in {PROTOS_REPO}, not even after a fetch"
+            )
+    tag = _git("describe", "--tags", "--exact-match", PROTO_COMMIT)
     if tag.returncode == 0:
-        print(f"Generating from zqnt-protos {tag.stdout.strip()} ({current})...")
+        print(f"Generating from zqnt-protos {tag.stdout.strip()} ({PROTO_COMMIT})...")
     elif os.environ.get("ALLOW_UNTAGGED") == "1":
         print(
-            f"Generating from untagged zqnt-protos {current} (preview, ALLOW_UNTAGGED=1)..."
+            f"Generating from untagged zqnt-protos {PROTO_COMMIT} (preview, ALLOW_UNTAGGED=1)..."
         )
     else:
         sys.exit(
-            f"zqnt-protos {current} carries no release tag. Pin a tag, or set ALLOW_UNTAGGED=1 for a "
-            "preview from a zqnt-protos PR branch (it must move to the tag after the release)."
+            f"zqnt-protos {PROTO_COMMIT} carries no release tag. Pin a tag, or set ALLOW_UNTAGGED=1 "
+            "for a preview from a zqnt-protos PR branch (it must move to the tag after the release)."
         )
+
+
+def export_protos(target: Path) -> None:
+    archive = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(PROTOS_REPO),
+            "archive",
+            "--format=tar",
+            PROTO_COMMIT,
+            "v2",
+            "v3",
+        ],
+        check=True,
+        capture_output=True,
+    ).stdout
+    with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+        tar.extractall(target, filter="data")
 
 
 def _protoc(proto_root: Path, out: Path, files: list[Path]) -> None:
@@ -109,23 +124,23 @@ def ensure_init_files(directory: Path, stop: Path) -> None:
             break
 
 
-def generate_v2() -> None:
-    files = sorted(V2_DIR.glob("*.proto"))
+def generate_v2(v2_dir: Path) -> None:
+    files = sorted(v2_dir.glob("*.proto"))
     print(f"v2: {len(files)} proto file(s) -> {V2_OUT.relative_to(ROOT)}")
     V2_OUT.mkdir(parents=True, exist_ok=True)
     ensure_init_files(V2_OUT, GENERATED)
-    _protoc(V2_DIR, V2_OUT, files)
+    _protoc(v2_dir, V2_OUT, files)
     _fix_v2_imports(V2_OUT)
 
 
-def generate_v3() -> None:
-    files = sorted(V3_DIR.rglob("*.proto"))
+def generate_v3(v3_dir: Path) -> None:
+    files = sorted(v3_dir.rglob("*.proto"))
     print(
         f"v3: {len(files)} proto file(s) -> {GENERATED.relative_to(ROOT)}/zqnt/<domain>/v3"
     )
-    _protoc(V3_DIR, GENERATED, files)
+    _protoc(v3_dir, GENERATED, files)
     for proto in files:
-        ensure_init_files(GENERATED / proto.relative_to(V3_DIR).parent, GENERATED)
+        ensure_init_files(GENERATED / proto.relative_to(v3_dir).parent, GENERATED)
     _fix_v3_imports(GENERATED)
 
 
@@ -181,6 +196,8 @@ def _fix_v3_imports(directory: Path) -> None:
 
 if __name__ == "__main__":
     check_pin()
-    generate_v2()
-    generate_v3()
+    with tempfile.TemporaryDirectory() as protos:
+        export_protos(Path(protos))
+        generate_v2(Path(protos) / "v2")
+        generate_v3(Path(protos) / "v3")
     print("Done.")
