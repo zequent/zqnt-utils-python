@@ -2,7 +2,7 @@
 """
 Generate Python protobuf / gRPC stubs from the platform's contracts, zqnt-protos.
 
-Source: PROTO_COMMIT of a zqnt-protos clone, by default the sibling checkout ../zqnt-protos
+Source: PROTO_REF_COMMIT of a zqnt-protos clone, by default the sibling checkout ../zqnt-protos
 (zqnt-platform/utils/zqnt-protos), or ZQNT_PROTOS_DIR. The files are read from that commit with
 `git archive`, whatever the clone has checked out. zqnt-protos is private and this repo public, so
 it is deliberately not a submodule: uv clones a git dependency's submodules, and every consumer's
@@ -14,8 +14,8 @@ zqnt-protos has two proto roots (see its README):
   v3  zqnt.<domain>.v3 packages -> zqnt_utils/generated/zqnt/<domain>/v3/*_pb2.py
       (zqnt_utils.generated.zqnt.capability.v3.command_pb2, ...)
 
-Pin: PROTO_COMMIT. A commit without a release tag (a preview from a zqnt-protos PR branch) is
-refused unless ALLOW_UNTAGGED=1. To move: set PROTO_COMMIT, re-run, commit it together with the
+Pin: PROTO_REF_COMMIT. A commit without a release tag (a preview from a zqnt-protos PR branch) is
+refused unless ALLOW_UNTAGGED=1. To move: set PROTO_REF_COMMIT, re-run, commit it together with the
 regenerated code. Run with PYTHONDONTWRITEBYTECODE=1 (generated/ tracks no bytecode of its own and
 should not gain any).
 
@@ -36,7 +36,7 @@ try:
 except ImportError:
     sys.exit("grpcio-tools is required: pip install grpcio-tools")
 
-PROTO_COMMIT = "d53456ca66ca31ccf9c76720c2b161d4b8bcdacd"
+PROTO_REF_COMMIT = "d53456ca66ca31ccf9c76720c2b161d4b8bcdacd"
 
 ROOT = Path(__file__).resolve().parent.parent
 PROTOS_REPO = Path(os.environ.get("ZQNT_PROTOS_DIR", ROOT.parent / "zqnt-protos"))
@@ -54,27 +54,29 @@ def _git(*args: str) -> subprocess.CompletedProcess[str]:
 
 
 def check_pin() -> None:
-    """PROTO_COMMIT must exist in the clone, and be a release unless explicitly a preview."""
+    """PROTO_REF_COMMIT must exist in the clone, and be a release unless explicitly a preview."""
     if not (PROTOS_REPO / ".git").exists():
         sys.exit(
             f"No zqnt-protos clone at {PROTOS_REPO} -- clone it there or set ZQNT_PROTOS_DIR"
         )
-    if _git("cat-file", "-e", f"{PROTO_COMMIT}^{{commit}}").returncode != 0:
+    if _git("cat-file", "-e", f"{PROTO_REF_COMMIT}^{{commit}}").returncode != 0:
         _git("fetch", "--quiet", "origin")
-        if _git("cat-file", "-e", f"{PROTO_COMMIT}^{{commit}}").returncode != 0:
+        if _git("cat-file", "-e", f"{PROTO_REF_COMMIT}^{{commit}}").returncode != 0:
             sys.exit(
-                f"zqnt-protos {PROTO_COMMIT} is not in {PROTOS_REPO}, not even after a fetch"
+                f"zqnt-protos {PROTO_REF_COMMIT} is not in {PROTOS_REPO}, not even after a fetch"
             )
-    tag = _git("describe", "--tags", "--exact-match", PROTO_COMMIT)
+    tag = _git("describe", "--tags", "--exact-match", PROTO_REF_COMMIT)
     if tag.returncode == 0:
-        print(f"Generating from zqnt-protos {tag.stdout.strip()} ({PROTO_COMMIT})...")
+        print(
+            f"Generating from zqnt-protos {tag.stdout.strip()} ({PROTO_REF_COMMIT})..."
+        )
     elif os.environ.get("ALLOW_UNTAGGED") == "1":
         print(
-            f"Generating from untagged zqnt-protos {PROTO_COMMIT} (preview, ALLOW_UNTAGGED=1)..."
+            f"Generating from untagged zqnt-protos {PROTO_REF_COMMIT} (preview, ALLOW_UNTAGGED=1)..."
         )
     else:
         sys.exit(
-            f"zqnt-protos {PROTO_COMMIT} carries no release tag. Pin a tag, or set ALLOW_UNTAGGED=1 "
+            f"zqnt-protos {PROTO_REF_COMMIT} carries no release tag. Pin a tag, or set ALLOW_UNTAGGED=1 "
             "for a preview from a zqnt-protos PR branch (it must move to the tag after the release)."
         )
 
@@ -87,7 +89,7 @@ def export_protos(target: Path) -> None:
             str(PROTOS_REPO),
             "archive",
             "--format=tar",
-            PROTO_COMMIT,
+            PROTO_REF_COMMIT,
             "v2",
             "v3",
         ],
