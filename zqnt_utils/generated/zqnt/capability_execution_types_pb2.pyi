@@ -80,6 +80,7 @@ class ExecutionNodeTypeProto(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     EXECUTION_NODE_TYPE_EVENT_WAIT: _ClassVar[ExecutionNodeTypeProto]
     EXECUTION_NODE_TYPE_HUMAN_APPROVAL: _ClassVar[ExecutionNodeTypeProto]
     EXECUTION_NODE_TYPE_END: _ClassVar[ExecutionNodeTypeProto]
+    EXECUTION_NODE_TYPE_AI: _ClassVar[ExecutionNodeTypeProto]
 
 class ExecutionEdgeTypeProto(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -187,6 +188,7 @@ EXECUTION_NODE_TYPE_WAIT: ExecutionNodeTypeProto
 EXECUTION_NODE_TYPE_EVENT_WAIT: ExecutionNodeTypeProto
 EXECUTION_NODE_TYPE_HUMAN_APPROVAL: ExecutionNodeTypeProto
 EXECUTION_NODE_TYPE_END: ExecutionNodeTypeProto
+EXECUTION_NODE_TYPE_AI: ExecutionNodeTypeProto
 EXECUTION_EDGE_TYPE_UNSPECIFIED: ExecutionEdgeTypeProto
 EXECUTION_EDGE_TYPE_NORMAL: ExecutionEdgeTypeProto
 EXECUTION_EDGE_TYPE_SUCCESS: ExecutionEdgeTypeProto
