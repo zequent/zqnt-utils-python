@@ -18,7 +18,7 @@ dev = [
 ]
 
 [tool.uv.sources]
-zqnt-api = { git = "https://github.com/zequent/zqnt-api-python", branch = "main" }  # zqnt-api 3.0.0 line (zequent/zqnt-api-python main); the release tag once it is cut
+zqnt-api = { git = "https://github.com/zequent/zqnt-api-python", tag = "pr-3-0afa431" }  # zqnt-api 3.0.0 preview; the release tag once it is cut
 
 [build-system]
 requires = ["hatchling"]
