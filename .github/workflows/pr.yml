@@ -1,18 +1,15 @@
-name: PR – Lint, Test, Build & Publish Preview
+name: PR – Lint, Test, Build Preview
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, feature/v3-agentic]
 
 permissions:
   contents: read
 
 jobs:
   ci:
-    permissions:
-      contents: write
-      pull-requests: write
-    name: Lint · Test · Build · Publish Preview
+    name: Lint · Test · Build Preview
     runs-on: ubuntu-latest
 
     steps:
@@ -44,50 +41,43 @@ jobs:
       - name: Format check (ruff)
         run: uv run ruff format --check .
 
-      # ── Version: read from pyproject.toml and add PR suffix ────────────────
-      - name: Create pre-release version
+      - name: Tests
+        run: uv run pytest -q
+
+      - name: Preview version
         id: version
         run: |
-          BASE_VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "//' | sed 's/".*//')
-          SHORT_SHA=$(git rev-parse --short HEAD)
-          PR_VERSION="${BASE_VERSION}.post${{ github.event.pull_request.number }}.dev0"
-          echo "version=${PR_VERSION}" >> "$GITHUB_OUTPUT"
-          echo "Pre-release version: ${PR_VERSION}"
+          VERSION=$(grep "^version" pyproject.toml | cut -d'"' -f2)
+          PR_VERSION="${VERSION}+pr${{ github.event.pull_request.number }}.$(git rev-parse --short HEAD)"
+          sed -i "s/^version = \".*\"/version = \"${PR_VERSION}\"/" pyproject.toml
+          echo "pr_version=${PR_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Preview version: ${PR_VERSION}" | tee -a "$GITHUB_STEP_SUMMARY"
 
-      # ── Update version temporarily ─────────────────────────────────────────
-      - name: Update version for pre-release
-        run: |
-          sed -i 's/version = ".*"/version = "${{ steps.version.outputs.version }}"/' pyproject.toml
-
-      # ── Build wheel + sdist ────────────────────────────────────────────────
       - name: Build package
         run: uv build
 
-      # ── Publish pre-release to GitHub Releases ─────────────────────────────
-      - name: Create pre-release GitHub Release
-        id: release
-        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
+  pr-preview:
+    name: Tag PR preview build
+    needs: [ci]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
-          tag_name: v${{ steps.version.outputs.version }}
-          name: v${{ steps.version.outputs.version }}
-          prerelease: true
-          generate_release_notes: false
-          files: dist/*
+          persist-credentials: false
 
-      # ── Comment PR with pre-release version ────────────────────────────────
-      - name: Comment PR with pre-release version
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const repo = context.repo;
-            const version = "${{ steps.version.outputs.version }}";
-            const releaseUrl = "${{ steps.release.outputs.url }}";
-            const whlFile = `zqnt_utils-${version}-py3-none-any.whl`;
-            const downloadUrl = `https://github.com/${repo.owner}/${repo.repo}/releases/download/v${version}/${whlFile}`;
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: repo.owner,
-              repo: repo.repo,
-              body: `📦 Pre-release **v${version}** published: [Release](${releaseUrl})\n\nInstall with:\n\`\`\`bash\nuv add "zqnt-utils @ ${downloadUrl}"\n\`\`\``
-            })
+      - name: Compute preview tag
+        id: tag
+        run: |
+          TAG="pr-${{ github.event.pull_request.number }}-$(git rev-parse --short=7 HEAD)"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "Preview tag: ${TAG}" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      # The checkout keeps no credentials; the push authenticates in this step only.
+      - name: Create and push preview tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git tag "${{ steps.tag.outputs.tag }}"
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "${{ steps.tag.outputs.tag }}"
