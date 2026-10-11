@@ -13,7 +13,7 @@ dev = [
     "ruff>=0.15.15",
     "pytest>=9.0.3",
     "grpcio-tools>=1.60.0",
-    "mypy-protobuf>=3.5.0",
+    "mypy-protobuf>=5.1.0",
 ]
 
 [build-system]
