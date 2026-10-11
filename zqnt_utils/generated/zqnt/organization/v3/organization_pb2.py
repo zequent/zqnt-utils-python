@@ -23,7 +23,7 @@ _sym_db = _symbol_database.Default()
 
 
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
-from zqnt_utils.generated.zqnt.common.v3 import common_pb2 as zqnt_dot_common_dot_v3_dot_common__pb2
+from zqnt_api.generated.zqnt.common.v3 import common_pb2 as zqnt_dot_common_dot_v3_dot_common__pb2
 from zqnt_utils.generated.zqnt.licensing.v3 import license_activation_pb2 as zqnt_dot_licensing_dot_v3_dot_license__activation__pb2
 
 

@@ -1,8 +1,8 @@
 import datetime
 
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
-from zqnt_utils.generated.zqnt.capability.v3 import capability_pb2 as _capability_pb2
-from zqnt_utils.generated.zqnt.common.v3 import common_pb2 as _common_pb2
+from zqnt_api.generated.zqnt.capability.v3 import capability_pb2 as _capability_pb2
+from zqnt_api.generated.zqnt.common.v3 import common_pb2 as _common_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
