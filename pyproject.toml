@@ -1,8 +1,9 @@
 [project]
 name = "zqnt-utils"
-version = "2.0.0"
+version = "3.0.0"
 requires-python = ">=3.12"
 dependencies = [
+    "zqnt-api",
     "redis[asyncio]>=8.1.0",
     "grpcio>=1.60.0",
     "protobuf>=4.25.0",
@@ -15,6 +16,9 @@ dev = [
     "grpcio-tools>=1.60.0",
     "mypy-protobuf>=5.1.0",
 ]
+
+[tool.uv.sources]
+zqnt-api = { git = "https://github.com/zequent/zqnt-api-python", rev = "439656edda28052ecb66e7e95f10e944219bd0f0" }  # zqnt-api 3.0.0 preview (#4, ASSET_VENDOR_AI); the release tag once it is cut
 
 [build-system]
 requires = ["hatchling"]
