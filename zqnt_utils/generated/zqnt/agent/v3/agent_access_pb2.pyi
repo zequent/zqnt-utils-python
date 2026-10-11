@@ -6,8 +6,8 @@ from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from zqnt_utils.generated.zqnt.agent.v3 import agent_pb2 as _agent_pb2
 from zqnt_utils.generated.zqnt.application.v3 import application_pb2 as _application_pb2
-from zqnt_utils.generated.zqnt.capability.v3 import capability_pb2 as _capability_pb2
-from zqnt_utils.generated.zqnt.common.v3 import common_pb2 as _common_pb2
+from zqnt_api.generated.zqnt.capability.v3 import capability_pb2 as _capability_pb2
+from zqnt_api.generated.zqnt.common.v3 import common_pb2 as _common_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
