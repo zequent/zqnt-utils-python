@@ -239,7 +239,7 @@ wheels = [
 [[package]]
 name = "zqnt-api"
 version = "3.0.0"
-source = { git = "https://github.com/zequent/zqnt-api-python?rev=439656edda28052ecb66e7e95f10e944219bd0f0#439656edda28052ecb66e7e95f10e944219bd0f0" }
+source = { git = "https://github.com/zequent/zqnt-api-python?rev=89b611a0ba4a99b7182d6e439a95c233f8784991#89b611a0ba4a99b7182d6e439a95c233f8784991" }
 dependencies = [
     { name = "grpcio" },
     { name = "protobuf" },
@@ -269,7 +269,7 @@ requires-dist = [
     { name = "grpcio", specifier = ">=1.60.0" },
     { name = "protobuf", specifier = ">=4.25.0" },
     { name = "redis", extras = ["asyncio"], specifier = ">=8.1.0" },
-    { name = "zqnt-api", git = "https://github.com/zequent/zqnt-api-python?rev=439656edda28052ecb66e7e95f10e944219bd0f0" },
+    { name = "zqnt-api", git = "https://github.com/zequent/zqnt-api-python?rev=89b611a0ba4a99b7182d6e439a95c233f8784991" },
 ]
 
 [package.metadata.requires-dev]

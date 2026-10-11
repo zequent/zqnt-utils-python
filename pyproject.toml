@@ -18,7 +18,7 @@ dev = [
 ]
 
 [tool.uv.sources]
-zqnt-api = { git = "https://github.com/zequent/zqnt-api-python", rev = "439656edda28052ecb66e7e95f10e944219bd0f0" }  # zqnt-api 3.0.0 preview (#4, ASSET_VENDOR_AI); the release tag once it is cut
+zqnt-api = { git = "https://github.com/zequent/zqnt-api-python", rev = "89b611a0ba4a99b7182d6e439a95c233f8784991" }  # zqnt-api 3.0.0 preview (#6, v3 detection radar geometry); the release tag once it is cut
 
 [build-system]
 requires = ["hatchling"]
