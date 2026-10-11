@@ -21,7 +21,7 @@ from typing import Any
 import redis.asyncio
 
 from .keys import CacheKeys
-from ..core.dto import EdgeEndpointDTO
+from zqnt_api.core import EdgeEndpointDTO
 
 logger = logging.getLogger(__name__)
 

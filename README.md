@@ -2,31 +2,29 @@
 
 Shared utilities for ZQNT services and adapters. Published to GitHub Packages (private registry).
 
+Since the public/internal split of the contracts, `zqnt_utils.generated` holds only the
+**internal** contracts. The public contracts (`zqnt_api.generated...`), the telemetry mapping
+(`zqnt_api.telemetry`), `zqnt_api.proto_utils` and `EdgeEndpointDTO` (`zqnt_api.core`, re-exported by
+`zqnt_utils.core`) come from [`zqnt-api`](https://github.com/Zequent/zqnt-api-python), a dependency
+of this package. Never import the same contract from both packages.
+
 ## Installation
 
-Das Package wird als `.whl`-Datei über [GitHub Releases](https://github.com/ZEQUENT_ORG/zqnt-utils-python/releases) verteilt. Kein Package-Registry-Token nötig — nur Zugriff auf das Repository.
+Das Package wird per Git-Tag aus diesem Repository installiert. Aktuelle Linie: **3.0.0**.
 
-### Stable Release
+### Release
 
 ```bash
-uv add "zqnt-utils @ https://github.com/ZEQUENT_ORG/zqnt-utils-python/releases/download/v0.1.0/zqnt_utils-0.1.0-py3-none-any.whl"
+uv add "zqnt-utils @ git+https://github.com/Zequent/zqnt-utils-python@v3.0.0"
 ```
 
-### Als Abhängigkeit im Projekt (`pyproject.toml`)
+### Preview (aus PR)
+
+PR-Builds tragen die Version `3.0.0+pr<n>.<sha>` (siehe Job-Summary). Consumer pinnen den PR-Branch:
 
 ```toml
-[project]
-dependencies = [
-    "zqnt-utils @ https://github.com/ZEQUENT_ORG/zqnt-utils-python/releases/download/v0.1.0/zqnt_utils-0.1.0-py3-none-any.whl",
-]
-```
-
-### Pre-release (aus PR)
-
-Der PR-Kommentar enthält den genauen Install-Befehl, z.B.:
-
-```bash
-uv add "zqnt-utils @ https://github.com/ZEQUENT_ORG/zqnt-utils-python/releases/download/v0.1.0.post42.devABC123/zqnt_utils-0.1.0.post42.devABC123-py3-none-any.whl"
+[tool.uv.sources]
+zqnt-utils = { git = "https://github.com/Zequent/zqnt-utils-python", branch = "<branch>" }
 ```
 
 ---
