@@ -22,7 +22,7 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
-from zqnt_utils.generated.zqnt.common.v3 import common_pb2 as zqnt_dot_common_dot_v3_dot_common__pb2
+from zqnt_api.generated.zqnt.common.v3 import common_pb2 as zqnt_dot_common_dot_v3_dot_common__pb2
 from zqnt_utils.generated.zqnt.iam.v3 import user_pb2 as zqnt_dot_iam_dot_v3_dot_user__pb2
 
 

@@ -2,6 +2,12 @@
 
 Shared utilities for ZQNT services and adapters. Published to GitHub Packages (private registry).
 
+Since the public/internal split of the contracts, `zqnt_utils.generated` holds only the
+**internal** contracts. The public contracts (`zqnt_api.generated...`), the telemetry mapping
+(`zqnt_api.telemetry`), `zqnt_api.proto_utils` and `EdgeEndpointDTO` (`zqnt_api.core`, re-exported by
+`zqnt_utils.core`) come from [`zqnt-api`](https://github.com/Zequent/zqnt-api-python), a dependency
+of this package. Never import the same contract from both packages.
+
 ## Installation
 
 Das Package wird als `.whl`-Datei über [GitHub Releases](https://github.com/ZEQUENT_ORG/zqnt-utils-python/releases) verteilt. Kein Package-Registry-Token nötig — nur Zugriff auf das Repository.

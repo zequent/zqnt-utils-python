@@ -3,6 +3,7 @@ name = "zqnt-utils"
 version = "2.0.0"
 requires-python = ">=3.12"
 dependencies = [
+    "zqnt-api",
     "redis[asyncio]>=8.0.0",
     "grpcio>=1.60.0",
     "protobuf>=4.25.0",
@@ -15,6 +16,10 @@ dev = [
     "grpcio-tools>=1.60.0",
     "mypy-protobuf>=3.5.0",
 ]
+
+[tool.uv.sources]
+# Preview of the public API (zequent/zqnt-api-python#1); a release tag once it is merged and tagged.
+zqnt-api = { git = "https://github.com/zequent/zqnt-api-python", branch = "feature/public-api-split" }
 
 [build-system]
 requires = ["hatchling"]

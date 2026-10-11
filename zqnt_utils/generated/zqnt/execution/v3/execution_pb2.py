@@ -25,8 +25,8 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 from zqnt_utils.generated.zqnt.application.v3 import application_pb2 as zqnt_dot_application_dot_v3_dot_application__pb2
-from zqnt_utils.generated.zqnt.capability.v3 import capability_pb2 as zqnt_dot_capability_dot_v3_dot_capability__pb2
-from zqnt_utils.generated.zqnt.common.v3 import common_pb2 as zqnt_dot_common_dot_v3_dot_common__pb2
+from zqnt_api.generated.zqnt.capability.v3 import capability_pb2 as zqnt_dot_capability_dot_v3_dot_capability__pb2
+from zqnt_api.generated.zqnt.common.v3 import common_pb2 as zqnt_dot_common_dot_v3_dot_common__pb2
 from zqnt_utils.generated.zqnt.execution.v3 import execution_stats_pb2 as zqnt_dot_execution_dot_v3_dot_execution__stats__pb2
 
 

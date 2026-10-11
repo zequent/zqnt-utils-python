@@ -237,6 +237,15 @@ wheels = [
 ]
 
 [[package]]
+name = "zqnt-api"
+version = "1.0.0"
+source = { git = "https://github.com/zequent/zqnt-api-python?branch=feature%2Fpublic-api-split#fa7ea4f663cbaba94b93d62ec3adaf2ed57ea11c" }
+dependencies = [
+    { name = "grpcio" },
+    { name = "protobuf" },
+]
+
+[[package]]
 name = "zqnt-utils"
 version = "2.0.0"
 source = { editable = "." }
@@ -244,6 +253,7 @@ dependencies = [
     { name = "grpcio" },
     { name = "protobuf" },
     { name = "redis" },
+    { name = "zqnt-api" },
 ]
 
 [package.dev-dependencies]
@@ -259,6 +269,7 @@ requires-dist = [
     { name = "grpcio", specifier = ">=1.60.0" },
     { name = "protobuf", specifier = ">=4.25.0" },
     { name = "redis", extras = ["asyncio"], specifier = ">=8.0.0" },
+    { name = "zqnt-api", git = "https://github.com/zequent/zqnt-api-python?branch=feature%2Fpublic-api-split" },
 ]
 
 [package.metadata.requires-dev]

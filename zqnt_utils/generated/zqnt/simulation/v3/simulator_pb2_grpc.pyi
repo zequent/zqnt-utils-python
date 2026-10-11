@@ -3,7 +3,7 @@
 isort:skip_file
 Fleet management of a running Zequent simulator: which simulated devices exist and whether they
 run. Commanding a device is not here: a simulated device is an asset like any other and takes
-commands through zqnt_utils.generated.zqnt.edge.v3.EdgeAdapterService.
+commands through zqnt_api.generated.zqnt.edge.v3.EdgeAdapterService.
 """
 
 from collections import abc as _abc
