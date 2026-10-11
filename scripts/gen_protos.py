@@ -45,8 +45,8 @@ WELL_KNOWN_PROTOS = Path(protoc.__file__).parent / "_proto"
 # no immutable tag yet. Same resolve-then-assert pattern as before -- fail loudly if the branch has
 # moved rather than silently generating from whatever it now points at. A real 2.0.0 release MUST
 # replace this with the immutable tag, exactly as the 1.3.1 pin did.
-PROTO_REF = "refactoring/refactoring-ecosystem-v2"
-PROTO_REF_COMMIT = "db104ba074bb76d8fee1a06dc9e59b9cc9ba51c6"
+PROTO_REF = "fix/ai-adapter-vendor"
+PROTO_REF_COMMIT = "eec3d9d89f312fe8558f6c2aa7cc6fd780d901c9"
 
 
 def _git(*args: str) -> str:
