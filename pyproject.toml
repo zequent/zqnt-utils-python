@@ -4,7 +4,7 @@ version = "3.0.0"
 requires-python = ">=3.12"
 dependencies = [
     "zqnt-api",
-    "redis[asyncio]>=8.0.0",
+    "redis[asyncio]>=8.1.0",
     "grpcio>=1.60.0",
     "protobuf>=4.25.0",
 ]
@@ -12,9 +12,9 @@ dependencies = [
 [dependency-groups]
 dev = [
     "ruff>=0.15.15",
-    "pytest>=9.0.3",
+    "pytest>=9.1.1",
     "grpcio-tools>=1.60.0",
-    "mypy-protobuf>=3.5.0",
+    "mypy-protobuf>=5.1.0",
 ]
 
 [tool.uv.sources]
