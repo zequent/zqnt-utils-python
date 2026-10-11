@@ -20,11 +20,12 @@ uv add "zqnt-utils @ git+https://github.com/Zequent/zqnt-utils-python@v3.0.0"
 
 ### Preview (aus PR)
 
-PR-Builds tragen die Version `3.0.0+pr<n>.<sha>` (siehe Job-Summary). Consumer pinnen den PR-Branch:
+PR-Builds tragen die Version `3.0.0+pr<n>.<sha>` und setzen den Git-Tag `pr-<n>-<sha>` auf den
+Merge-Commit (siehe Job-Summary). Consumer pinnen diesen Tag:
 
 ```toml
 [tool.uv.sources]
-zqnt-utils = { git = "https://github.com/Zequent/zqnt-utils-python", branch = "<branch>" }
+zqnt-utils = { git = "https://github.com/Zequent/zqnt-utils-python", tag = "pr-<n>-<sha>" }
 ```
 
 ---
