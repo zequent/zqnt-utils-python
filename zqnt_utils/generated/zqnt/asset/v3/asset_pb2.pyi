@@ -38,6 +38,8 @@ class Vendor(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     VENDOR_BETAFLIGHT: _ClassVar[Vendor]
     VENDOR_RNS: _ClassVar[Vendor]
     VENDOR_ZQNT: _ClassVar[Vendor]
+    VENDOR_SIMULATOR: _ClassVar[Vendor]
+    VENDOR_AI: _ClassVar[Vendor]
 
 class Connection(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -65,6 +67,8 @@ VENDOR_SAPIENT: Vendor
 VENDOR_BETAFLIGHT: Vendor
 VENDOR_RNS: Vendor
 VENDOR_ZQNT: Vendor
+VENDOR_SIMULATOR: Vendor
+VENDOR_AI: Vendor
 CONNECTION_UNSPECIFIED: Connection
 CONNECTION_MQTT: Connection
 CONNECTION_TCP: Connection
