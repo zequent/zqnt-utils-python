@@ -37,7 +37,7 @@ try:
 except ImportError:
     sys.exit("grpcio-tools is required: pip install grpcio-tools")
 
-PROTO_REF_COMMIT = "30874ebe48b72bf91e121e69c9e0d9caf7c2079c"
+PROTO_REF_COMMIT = "66aba3cc425dd8d5baa6e21ae889267187c505f8"
 
 ROOT = Path(__file__).resolve().parent.parent
 PROTOS_REPO = Path(os.environ.get("ZQNT_PROTOS_DIR", ROOT.parent / "zqnt-protos"))
